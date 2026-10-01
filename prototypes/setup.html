@@ -7,8 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <style>
-/* Layout: two modes. Setup and campaign briefing are a full-screen single column, one question per screen.
-   The console is the real console's sidebar plus tabs, organized by what each part does. Light first; dark only when chosen. */
+/* Layout: setup is a full-screen conversation with OkPo on the left and "Your GCash AI" assembling on the right
+   (a pull-down strip on phones). Things you confirm fly into it. The console after setup stays organized. Light first. */
 :root{
   --ground:#f6f1e4; --tone:#ebe2cc; --ink:#121212; --body:#4a4640; --mute:#6a655c;
   --line:rgba(18,18,18,.12); --line2:rgba(18,18,18,.07); --soft:rgba(18,18,18,.05); --field:#ffffff;
@@ -21,7 +21,7 @@
   --display:'Bricolage Grotesque',ui-sans-serif,system-ui,sans-serif;
   --text:'IBM Plex Sans',ui-sans-serif,system-ui,sans-serif;
   --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
-  --ease:cubic-bezier(.2,.8,.2,1);
+  --ease:cubic-bezier(.2,.8,.2,1); --pop:cubic-bezier(.34,1.56,.64,1); --exit:cubic-bezier(.6,0,.3,1);
 }
 :root[data-theme="dark"]{
   --ground:#0f0f0f; --tone:#1c1b19; --ink:#ececec; --body:#b9bcc0; --mute:#8f949a;
@@ -34,12 +34,22 @@
 }
 *{box-sizing:border-box}
 html,body{height:100%}
-body{margin:0;background:var(--ground);color:var(--ink);font:400 15px/1.5 var(--text);-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--ground);color:var(--ink);font:400 15px/1.5 var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 button,input,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
 :focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:8px}
 .bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.bg svg{position:absolute;fill:var(--tone)}
+.bg svg{position:absolute;fill:var(--tone);transition:transform 1.4s var(--ease)}
+/* the backdrop shifts per section */
+body[data-sec="1"] .bg .b2{transform:scale(1.35) rotate(25deg)}
+body[data-sec="1"] .bg .b1{transform:translate(-40px,-30px) scale(.9)}
+body[data-sec="2"] .bg .b3{transform:translate(-120px,-60px) scale(1.2)}
+body[data-sec="2"] .bg .b2{transform:translate(60px,40px) scale(.85) rotate(-15deg)}
+body[data-sec="3"] .bg .b1{transform:scale(1.2) rotate(-8deg)}
+body[data-sec="3"] .bg .b3{transform:translate(160px,-40px) scale(1.15)}
+body[data-sec="4"] .bg .b1{transform:translate(60px,40px) scale(1.25)}
+body[data-sec="4"] .bg .b2{transform:scale(1.4) rotate(45deg)}
+body[data-sec="4"] .bg .b3{transform:translate(-60px,-80px) scale(1.3)}
 #app{position:relative;z-index:1;min-height:100%}
 .label{font:600 10.5px/1.2 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
 .disp{font-family:var(--display);font-weight:800;letter-spacing:-.03em}
@@ -52,8 +62,8 @@ button{cursor:pointer}
 .btn{border:0;border-radius:14px;padding:13px 22px;min-height:48px;font-weight:600;font-size:15px;background:var(--btn);color:var(--on-btn);transition:transform .12s var(--ease),opacity .2s}
 .btn:active{transform:scale(.97)} .btn[disabled]{opacity:.35;cursor:default;transform:none}
 .btn.sm{min-height:44px;padding:10px 16px;font-size:14px}
-.ghost{border:1px solid var(--line);background:transparent;border-radius:10px;padding:9px 14px;min-height:44px;font-weight:500;font-size:14px}
-.ghost:hover{background:var(--soft)}
+.ghost{border:1px solid var(--line);background:transparent;border-radius:10px;padding:9px 14px;min-height:44px;font-weight:500;font-size:14px;transition:transform .12s var(--ease),background .2s}
+.ghost:hover{background:var(--soft)} .ghost:active{transform:scale(.97)}
 .link{border:0;background:none;padding:10px 0;min-height:44px;color:var(--mute);text-decoration:underline;font-size:14px}
 .link:hover{color:var(--ink)}
 .seg{display:inline-flex;gap:2px;padding:3px;border-radius:12px;background:var(--soft)}
@@ -68,58 +78,97 @@ input[type=text],textarea{width:100%;border:1px solid var(--line);border-radius:
 input[type=text]:focus,textarea:focus{border-color:var(--ink)}
 textarea{resize:vertical;min-height:120px;line-height:1.5}
 
+/* ---------- motion ---------- */
+@keyframes rise{from{opacity:0;transform:translateY(14px)}}
+@keyframes pop{0%{opacity:0;transform:scale(.4)}70%{opacity:1;transform:scale(1.12)}100%{transform:scale(1)}}
+@keyframes drop{from{opacity:0;transform:translateY(-18px) scale(.9)}}
+@keyframes word{from{opacity:0;transform:translateY(6px);filter:blur(3px)}}
+@keyframes glow{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--purple) 70%,transparent)}100%{box-shadow:0 0 0 10px transparent}}
+@keyframes pulse{50%{transform:scale(1.08)}}
+@keyframes dots{0%,80%,100%{opacity:.25}40%{opacity:1}}
+@keyframes sweep{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+.enter>*{animation:rise .5s var(--ease) both}
+.enter>*:nth-child(2){animation-delay:.06s}.enter>*:nth-child(3){animation-delay:.12s}.enter>*:nth-child(4){animation-delay:.18s}.enter>*:nth-child(5){animation-delay:.24s}.enter>*:nth-child(n+6){animation-delay:.3s}
+.say .w{display:inline-block;animation:word .4s var(--ease) both}
+.pop{animation:pop .55s var(--pop) both}
+.lit{animation:glow 1.1s var(--ease) 2}
+.ghostfly{position:fixed;z-index:60;pointer-events:none;margin:0;transition:transform .62s var(--exit),opacity .62s var(--exit);will-change:transform}
+.typing span{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--mute);margin-right:4px;animation:dots 1s infinite}
+.typing span:nth-child(2){animation-delay:.15s}.typing span:nth-child(3){animation-delay:.3s}
+
 /* ---------- guided mode ---------- */
 .g{min-height:100vh;display:flex;flex-direction:column}
-.gtop{display:flex;align-items:center;gap:24px;padding:20px 28px;padding-top:calc(20px + env(safe-area-inset-top,0px))}
-.prog{flex:1;max-width:620px;margin:0 auto;display:flex;gap:8px}
-.prog span{flex:1;display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--mute);min-width:0}
-.prog span.on{color:var(--ink);font-weight:600}
-.prog i{display:block;height:4px;border-radius:2px;background:var(--line);position:relative;overflow:hidden}
-.prog i b{position:absolute;left:0;top:0;bottom:0;background:var(--ink);transition:width .4s var(--ease)}
-.prog em{font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.gmain{flex:1;display:flex;flex-direction:column;justify-content:center;padding:24px 16px 96px}
-.gcol{width:min(640px,100%);margin:0 auto;display:flex;flex-direction:column;gap:24px}
-.gcol h1{margin:0;font:800 clamp(32px,4.6vw,44px)/1.03 var(--display);letter-spacing:-.035em;text-wrap:balance}
-.gcol .lead{margin:0;font-size:17px;color:var(--body);max-width:56ch}
-.gq{display:flex;flex-direction:column;gap:10px}
-.gnav{display:flex;align-items:center;gap:16px;padding-top:6px;flex-wrap:wrap}
-.lines>*+*{border-top:1px solid var(--line)}
-.lines{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.li{display:flex;align-items:center;gap:14px;padding:14px 0}
-.li .t{font-size:16px} .li .s{font-size:13px;color:var(--mute);margin-top:2px}
-.drop{border:1.5px dashed var(--line);border-radius:20px;padding:28px;text-align:center;background:var(--glass-b);width:100%}
-.drop:hover{border-color:var(--ink)}
+.gtop{display:flex;align-items:center;gap:24px;padding:18px 28px;padding-top:calc(18px + env(safe-area-inset-top,0px))}
+.steps{display:flex;gap:6px;align-items:center;margin:0 auto}
+.steps em{font-style:normal}
+.steps span{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--mute);padding:6px 10px;border-radius:99px;white-space:nowrap}
+.steps span.on{background:var(--glass-strong);color:var(--ink);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.steps span.done{color:var(--ink)}
+.steps i{width:8px;height:8px;border-radius:50%;background:var(--line);flex:none}
+.steps span.on i{background:var(--ink)} .steps span.done i{background:var(--green)}
+.gbody{flex:1;display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:40px;padding:12px 40px 96px;max-width:1240px;width:100%;margin:0 auto;align-items:start}
+.gcol{display:flex;flex-direction:column;gap:22px;max-width:620px;width:100%;justify-self:center;padding-top:4vh}
+.gcol h1{margin:0;font:800 clamp(32px,4.4vw,46px)/1.02 var(--display);letter-spacing:-.035em;text-wrap:balance}
+.okpo{display:flex;gap:12px;align-items:flex-start}
+.okpo .av{width:38px;height:34px;border-radius:12px;flex:none;display:flex;align-items:center;justify-content:center;background:var(--glass-strong);border:1px solid var(--glass-edge);box-shadow:var(--shadow);font:800 13px/1 var(--display);letter-spacing:-.04em}
+.okpo .av span:nth-child(1){color:var(--coral)}.okpo .av span:nth-child(2){color:var(--yellow)}
+.say{margin:0;font-size:17px;line-height:1.5;color:var(--body);max-width:52ch;padding-top:4px}
+.gnav{display:flex;align-items:center;gap:16px;padding-top:4px;flex-wrap:wrap}
+.cards{display:flex;flex-direction:column;gap:10px}
+.card{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:16px;background:var(--glass-strong);border:1px solid var(--line2);box-shadow:0 6px 16px rgba(18,18,18,.05);transition:transform .2s var(--ease),opacity .2s}
+.card .t{font-size:16px} .card .s{font-size:12.5px;color:var(--mute);margin-top:2px}
+.card.gone{opacity:0;transform:scale(.96)}
+.drop{border:1.5px dashed var(--line);border-radius:20px;padding:30px;text-align:center;background:var(--glass-b);width:100%;transition:border-color .2s,transform .15s var(--ease)}
+.drop:hover{border-color:var(--ink)} .drop:active{transform:scale(.99)}
 .doc{width:26px;height:32px;border-radius:5px;border:1.5px solid var(--line);background:var(--field);flex:none}
 .webi{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--line);background:var(--field);flex:none}
-.choice{display:flex;align-items:center;gap:14px;border:1px solid var(--line);background:var(--glass-b);border-radius:18px;padding:16px 20px;text-align:left;width:100%}
+.choice{display:flex;align-items:center;gap:14px;border:1px solid var(--line);background:var(--glass-b);border-radius:18px;padding:16px 20px;text-align:left;width:100%;transition:transform .15s var(--ease)}
+.choice:active{transform:scale(.98)}
 .choice[aria-checked="true"]{border:2px solid var(--ink);background:var(--glass-strong);padding:15px 19px}
-.radio{width:20px;height:20px;border-radius:50%;border:2px solid var(--ink);flex:none}
+.radio{width:20px;height:20px;border-radius:50%;border:2px solid var(--ink);flex:none;transition:box-shadow .2s}
 .choice[aria-checked="true"] .radio{background:var(--ink);box-shadow:inset 0 0 0 4px var(--ground)}
-.box{width:22px;height:22px;border-radius:6px;border:2px solid var(--ink);flex:none;display:grid;place-items:center;font-size:12px;line-height:1}
+.box{width:24px;height:24px;border-radius:7px;border:2px solid var(--ink);flex:none;display:grid;place-items:center;font-size:13px;line-height:1;transition:background .2s}
 .box.on{background:var(--ink);color:var(--ground)}
-.count{display:flex;align-items:center;gap:16px;padding:16px 0}
-.count .n{font:800 28px/1 var(--display);min-width:44px;text-align:right}
+.piles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.pile{border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:8px;min-height:230px}
+.pile .n{font:800 34px/1 var(--display);letter-spacing:-.03em}
+.pile .mini{font-size:12.5px;line-height:1.35;background:var(--glass-strong);border:1px solid var(--line2);border-radius:10px;padding:7px 9px;animation:drop .45s var(--pop) both}
+.pile.guard{border:2px solid var(--ink)} .pile.brief{border:1.5px dashed var(--line)}
 .bar{height:6px;border-radius:3px;background:var(--line);position:relative;overflow:hidden}
-.bar b{position:absolute;left:0;top:0;bottom:0;background:var(--ink);transition:width .25s linear}
+.bar b{position:absolute;left:0;top:0;bottom:0;background:var(--ink);transition:width .2s linear}
 .voice{border-radius:18px;padding:18px 20px}
 .note{display:flex;gap:12px;background:var(--soft);border-radius:14px;padding:12px 14px;font-size:14px;color:var(--body)}
-.bub{border-radius:16px;padding:10px 13px;font-size:14.5px;line-height:1.45;max-width:88%}
+.bub{border-radius:16px;padding:10px 13px;font-size:14.5px;line-height:1.45;max-width:88%;animation:rise .35s var(--ease) both}
 .bub.me{background:var(--btn);color:var(--on-btn);align-self:flex-end;border-bottom-right-radius:6px}
 .bub.ai{background:var(--glass-strong);border:1px solid var(--line2);align-self:flex-start;border-bottom-left-radius:6px}
 .used{display:flex;flex-wrap:wrap;gap:5px;align-items:center;padding-top:10px;border-top:1px dashed var(--line)}
-.chat{display:flex;flex-direction:column;gap:10px;max-height:330px;overflow-y:auto;padding-right:2px}
+.chat{display:flex;flex-direction:column;gap:10px;max-height:320px;overflow-y:auto;padding-right:2px}
 .ex{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,1fr);gap:8px 12px;font-size:13.5px;align-items:start}
-.layers{display:flex;flex-direction:column;gap:10px}
-.layer{display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:18px}
-.layer.next{border:1.5px dashed var(--line);background:transparent}
 .sum{display:grid;grid-template-columns:140px minmax(0,1fr);gap:4px 16px;padding:16px 0}
-.tpl{display:flex;align-items:center;gap:10px;padding:12px 0;flex-wrap:wrap}
-.tpl .nm{flex:1 1 220px;font-size:16px;font-weight:500;min-width:0}
+.lines{border-top:1px solid var(--line);border-bottom:1px solid var(--line)} .lines>*+*{border-top:1px solid var(--line)}
+.tpl{display:flex;align-items:center;gap:10px;padding:12px 14px;flex-wrap:wrap;border-radius:16px;background:var(--glass-strong);border:1px solid var(--line2)}
+.tpl .nm{flex:1 1 200px;font-size:16px;font-weight:500;min-width:0}
 .tpl .ctl{display:flex;align-items:center;gap:8px}
 .mv{border:1px solid var(--line);background:transparent;border-radius:10px;width:44px;height:44px;display:grid;place-items:center;color:var(--body);font-size:16px}
 .mv[disabled]{opacity:.3;cursor:default}
-.share{width:96px;height:6px;border-radius:3px;background:var(--line);position:relative;overflow:hidden;flex:none}
-.share b{position:absolute;left:0;top:0;bottom:0;background:var(--green)}
+.share{width:90px;height:6px;border-radius:3px;background:var(--line);position:relative;overflow:hidden;flex:none}
+.share b{position:absolute;left:0;top:0;bottom:0;background:var(--green);transition:width .4s var(--ease)}
+
+/* ---------- Your GCash AI (the stack) ---------- */
+.stack{position:sticky;top:20px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.stack h2{margin:0;font:800 20px/1.1 var(--display);letter-spacing:-.03em}
+.lay{border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;background:var(--glass-strong);border:1px solid var(--line2);transition:opacity .3s}
+.lay.hollow{opacity:.55}
+.lay.guard{border:2px solid var(--ink)}
+.lay.brief{border:1.5px dashed var(--line);background:transparent}
+.lay .hd{display:flex;align-items:center;gap:10px}
+.lay .hd b{font-size:14.5px;flex:1}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chips .rid{transition:transform .2s}
+.vline{font:800 15px/1.25 var(--display);letter-spacing:-.02em}
+.mini-stack{display:none}
+.live{position:relative;overflow:hidden}
+.live::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--green) 22%,transparent),transparent);animation:sweep 1.2s var(--ease) 1 both}
 
 /* ---------- console ---------- */
 .c{display:flex;min-height:100vh}
@@ -130,12 +179,13 @@ textarea{resize:vertical;min-height:120px;line-height:1.5}
 .nav[data-nav="campaigns"][aria-current="page"]{background:color-mix(in srgb,var(--green) 24%,transparent)}
 .nav[data-nav="context"][aria-current="page"]{background:color-mix(in srgb,var(--purple) 24%,transparent)}
 .cmain{flex:1;min-width:0;padding:28px 36px 96px;display:flex;flex-direction:column;gap:18px;max-width:1240px}
+.cmain>*{animation:rise .4s var(--ease) both}
 .ctabs{display:flex;gap:2px;padding:3px;border-radius:12px;background:var(--soft);overflow-x:auto;scrollbar-width:none;align-self:flex-start;max-width:100%}
 .ctabs button{border:0;background:transparent;border-radius:9px;padding:8px 14px;min-height:40px;font-size:14px;color:var(--body);white-space:nowrap}
 .ctabs button[aria-selected="true"]{background:var(--glass-strong);color:var(--ink);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.1)}
 .cards3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .sec{padding:20px;display:flex;flex-direction:column;gap:12px;text-align:left;border:1px solid var(--glass-edge);width:100%;transition:transform .15s var(--ease)}
-.sec:hover{transform:translateY(-1px)}
+.sec:hover{transform:translateY(-2px)}
 .big{font:800 34px/1 var(--display);letter-spacing:-.03em}
 .tw{overflow-x:auto}
 table{border-collapse:collapse;width:100%;font-size:14px}
@@ -154,14 +204,18 @@ tr.grp td{padding:16px 12px 6px;border-bottom:0}
 .circ{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--mute);flex:none;display:grid;place-items:center;font-size:11px}
 .circ.done{background:var(--ink);border-color:var(--ink);color:var(--ground)}
 .empty{padding:28px;text-align:center;display:flex;flex-direction:column;gap:8px;align-items:center}
-.toast{position:fixed;left:50%;bottom:calc(72px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:50;padding:12px 18px;border-radius:16px;background:var(--glass-strong);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid var(--glass-edge);color:var(--ink);font-weight:500;box-shadow:var(--shadow);animation:up .3s var(--ease);max-width:calc(100% - 32px)}
-@keyframes up{from{opacity:0;transform:translate(-50%,10px)}}
+.toast{position:fixed;left:50%;bottom:calc(72px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:50;padding:12px 18px;border-radius:16px;background:var(--glass-strong);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid var(--glass-edge);color:var(--ink);font-weight:500;box-shadow:var(--shadow);animation:rise .3s var(--ease);max-width:calc(100% - 32px)}
 .proto{position:fixed;left:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:40;display:flex;flex-wrap:wrap;gap:4px;padding:4px;border-radius:12px;background:#121212;color:#f6f1e4;font:600 11.5px var(--mono);max-width:calc(100% - 24px)}
 .proto button{border:0;background:transparent;color:inherit;border-radius:8px;padding:6px 9px;font:inherit}
 .proto button:hover,.proto button[aria-pressed="true"]{background:rgba(255,255,255,.14)}
-.pitems{display:flex;flex-wrap:wrap;gap:4px}
-#pMenu{opacity:.65}
-@media (max-width:900px){
+.pitems{display:flex;flex-wrap:wrap;gap:4px} #pMenu{opacity:.65}
+@media (max-width:1000px){
+  .gbody{grid-template-columns:minmax(0,1fr);padding:4px 16px 120px;gap:16px}
+  .stack{display:none}
+  .mini-stack{display:flex;position:sticky;top:0;z-index:20;margin:0 -16px;padding:10px 16px;align-items:center;gap:10px;background:var(--glass-strong);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--line2);border-radius:0;font-size:13.5px;width:calc(100% + 32px);text-align:left;border-top:0;border-left:0;border-right:0;min-height:48px}
+  .stack.open{display:flex;position:fixed;inset:auto 12px 12px 12px;top:72px;z-index:45;overflow-y:auto;border-radius:24px}
+  .gcol{padding-top:8px}
+  .steps span em{display:none}.steps span{padding:6px}
   .c{flex-direction:column}
   .side{width:auto;flex-direction:row;overflow-x:auto;padding:12px 16px;border-right:0;border-bottom:1px solid var(--line2);align-items:center}
   .side .wm{margin:0 12px 0 0}.side .foot{display:none}.nav{width:auto;white-space:nowrap}
@@ -170,21 +224,21 @@ tr.grp td{padding:16px 12px 6px;border-bottom:0}
   .split{grid-template-columns:minmax(0,1fr)!important}
 }
 @media (max-width:600px){
-  .gtop{padding:14px 16px;gap:12px}.prog em{display:none}
-  .gmain{justify-content:flex-start;padding-top:28px;padding-bottom:120px}
+  .gtop{padding:12px 16px;gap:12px}
+  .piles{grid-template-columns:minmax(0,1fr)}.pile{min-height:0}
   .seg button{min-height:44px}
   .ex{grid-template-columns:auto minmax(0,1fr)}.ex .pf{grid-column:2}
   .sum{grid-template-columns:minmax(0,1fr)}
   .pitems{display:none}.proto.open .pitems{display:flex}#pMenu{opacity:1}
 }
-@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important}}
 </style>
 </head>
-<body>
+<body data-sec="0">
 <div class="bg" aria-hidden="true">
-  <svg width="520" height="520" viewBox="0 0 100 100" style="left:-140px;top:-140px"><path d="M0 0 A100 100 0 0 1 100 100 L0 100 Z" transform="rotate(180 50 50)"></path></svg>
-  <svg width="380" height="380" viewBox="0 0 100 100" style="right:-90px;top:30%"><path d="M50 0 A25 25 0 0 1 50 50 A25 25 0 0 1 0 50 A25 25 0 0 1 50 0 Z M50 50 A25 25 0 0 1 100 50 A25 25 0 0 1 50 100 A25 25 0 0 1 50 50 Z"></path></svg>
-  <svg width="440" height="440" viewBox="0 0 100 100" style="left:36%;bottom:-250px"><path d="M0 64 A50 50 0 0 1 100 64 Z"></path></svg>
+  <svg class="b1" width="520" height="520" viewBox="0 0 100 100" style="left:-140px;top:-140px"><path d="M0 0 A100 100 0 0 1 100 100 L0 100 Z" transform="rotate(180 50 50)"></path></svg>
+  <svg class="b2" width="380" height="380" viewBox="0 0 100 100" style="right:-90px;top:30%"><path d="M50 0 A25 25 0 0 1 50 50 A25 25 0 0 1 0 50 A25 25 0 0 1 50 0 Z M50 50 A25 25 0 0 1 100 50 A25 25 0 0 1 50 100 A25 25 0 0 1 50 50 Z"></path></svg>
+  <svg class="b3" width="440" height="440" viewBox="0 0 100 100" style="left:36%;bottom:-250px"><path d="M0 64 A50 50 0 0 1 100 64 Z"></path></svg>
 </div>
 <div id="app"></div>
 <div class="proto" role="toolbar" aria-label="Prototype controls"><button type="button" id="pMenu" aria-expanded="false">Prototype</button><span class="pitems"><button type="button" id="pRestart">Restart</button><button type="button" id="pSkip">Skip to console</button><button type="button" id="pWeek" aria-pressed="false">Simulate a week</button><button type="button" id="pTheme">Dark</button></span></div>
@@ -195,29 +249,29 @@ tr.grp td{padding:16px 12px 6px;border-bottom:0}
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
-/* tiles: the console's own shapes. Idle = outline in mute, active = filled glaze. */
+const wait=ms=>new Promise(r=>setTimeout(r,RM?0:ms));
 const P={frame:'<path d="M0 0H100V100H0Z M27 27V73H73V27Z" fill-rule="evenodd" fill="C"/>',quarter:'<path d="M0 100 L0 0 A100 100 0 0 1 100 100 Z" fill="C"/>',diamond:'<path d="M50 0L100 50L50 100L0 50Z M50 28L72 50L50 72L28 50Z" fill-rule="evenodd" fill="C"/>',half:'<path d="M0 100 A50 50 0 0 1 100 100 Z" fill="C"/><rect width="100" height="22" fill="C"/>',pin:'<path d="M0 0 L50 0 L50 50 Z M100 0 L100 50 L50 50 Z M100 100 L50 100 L50 50 Z M0 100 L0 50 L50 50 Z" fill="C"/>',petal:'<path d="M50 50 Q50 2 98 2 Q98 50 50 50 Z M50 50 Q98 50 98 98 Q50 98 50 50 Z M50 50 Q50 98 2 98 Q2 50 50 50 Z M50 50 Q2 50 2 2 Q50 2 50 50 Z" fill="C"/>'};
 const COL={frame:'var(--coral)',quarter:'var(--green)',diamond:'var(--orange)',half:'var(--yellow)',petal:'var(--purple)',pin:'var(--blue)'};
-function tile(k,s=16,outline){let b=P[k];b=outline?b.replace(/fill="C"/g,`style="fill:none;stroke:${outline};stroke-width:9"`).replace(/fill-rule="evenodd" /g,''):b.replace(/fill="C"/g,`style="fill:${COL[k]}"`);return `<svg width="${s}" height="${s}" viewBox="-5 -5 110 110" aria-hidden="true" style="flex:none;display:block">${b}</svg>`}
-const rid=(t,c='')=>`<span class="rid ${c}">${esc(t)}</span>`;
+function tile(k,s=16,outline,cls=''){let b=P[k];b=outline?b.replace(/fill="C"/g,`style="fill:none;stroke:${outline};stroke-width:9"`).replace(/fill-rule="evenodd" /g,''):b.replace(/fill="C"/g,`style="fill:${COL[k]}"`);return `<svg class="${cls}" width="${s}" height="${s}" viewBox="-5 -5 110 110" aria-hidden="true" style="flex:none;display:block">${b}</svg>`}
+const rid=(t,c='',id='')=>`<span class="rid ${c}" ${id?`data-chip="${id}"`:''}>${esc(t)}</span>`;
 const kind=u=>/^K\d|^Voice$/.test(u)?'k':'';
 
 const FACTS=[
- {id:'K1',t:'Free to download and sign up.',src:'gcash.com/register',g:'Sign-up',used:312},
- {id:'K3',t:'Sign-up needs one valid ID and takes about 5 minutes.',src:'gcash.com/help',g:'Sign-up',used:204},
- {id:'K2',t:'Verification is usually done the same day.',src:'gcash.com/help',g:'Sign-up',used:30},
- {id:'K4',t:'Send money to any Philippine bank.',src:'gcash.com/send',g:'Products',used:88},
- {id:'K5',t:'Pay bills to over 1,000 billers in the app.',src:'gcash.com/bills',g:'Products',used:23},
- {id:'K12',t:'Cash in at 7-Eleven and other partners.',src:'gcash.com',g:'Products',used:19},
- {id:'K6',t:'Save in GSave with no minimum balance.',src:'Brand book, p.14',g:'Products',used:15},
- {id:'K7',t:'Most customers are 18 to 35, many unbanked.',src:'Brand book, p.8',g:'Audience',used:41},
- {id:'K8',t:'Many send money home to family in the provinces.',src:'Brand book, p.9',g:'Audience',used:12},
+ {id:'K1',t:'Free to download and sign up.',sh:'Free to join',src:'gcash.com/register',g:'Sign-up',used:312},
+ {id:'K3',t:'Sign-up needs one valid ID and takes about 5 minutes.',sh:'One ID, 5 minutes',src:'gcash.com/help',g:'Sign-up',used:204},
+ {id:'K2',t:'Verification is usually done the same day.',sh:'Same-day check',src:'gcash.com/help',g:'Sign-up',used:30},
+ {id:'K4',t:'Send money to any Philippine bank.',sh:'Any bank',src:'gcash.com/send',g:'Products',used:88},
+ {id:'K5',t:'Pay bills to over 1,000 billers in the app.',sh:'1,000+ billers',src:'gcash.com/bills',g:'Products',used:23},
+ {id:'K12',t:'Cash in at 7-Eleven and other partners.',sh:'Cash in at 7-Eleven',src:'gcash.com',g:'Products',used:19},
+ {id:'K6',t:'Save in GSave with no minimum balance.',sh:'GSave, no minimum',src:'Brand book, p.14',g:'Products',used:15},
+ {id:'K7',t:'Most customers are 18 to 35, many unbanked.',sh:'18 to 35',src:'Brand book, p.8',g:'Audience',used:41},
+ {id:'K8',t:'Many send money home to family in the provinces.',sh:'Sends money home',src:'Brand book, p.9',g:'Audience',used:12},
 ];
 const GUARDS=[
- {id:'R-03',t:'Never promise approval, loan amounts or dates.',src:'Compliance memo, p.2',memo:true,coach:['Won’t say it, and warns','Gives a safe line instead'],ask:['Won’t say it','Hands off if pressed'],pass:'“Libre mag-join, mga 5 minuto.”',fail:'“Sure approved ka dito!”'},
- {id:'R-04',t:'Never compare fees with other wallets.',src:'Brand book, p.31',coach:['Won’t say it, and warns',''],ask:['Won’t say it',''],pass:'“Libre magpadala sa GCash.”',fail:'“Mas mura kami kaysa sa ibang wallet.”'},
- {id:'R-09',t:'Never lead with loans or credit.',src:'Compliance memo, p.3',memo:true,coach:['Steers away',''],ask:['Won’t bring it up',''],pass:'Opens on sending money home.',fail:'Opens on “Need cash? GCredit!”'},
- {id:'R-10',t:'One campaign per post.',src:'Compliance memo, p.4',memo:true,coach:['Reminds',''],ask:null,pass:'One campaign in the post.',fail:'Mentions Heroes and Ipon in one post.'},
+ {id:'R-03',t:'Never promise approval, loan amounts or dates.',sh:'No approval promises',src:'Compliance memo, p.2',memo:true,coach:['Won’t say it, and warns','Gives a safe line instead'],ask:['Won’t say it','Hands off if pressed'],pass:'“Libre mag-join, mga 5 minuto.”',fail:'“Sure approved ka dito!”'},
+ {id:'R-04',t:'Never compare fees with other wallets.',sh:'No fee comparisons',src:'Brand book, p.31',coach:['Won’t say it, and warns',''],ask:['Won’t say it',''],pass:'“Libre magpadala sa GCash.”',fail:'“Mas mura kami kaysa sa ibang wallet.”'},
+ {id:'R-09',t:'Never lead with loans or credit.',sh:'Don’t lead with loans',src:'Compliance memo, p.3',memo:true,coach:['Steers away',''],ask:['Won’t bring it up',''],pass:'Opens on sending money home.',fail:'Opens on “Need cash? GCredit!”'},
+ {id:'R-10',t:'One campaign per post.',sh:'One campaign per post',src:'Compliance memo, p.4',memo:true,coach:['Reminds',''],ask:null,pass:'One campaign in the post.',fail:'Mentions Heroes and Ipon in one post.'},
 ];
 const OKPO=[
  {id:'R-01',t:'Turn on Paid partnership',coach:['Reminds','On every mission'],ask:null,sev:'fix',pass:'Paid partnership label on.',fail:'Label off.'},
@@ -232,126 +286,179 @@ const LINE='Libre lang mag-join, mga 5 minuto. Padala agad kay Nanay.',LINE_P='L
 const SAMPLE_CAPS='Libre lang mag-join, promise. 5 minuto lang, may ID ka na ba?\n\nPadala kay Nanay kahit gabi na. Ganun kabilis.\n\nBayad bills habang nasa jeep. Tapos na bago bumaba.';
 const PAGE=5;
 
-const fresh=()=>({mode:'setup',step:0,files:[],captions:'',read:0,
+const fresh=()=>({mode:'setup',step:0,files:[],captions:'',readDone:false,
   facts:FACTS.map(f=>({...f,st:'new',editing:false})),fpage:0,credit:null,
-  voice:null,traits:['Taglish','Short','Warm','“Po” when they use it','No hard sell'],line:null,
-  guards:null,showEx:false,
-  tryTab:'creator',log:{creator:[],follower:[],post:[]},published:false,tested:false,week:false,
-  camps:[],cstep:0,camp:null,page:'context',
+  voice:null,voiceSet:false,traits:['Taglish','Short','Warm','“Po” when they use it','No hard sell'],line:null,
+  guards:null,showEx:false,hl:[],fresh:[],
+  tryTab:'creator',log:{creator:[],follower:[],post:[]},busy:false,published:false,tested:false,week:false,
+  camps:[],cstep:0,camp:null,page:'context',stackOpen:false,
   ctab:'overview',guideHidden:false,ff:'All',fq:'',learnDone:[]});
-let S=fresh();
+let S=fresh(),lastKey='';
 
 function toast(t){const h=$('#toastHost');h.innerHTML=`<div class="toast" role="status">${esc(t)}</div>`;clearTimeout(toast.t);toast.t=setTimeout(()=>h.innerHTML='',2800)}
 const hasMemo=()=>S.files.some(f=>f.memo);
 const activeG=()=>(S.guards||[]).filter(g=>g.on);
 const exCount=()=>(activeG().length+OKPO.length)*2;
 const drafts=()=>S.facts.filter(f=>f.st==='draft');
+const kept=()=>S.facts.filter(f=>f.st==='kept');
 const voiceLine=()=>S.line!==null?S.line:(S.traits.includes('Playful')?LINE_P:LINE);
-function buildGuards(){S.guards=GUARDS.map(g=>{const found=!g.memo||hasMemo();return {...g,on:found,found,sev:'fail',src:found?g.src:'Common for finance brands'}})}
+function buildGuards(){S.guards=GUARDS.map(g=>{const found=!g.memo||hasMemo();return {...g,on:false,found,sev:'fail',src:found?g.src:'Common for finance brands'}})}
+
+/* fly a copy of an element into the stack */
+function fly(el,target){
+  if(RM||!el)return;
+  const t=document.querySelector(getComputedStyle($('.stack')||document.body).display==='none'?'#miniStack':target)||$('#miniStack');if(!t)return;
+  const a=el.getBoundingClientRect(),b=t.getBoundingClientRect();
+  const g=el.cloneNode(true);g.classList.add('ghostfly');g.removeAttribute('id');
+  Object.assign(g.style,{left:a.left+'px',top:a.top+'px',width:a.width+'px',height:a.height+'px'});
+  document.body.appendChild(g);
+  const dx=b.left+b.width/2-(a.left+a.width/2),dy=b.top+b.height/2-(a.top+a.height/2);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{g.style.transform=`translate(${dx}px,${dy}px) scale(.18)`;g.style.opacity='.15'}));
+  setTimeout(()=>g.remove(),700);
+}
+
+/* ---------------- OkPo speaks ---------------- */
+function say(text){
+  let i=0;const words=text.split(' ').map(w=>`<span class="w" style="animation-delay:${(i++)*28}ms">${esc(w)}</span>`).join(' ');
+  return `<div class="okpo"><span class="av" aria-hidden="true"><span>O</span><span>k</span></span><p class="say"><span class="label" style="display:block;margin-bottom:4px">OkPo</span>${words}</p></div>`;
+}
+
+/* ---------------- Your GCash AI ---------------- */
+function stackPanel(){
+  const k=kept(),ag=activeG(),c=S.camps[0]||S.camp;
+  const fr=id=>S.fresh.includes(id)?'pop':'';
+  const lit=id=>S.hl.includes(id)?' lit':'';
+  const who=`<div class="lay ${k.length||S.voiceSet?'':'hollow'}" id="stk-who"><div class="hd">${tile('petal',20,null,fr('who'))}<b>Who we are</b><span class="small num">${k.length} facts</span></div>
+    ${k.length?`<div class="chips">${k.map(f=>`<span class="rid k ${fr(f.id)}${lit(f.id)}" data-chip="${f.id}">${f.id} ${esc(f.sh)}</span>`).join('')}</div>`:'<span class="small">Facts you keep land here.</span>'}
+    ${drafts().length?`<span class="small">${drafts().length} drafts, not used yet</span>`:''}
+    <div id="stk-voice">${S.voiceSet?`<div class="${fr('voice')}${lit('Voice')}" style="border-top:1px dashed var(--line);padding-top:8px;border-radius:8px"><span class="label">Voice</span><div class="vline">${esc(voiceLine())}</div></div>`:''}</div></div>`;
+  const guard=`<div class="lay guard ${ag.length?'':'hollow'}" id="stk-guard"><div class="hd"><b>Guardrails</b><span class="small num">${ag.length?ag.length+' + 4':'0'}</span></div>
+    ${ag.length?`<div class="chips">${ag.map(g=>`<span class="rid ${fr(g.id)}${lit(g.id)}" data-chip="${g.id}">${g.id} ${esc(g.sh||g.t)}</span>`).join('')}</div><span class="small">Plus OkPo’s 4: paid label, says it’s paid, own link, no minors</span>`:'<span class="small">What stops a post lands here.</span>'}</div>`;
+  const brief=`<div class="lay brief ${c?'':'hollow'}" id="stk-brief"><div class="hd">${tile('quarter',20,c?null:'var(--mute)',fr('brief'))}<b>Campaign brief</b><span class="small">${c?esc(c.name):'per campaign'}</span></div>
+    ${c&&c.tps.length?`<div class="chips">${c.tps.map((t,i)=>`<span class="rid tp ${fr('tp'+t)}">${String(i+1).padStart(2,'0')} ${esc(t)}</span>`).join('')}</div>`:'<span class="small">Comes with each campaign, on top of the two below.</span>'}</div>`;
+  const live=S.published;
+  return `<aside class="glass stack ${S.stackOpen?'open':''}" aria-label="Your GCash AI"><div class="row"><h2 class="grow">Your GCash AI</h2><span class="chip ${live?'ok':'n'}">${live?'LIVE':'DRAFT'}</span>${S.stackOpen?'<button type="button" class="ghost" data-act="stackclose" style="min-height:36px;padding:6px 10px">Close</button>':''}</div>${brief}${guard}${who}
+  <span class="small">${live?'Coach, Check and Ask AI all run on this.':'Coach, Check and Ask AI will run on this.'}</span></aside>`;
+}
+const miniStack=()=>`<button type="button" class="mini-stack" id="miniStack" data-act="stackopen" aria-expanded="${S.stackOpen}">${tile('petal',18)}<span class="grow"><b>Your GCash AI</b> · ${kept().length} facts · ${activeG().length} guardrails</span><span aria-hidden="true">▾</span></button>`;
 
 /* ---------------- guided setup ---------------- */
-const SECT=['Your material','Who we are','Guardrails','Go live'];
-// step -> [section, fill%]  steps: 0 welcome,1 material,2 captions,3 reading,4 facts,5 question,6 voice,7 guardrails,8 try,9 review,10 done
-const MAP={1:[0,34],2:[0,67],3:[0,100],4:[1,34],5:[1,67],6:[1,100],7:[2,100],8:[3,50],9:[3,100]};
-function gtop(sections,cur,fill,exit=true){
-  const prog=sections.map((s,i)=>{const w=i<cur?100:i===cur?fill:0;return `<span class="${i===cur?'on':''}"><i><b style="width:${w}%"></b></i><em>${s}</em></span>`}).join('');
-  return `<header class="gtop"><span class="wm" aria-label="OkPo"><span>O</span><span>k</span><span>P</span><span>o</span></span><div class="prog" aria-label="Progress">${prog}</div>${exit?'<button type="button" class="link" data-act="saveexit">Save and exit</button>':'<span style="width:90px"></span>'}</header>`;
+const SECT=['Material','Who we are','Guardrails','Go live'];
+const SECOF=st=>st===0?0:st<=3?1:st<=6?2:st===7?3:4;
+function gtop(sec,list=SECT){
+  const s=list.map((n,i)=>`<span class="${i+1===sec?'on':i+1<sec?'done':''}"><i></i><em>${n}</em></span>`).join('');
+  return `<header class="gtop"><span class="wm" aria-label="OkPo"><span>O</span><span>k</span><span>P</span><span>o</span></span><div class="steps" aria-label="Progress">${s}</div><button type="button" class="link" data-act="saveexit">Save and exit</button></header>`;
 }
-const gpage=(top,inner,nav)=>`<div class="g">${top}<main class="gmain"><div class="gcol">${inner}${nav}</div></main></div>`;
+function gpage(sec,inner,nav,list){
+  return `<div class="g">${gtop(sec,list)}<div class="gbody">${miniStack()}<main class="gcol" id="gcol">${inner}${nav}</main>${stackPanel()}</div></div>`;
+}
 function gnav({back=true,primary='Continue',disabled=false,skip=''}={}){
   return `<div class="gnav">${back?'<button type="button" class="ghost" data-act="back">Back</button>':''}<span class="grow"></span>${skip?`<button type="button" class="link" data-act="skip">${skip}</button>`:''}<button type="button" class="btn" data-act="next" ${disabled?'disabled':''}>${primary}</button></div>`;
 }
-const head=(k,h,lead)=>`<div class="gq"><span class="label">${k}</span><h1>${h}</h1>${lead?`<p class="lead">${lead}</p>`:''}</div>`;
+const H=(k,h)=>`<div><span class="label">${k}</span><h1 style="margin-top:8px">${h}</h1></div>`;
 
 function setupScreen(){
-  const st=S.step,m=MAP[st]||[0,0],top=gtop(SECT,st===0?0:m[0],st===0?0:m[1]);
-  if(st===0) return gpage(top,head('Welcome, GCash','Let’s teach OkPo about GCash.','About 10 minutes. OkPo drafts from what you already have, and you confirm. Nothing goes live until you approve it.')+
-   `<div class="lines"><div class="li"><b class="disp" style="font-size:22px;width:26px">1</b><span class="grow"><div class="t"><b>Who we are</b></div><div class="s">What’s true about GCash, and how you sound</div></span></div><div class="li"><b class="disp" style="font-size:22px;width:26px">2</b><span class="grow"><div class="t"><b>Guardrails</b></div><div class="s">What can never happen in a post</div></span></div></div>
-   <p class="small" style="margin:-8px 0 0">Each campaign adds its own brief on top of these two. You’ll write it when you start a campaign.</p>`,gnav({back:false,primary:'Start'}));
+  const st=S.step,sec=SECOF(st);
+  if(st===0) return gpage(0,H('Welcome, GCash','Let’s build your GCash AI.')+say('Kumusta! I’m OkPo. Give me what you already have and I’ll draft the rest. You just check it. About 10 minutes, and nothing goes live until you say so.')+
+    `<div class="cards"><div class="card">${tile('petal',28)}<span class="grow"><div class="t"><b>Who we are</b></div><div class="s">What’s true about GCash, and how you sound</div></span></div><div class="card" style="border:2px solid var(--ink)"><span style="width:28px"></span><span class="grow"><div class="t"><b>Guardrails</b></div><div class="s">What can never happen in a post</div></span></div><div class="card" style="border:1.5px dashed var(--line);background:transparent;box-shadow:none">${tile('quarter',28,'var(--mute)')}<span class="grow"><div class="t"><b>Campaign brief</b></div><div class="s">Comes later, with each campaign</div></span></div></div>`,gnav({back:false,primary:'Let’s start'}));
   if(st===1){
     const icon=f=>f.web?'<span class="webi"></span>':'<span class="doc"></span>';
-    const list=S.files.map((f,i)=>`<div class="li">${icon(f)}<span class="grow"><div class="t">${esc(f.n)}</div><div class="s">${esc(f.d)}</div></span><button type="button" class="link" data-rm="${i}" aria-label="Remove ${esc(f.n)}">Remove</button></div>`).join('');
-    return gpage(top,head('Your material','Add what you already have.','Your website and brand book are enough to start. A compliance document helps us find your guardrails.')+
-     `<button type="button" class="drop" data-act="addfile"><b style="font-size:16px">Drop files here, or paste a link</b><span class="small" style="display:block;margin-top:4px">PDF, slides, docs, a web address · tap to add a sample</span></button>${list?`<div class="lines">${list}</div>`:''}`,
+    const list=S.files.map((f,i)=>`<div class="card ${S.fresh.includes(f.n)?'pop':''}">${icon(f)}<span class="grow"><div class="t">${esc(f.n)}</div><div class="s">${esc(f.d)}</div></span><button type="button" class="link" data-rm="${i}" aria-label="Remove ${esc(f.n)}">Remove</button></div>`).join('');
+    return gpage(1,H('Your material','Add what you already have.')+say(S.files.length?`Nice. ${S.files.length===1?'One':S.files.length} ${S.files.length===1?'source':'sources'} so far. A compliance memo helps me find what must never be said.`:'Your website and brand book are enough to start. A compliance memo helps me find what must never be said.')+
+     `<button type="button" class="drop" data-act="addfile"><b style="font-size:16px">Drop files here, or paste a link</b><span class="small" style="display:block;margin-top:4px">PDF, slides, docs, a web address · tap to add a sample</span></button><div class="cards">${list}</div>`,
      gnav({primary:'Continue',disabled:!S.files.length}));
   }
-  if(st===2) return gpage(top,head('Your material · optional','Paste a few captions GCash likes.','Three or more posts in your own words. OkPo learns how GCash sounds from them.')+
+  if(st===2) return gpage(1,H('Your material · optional','Paste a few captions GCash likes.')+say('Three is enough for me to hear how GCash talks. Skip it if you don’t have them handy.')+
      `<div style="display:flex;flex-direction:column;gap:8px"><label for="caps" class="label">Captions</label><textarea id="caps" placeholder="One caption per paragraph">${esc(S.captions)}</textarea><button type="button" class="link" data-act="samplecaps" style="align-self:flex-start">Use sample captions</button></div>`,
      gnav({primary:'Read them',skip:'Skip for now'}));
   if(st===3){
-    const r=S.read,bad=S.files.filter(f=>f.bad),gN=(S.guards||[]).filter(g=>g.found).length;
-    const c=(name,n,unit,at)=>`<div class="count"><span class="grow" style="font-size:16px;font-weight:600">${name}</span><span class="n num">${r>=at?n:Math.round(n*Math.min(1,r/at))}</span><span class="small" style="width:110px">${unit}</span><span style="width:22px;text-align:right">${r>=at?'<span class="tick" aria-label="Done">✓</span>':'<span class="small">…</span>'}</span></div>`;
-    const done=r>=100;
-    return gpage(top,head('Your material',done?'Done. Here’s what we found.':'Reading your material…',done?'Next, you’ll check each part.':'OkPo files every line by the question it answers.')+
-     `<div class="bar" role="progressbar" aria-label="Reading" aria-valuenow="${r}" aria-valuemin="0" aria-valuemax="100"><b style="width:${r}%"></b></div>
-     <div class="lines">${c('Who we are',FACTS.length,'facts',60)}${c('Guardrails',gN,'found',80)}${c('Saved for your first campaign',SAVED_TPS.length,'talking points',100)}</div>
-     ${done&&bad.length?`<div class="note"><span class="grow"><b>We couldn’t read ${esc(bad[0].n)}.</b> It looks like a scanned image. Paste its text instead, or carry on without it.</span></div>`:''}
-     ${done&&!hasMemo()?`<div class="note"><span class="grow"><b>No compliance document.</b> We’ll suggest common guardrails for finance brands, and you pick the ones that apply.</span></div>`:''}
-     ${done?'':'<p class="small" style="margin:0">Big files can take a few minutes. You can leave this page; we’ll email you when it’s ready.</p>'}`,
-     gnav({primary:'Continue',disabled:!done}));
+    const gN=(S.guards||[]).filter(g=>g.found).length,bad=S.files.filter(f=>f.bad);
+    const done=S.readDone;
+    return gpage(1,H('Your material',done?'Here’s how it sorted out.':'Reading your material…')+say(done?`Done. ${FACTS.length} things I’m fairly sure are true, ${gN} that should stop a post, and ${SAVED_TPS.length} talking points I’ll keep for your first campaign.`:'I’m filing every line by the question it answers. Watch the piles.')+
+     `<div class="bar" role="progressbar" aria-label="Reading" id="rbar"><b style="width:${done?100:0}%"></b></div>
+     <div class="piles"><div class="pile glass strong"><div class="row">${tile('petal',20)}<b class="grow" style="font-size:14px">Who we are</b></div><span class="n num" id="n0">${done?FACTS.length:0}</span><div class="cards" id="p0" style="gap:6px">${done?FACTS.slice(0,3).map(f=>`<span class="mini">${esc(f.sh)}</span>`).join(''):''}</div></div>
+     <div class="pile glass strong guard"><div class="row"><b class="grow" style="font-size:14px">Guardrails</b></div><span class="n num" id="n1">${done?gN:0}</span><div class="cards" id="p1" style="gap:6px">${done?GUARDS.filter(g=>!g.memo||hasMemo()).slice(0,3).map(g=>`<span class="mini">${esc(g.sh)}</span>`).join(''):''}</div></div>
+     <div class="pile glass brief"><div class="row">${tile('quarter',20)}<b class="grow" style="font-size:14px">First campaign</b></div><span class="n num" id="n2">${done?SAVED_TPS.length:0}</span><div class="cards" id="p2" style="gap:6px">${done?SAVED_TPS.slice(0,3).map(t=>`<span class="mini">${esc(t)}</span>`).join(''):''}</div></div></div>
+     ${done&&bad.length?`<div class="note"><span class="grow"><b>I couldn’t read ${esc(bad[0].n)}.</b> It looks like a scanned image. Paste its text instead, or carry on without it.</span></div>`:''}
+     ${done&&!hasMemo()?`<div class="note"><span class="grow"><b>No compliance document.</b> I’ll suggest common guardrails for finance brands, and you pick the ones that apply.</span></div>`:''}
+     ${done?'':'<p class="small" style="margin:0">Big files can take a few minutes. You can leave; we’ll email you when it’s ready.</p>'}`,
+     gnav({primary:'Check them',disabled:!done}));
   }
   if(st===4){
-    const pages=Math.ceil(S.facts.length/PAGE),p=S.fpage,fs=S.facts.slice(p*PAGE,p*PAGE+PAGE),checked=Math.min(S.facts.length,(p+1)*PAGE);
-    const rows=fs.map(f=>`<div class="li"><span class="grow">${f.editing?`<label for="f-${f.id}" class="label">Fix this fact</label><input type="text" id="f-${f.id}" value="${esc(f.t)}">`:`<div class="t">${esc(f.t)}</div>`}<div class="s">From ${esc(f.src)}</div></span>${f.editing?`<button type="button" class="ghost" data-fsave="${f.id}">Save</button>`:`<span class="seg" role="group" aria-label="Keep or fix"><button type="button" data-fk="${f.id}" aria-pressed="true">Keep</button><button type="button" data-ff="${f.id}" aria-pressed="false">Fix</button></span>`}</div>`).join('');
-    const last=p===pages-1;
-    return gpage(top,head(`Who we are · 1 of 3 · ${checked} of ${S.facts.length} checked`,'Is this true about GCash?','Keep what’s right, fix what isn’t. The AI only says what you’ve checked.')+
-     `<div class="lines">${rows}</div>`,
-     gnav({primary:last?'Looks right':'Looks right, next '+Math.min(PAGE,S.facts.length-(p+1)*PAGE),skip:last?'':'Check the rest later'}));
+    const pages=Math.ceil(S.facts.length/PAGE),p=S.fpage,fs=S.facts.slice(p*PAGE,p*PAGE+PAGE),checked=Math.min(S.facts.length,(p+1)*PAGE),last=p===pages-1;
+    const rows=fs.map(f=>`<div class="card" id="fc-${f.id}"><span class="grow">${f.editing?`<label for="f-${f.id}" class="label">Fix this fact</label><input type="text" id="f-${f.id}" value="${esc(f.t)}">`:`<div class="t">${esc(f.t)}</div>`}<div class="s">From ${esc(f.src)}</div></span>${f.editing?`<button type="button" class="ghost" data-fsave="${f.id}">Save</button>`:`<button type="button" class="ghost" data-ff="${f.id}">Fix</button>`}</div>`).join('');
+    return gpage(2,H(`Who we are · ${checked} of ${S.facts.length}`,'Is this true about GCash?')+say(p===0?'Here’s what I think is true. Fix anything that’s off, and I’ll only ever say what you keep.':'A few more, then we’re done with facts.')+
+     `<div class="cards">${rows}</div>`,
+     gnav({primary:last?'Keep these':'Keep these 5',skip:last?'':'Check the rest later'}));
   }
   if(st===5){
-    const ch=(v,big,d)=>`<button type="button" class="choice" role="radio" aria-checked="${S.credit===v}" data-credit="${v}"><span class="radio"></span><span class="grow"><b class="disp" style="font-size:24px">${big}</b><span class="small" style="display:block">${d}</span></span></button>`;
-    return gpage(top,head('Who we are · 2 of 3 · one question','Your website and your deck disagree.','Which welcome credit is right today?')+
+    const ch=(v,big,d)=>`<button type="button" class="choice" role="radio" aria-checked="${S.credit===v}" data-credit="${v}"><span class="radio"></span><span class="grow"><b class="disp" style="font-size:26px">${big}</b><span class="small" style="display:block">${d}</span></span></button>`;
+    return gpage(2,H('Who we are · one question','Which welcome credit is right?')+say('Your website and your Heroes deck disagree, and I don’t want to guess with money.')+
      `<div role="radiogroup" aria-label="Welcome credit" style="display:flex;flex-direction:column;gap:10px">${ch('50','₱50','gcash.com, promos page')}${ch('100','₱100','GCash Heroes deck, slide 6')}${ch('none','Neither','The offer has ended')}</div>`,gnav({disabled:!S.credit}));
   }
   if(st===6){
     const adj=S.voice==='adjust';
     const chips=adj?`<div class="row" style="flex-wrap:wrap;gap:8px" role="group" aria-label="Voice traits">${TRAITS.map(t=>`<button type="button" class="ghost" data-trait="${esc(t)}" aria-pressed="${S.traits.includes(t)}" style="${S.traits.includes(t)?'background:var(--k-bg);color:var(--l-purple);border-color:transparent;font-weight:600':''}">${esc(t)}</button>`).join('')}</div>`
       :`<div class="row" style="flex-wrap:wrap;gap:6px">${S.traits.map(t=>rid(t,'k')).join('')}</div>`;
-    const card=adj?`<div class="voice glass strong" style="border:2px solid var(--ink);display:flex;flex-direction:column;gap:8px"><label for="vline" class="label">GCash · rewrite this line your way</label><textarea id="vline" style="min-height:90px;font:800 22px/1.2 var(--display);letter-spacing:-.02em">${esc(voiceLine())}</textarea></div>`
-      :`<div class="voice glass strong" style="border:2px solid var(--ink)"><span class="label">GCash</span><p class="disp" style="margin:8px 0 0;font-size:clamp(21px,3vw,26px);line-height:1.15">${esc(voiceLine())}</p></div>`;
-    return gpage(top,head('Who we are · 3 of 3',adj?'Make it sound like GCash.':'Does this sound like GCash?',adj?'Pick the traits that fit and rewrite the line. OkPo learns from both.':S.captions.trim()?'Learned from your captions, website and brand book.':'Learned from your website and brand book. Captions would sharpen it.')+
+    const card=adj?`<div class="voice glass strong" id="vcard" style="border:2px solid var(--ink);display:flex;flex-direction:column;gap:8px"><label for="vline" class="label">GCash · rewrite it your way</label><textarea id="vline" style="min-height:90px;font:800 22px/1.2 var(--display);letter-spacing:-.02em">${esc(voiceLine())}</textarea></div>`
+      :`<div class="voice glass strong" id="vcard" style="border:2px solid var(--ink)"><span class="label">GCash</span><p class="disp" style="margin:8px 0 0;font-size:clamp(22px,3vw,28px);line-height:1.15">${esc(voiceLine())}</p></div>`;
+    return gpage(2,H('Who we are · voice',adj?'Make it sound like GCash.':'Does this sound like GCash?')+say(adj?'Pick what fits and rewrite the line. I learn from both.':S.captions.trim()?'I learned this from your captions. Here’s a plain line, and the same line the way GCash would say it.':'I learned this from your website. Captions would sharpen it later.')+
      `<div style="display:flex;flex-direction:column;gap:12px"><div class="voice" style="background:var(--soft)"><span class="label">Plain</span><p style="margin:8px 0 0;font-size:17px">Sign up for GCash today and enjoy fast, secure transfers!</p></div>${card}${chips}</div>`,
      adj?gnav({primary:'Use this voice'}):gnav({primary:'Yes, that’s us',skip:'Adjust'}));
   }
   if(st===7){
     const memo=hasMemo();
-    const rows=S.guards.map((g,i)=>`<button type="button" class="li" style="width:100%;border:0;background:transparent;text-align:left" role="checkbox" aria-checked="${g.on}" data-g="${i}"><span class="box ${g.on?'on':''}">${g.on?'✓':''}</span><span class="grow"><div class="t">${esc(g.t)}</div><div class="s">${esc(g.src)}</div></span></button>`).join('');
-    return gpage(top,head('Guardrails','What should stop a post?',memo?'Only things that are never OK. We found these in your compliance memo and brand book.':'We didn’t find a compliance document, so these are common for finance brands. Tick the ones that apply.')+
-     `<div class="lines">${rows}<form class="li" data-form="guard"><label for="newGuard" class="label" style="position:absolute;left:-9999px">Add a guardrail</label><input type="text" id="newGuard" placeholder="Add one, e.g. Never show another wallet’s app"><button type="submit" class="ghost">Add</button></form></div>
-     <div class="note"><span class="grow">Each one stops a post from counting. You can soften one to “needs a fix” later, in the console. OkPo also adds 4 for every brand: the paid label, saying it’s paid, the creator’s own link, and no minors on camera.</span></div>`,
+    const rows=S.guards.map((g,i)=>`<button type="button" class="card" id="gc-${i}" style="width:100%;text-align:left;${g.on?'border:2px solid var(--ink);padding:13px 15px':''}" role="checkbox" aria-checked="${g.on}" data-g="${i}"><span class="box ${g.on?'on':''}">${g.on?'✓':''}</span><span class="grow"><div class="t">${esc(g.t)}</div><div class="s">${esc(g.src)}</div></span></button>`).join('');
+    return gpage(3,H('Guardrails','What should stop a post?')+say(memo?'I found these in your compliance memo and brand book. Tick the ones that are never OK, and each one stops a post from counting.':'I didn’t get a compliance document, so these are common for finance brands. Tick the ones that apply to GCash.')+
+     `<div class="cards">${rows}<form class="card" data-form="guard"><label for="newGuard" class="label" style="position:absolute;left:-9999px">Add a guardrail</label><input type="text" id="newGuard" placeholder="Add one, e.g. Never show another wallet’s app"><button type="submit" class="ghost">Add</button></form></div>
+     <div class="note"><span class="grow">You can soften one to “needs a fix” later. OkPo also adds 4 for every brand: the paid label, saying it’s paid, the creator’s own link, and no minors on camera.</span></div>`,
      gnav({primary:'Continue',disabled:!activeG().length}));
   }
-  if(st===8) return gpage(top,head('Go live · try it','Try it before it goes live.','Ask anything a creator or a follower might, or paste a post.')+tryPanel(),gnav({primary:'Review and publish'}));
+  if(st===8) return gpage(4,H('Go live · try it','Try me before I go live.')+say('Ask what a creator or a follower would ask, or paste a post. Watch the right side: whatever I use lights up.')+tryPanel(),gnav({primary:'Review and publish'}));
   if(st===9){
-    const kept=S.facts.filter(f=>f.st!=='draft').length,dr=drafts().length;
+    const dr=drafts().length;
     const sum=(k,v,s)=>`<div class="sum"><span class="label" style="padding-top:3px">${k}</span><span><b style="font-size:16px">${v}</b>${s?`<span class="small" style="display:block">${s}</span>`:''}</span></div>`;
-    return gpage(top,head('Go live · review','Ready to go live?','This is what the AI will say and enforce for every GCash campaign. You can change any of it later.')+
-     `<div class="lines">${sum('Who we are',kept+' facts checked',(dr?dr+' more saved as drafts. The AI won’t use them until someone checks them. ':'')+'Welcome credit: '+(S.credit==='none'?'none right now':'₱'+S.credit)+'.')}${sum('Voice',S.traits.join(', '),'“'+esc(voiceLine())+'”')}${sum('Guardrails',activeG().length+' from GCash, 4 from OkPo','Each one stops a post from counting.')}${sum('Test',exCount()+' of '+exCount()+' examples behave','A pass and a fail for every guardrail.')}</div>`,
+    return gpage(4,H('Go live · review','Ready to go live?')+say('This is what I’ll say and enforce for every GCash campaign. You can change any of it later.')+
+     `<div class="glass strong" style="padding:4px 18px"><div class="lines" style="border:0">${sum('Who we are',kept().length+' facts kept',(dr?dr+' more saved as drafts. I won’t use them until someone checks them. ':'')+'Welcome credit: '+(S.credit==='none'?'none right now':'₱'+S.credit)+'.')}${sum('Voice',S.traits.join(', '),'“'+esc(voiceLine())+'”')}${sum('Guardrails',activeG().length+' from GCash, 4 from OkPo','Each one stops a post from counting.')}${sum('Test',exCount()+' of '+exCount()+' examples behave','A pass and a fail for every guardrail.')}</div></div>`,
      gnav({primary:'Approve and publish'}));
   }
   if(st===10){
-    return gpage(gtop(SECT,4,100,false),`<div class="gq"><span class="label">GCash is live · version 1</span><h1>Your AI now knows GCash.</h1><p class="lead">One more layer comes with each campaign: a brief that says what creators talk about.</p></div>
-     <div class="layers">
-       <div class="layer next"><span class="grow"><b style="font-size:16px">Campaign brief</b><span class="small" style="display:block">Talking points, how a post ends, tags. Written when you start a campaign.</span></span><span class="chip n">NEXT</span></div>
-       <div class="layer glass strong"><span class="grow"><b style="font-size:16px">Guardrails</b><span class="small" style="display:block">${activeG().length} from GCash, 4 from OkPo</span></span><span class="chip ok">LIVE</span></div>
-       <div class="layer glass strong"><span class="grow"><b style="font-size:16px">Who we are</b><span class="small" style="display:block">${S.facts.filter(f=>f.st!=='draft').length} facts and a voice${drafts().length?' · '+drafts().length+' drafts to check':''}</span></span><span class="chip ok">LIVE</span></div>
-     </div>
-     <p class="small" style="margin:-8px 0 0">The brief sits on top. A campaign can add to who we are and the guardrails, never loosen them.</p>`,
+    return gpage(5,H('GCash is live · version 1','Your GCash AI is live.')+say('I know GCash now. One layer left, and it comes with each campaign: a brief that says what creators talk about.')+
+     `<div class="cards"><div class="card live" style="border:1.5px dashed var(--line);background:transparent;box-shadow:none">${tile('quarter',26,'var(--mute)')}<span class="grow"><div class="t"><b>Campaign brief</b></div><div class="s">Written when you start a campaign</div></span><span class="chip n" style="animation:pulse 1.6s var(--ease) infinite">NEXT</span></div>
+     <div class="card pop" style="border:2px solid var(--ink);animation-delay:.25s"><span style="width:26px"></span><span class="grow"><div class="t"><b>Guardrails</b></div><div class="s">${activeG().length} from GCash, 4 from OkPo</div></span><span class="chip ok">LIVE</span></div>
+     <div class="card pop" style="animation-delay:.05s">${tile('petal',26)}<span class="grow"><div class="t"><b>Who we are</b></div><div class="s">${kept().length} facts and a voice${drafts().length?' · '+drafts().length+' drafts to check':''}</div></span><span class="chip ok">LIVE</span></div></div>`,
      `<div class="gnav"><button type="button" class="ghost" data-act="toconsole">Later, open the console</button><span class="grow"></span><button type="button" class="btn" data-act="newcamp">Start your first campaign</button></div>`);
   }
 }
 function exitedScreen(){
-  const where=S.step<=3?'Your material':S.step<=6?'Who we are':S.step===7?'Guardrails':'Go live';
-  return gpage(gtop(SECT,MAP[S.step]?MAP[S.step][0]:0,MAP[S.step]?MAP[S.step][1]:0,false),head('Saved','You can pick this up any time.',`You stopped at ${where}. Everything you’ve checked is kept, and nothing is live yet.`),
+  const where=['','Material','Who we are','Guardrails','Go live'][Math.max(1,SECOF(S.step))];
+  return gpage(SECOF(S.step),H('Saved','You can pick this up any time.')+say(`We stopped at ${where}. Everything you’ve checked is kept, and nothing is live yet.`),
    '<div class="gnav"><span class="grow"></span><button type="button" class="btn" data-act="resume">Continue setup</button></div>');
+}
+
+/* reading: lines drop into piles while the counts climb */
+async function runReading(){
+  buildGuards();S.readDone=false;render();
+  const gs=GUARDS.filter(g=>!g.memo||hasMemo());
+  const streams=[FACTS.map(f=>f.sh),gs.map(g=>g.sh),SAVED_TPS];
+  const totals=streams.map(s=>s.length),cur=[0,0,0];
+  const order=[];for(let i=0;i<Math.max(...totals);i++)for(let p=0;p<3;p++)if(i<totals[p])order.push(p);
+  for(let i=0;i<order.length;i++){
+    if(S.mode!=='setup'||S.step!==3)return;
+    const p=order[i];cur[p]++;
+    const box=$('#p'+p);if(box){const m=document.createElement('span');m.className='mini';m.textContent=streams[p][cur[p]-1];box.prepend(m);while(box.children.length>3)box.lastChild.remove()}
+    const n=$('#n'+p);if(n)n.textContent=cur[p];
+    const bar=$('#rbar b');if(bar)bar.style.width=Math.round((i+1)/order.length*100)+'%';
+    await wait(170);
+  }
+  await wait(250);if(S.mode==='setup'&&S.step===3){S.readDone=true;render()}
 }
 
 /* ---------------- try it ---------------- */
 function reply(tab,q){
   const s=q.toLowerCase(),cr=S.credit;
   if(tab==='post'){
-    const res=[];
-    const g=id=>activeG().some(x=>x.id===id);
+    const res=[];const g=id=>activeG().some(x=>x.id===id);
     if(g('R-03')&&/sure|approv|guarantee/.test(s))res.push(['fail','Promises approval','R-03']);
     if(g('R-04')&&/mas mura|cheaper|kaysa/.test(s))res.push(['fail','Compares fees with another wallet','R-04']);
     if(g('R-09')&&/loan|gcredit|utang/.test(s))res.push(['fail','Leads with credit','R-09']);
@@ -373,44 +480,40 @@ function reply(tab,q){
   return{t:'Magandang tanong po. Ipapasa ko ito sa GCash team para masagot nang tama.',used:['Voice','Logged to Learn']};
 }
 const SAMPLE={creator:'Pwede ko bang sabihin na sure approved sila?',follower:'Magkano mag-join? Ano kailangan?',post:'Libre lang mag-join! Sure approved ka dito. Check niyo yung website.'};
-function examples(){
-  const all=[...activeG(),...OKPO];
-  return `<div class="ex">${all.map(g=>`${rid(g.id)}<span class="pf"><span class="chip ok" style="margin-right:6px">PASS</span>${esc(g.pass||'A post that keeps to it.')}</span><span class="pf"><span class="chip fail" style="margin-right:6px">FAIL</span>${esc(g.fail||'A post that breaks it.')}</span>`).join('')}</div>`;
-}
+function examples(){const all=[...activeG(),...OKPO];return `<div class="ex">${all.map(g=>`${rid(g.id)}<span class="pf"><span class="chip ok" style="margin-right:6px">PASS</span>${esc(g.pass||'A post that keeps to it.')}</span><span class="pf"><span class="chip fail" style="margin-right:6px">FAIL</span>${esc(g.fail||'A post that breaks it.')}</span>`).join('')}</div>`}
 function tryPanel(){
   const tab=S.tryTab,log=S.log[tab];
-  const items=(log.length?log:[{q:SAMPLE[tab],...reply(tab,SAMPLE[tab])}]).map(m=>`<div class="bub me">${esc(m.q)}</div><div class="bub ai" ${m.html?'style="max-width:100%;width:100%;display:flex;flex-direction:column;gap:8px"':''}>${m.html?m.t:esc(m.t)}</div><div class="used"><span class="label">Used</span>${m.used.map(u=>rid(u,kind(u))).join('')}</div>`).join('');
+  const items=(log.length?log:[{q:SAMPLE[tab],...reply(tab,SAMPLE[tab])}]).map(m=>`<div class="bub me">${esc(m.q)}</div>${m.pending?'<div class="bub ai typing" aria-label="OkPo is typing"><span></span><span></span><span></span></div>':`<div class="bub ai" ${m.html?'style="max-width:100%;width:100%;display:flex;flex-direction:column;gap:8px"':''}>${m.html?m.t:esc(m.t)}</div><div class="used"><span class="label">Used</span>${m.used.map(u=>rid(u,kind(u))).join('')}</div>`}`).join('');
   const tb=(k,l)=>`<button type="button" data-tab="${k}" aria-pressed="${tab===k}">${l}</button>`;
   return `<div class="glass strong" style="padding:18px;display:flex;flex-direction:column;gap:14px"><span class="seg" role="group" aria-label="Try as" style="align-self:flex-start;flex-wrap:wrap">${tb('creator','As a creator')}${tb('follower','As a follower')}${tb('post','A post')}</span>
    <div class="chat" id="chat">${items}</div>
-   <form class="row" data-form="try"><label for="tryq" class="label" style="position:absolute;left:-9999px">${tab==='post'?'Paste a post':'Ask a question'}</label><input type="text" id="tryq" placeholder="${tab==='post'?'Paste a caption or what was said':'Ask something else, e.g. May welcome credit ba?'}"><button type="submit" class="ghost">${tab==='post'?'Check':'Ask'}</button></form></div>
+   <form class="row" data-form="try"><label for="tryq" class="label" style="position:absolute;left:-9999px">${tab==='post'?'Paste a post':'Ask a question'}</label><input type="text" id="tryq" placeholder="${tab==='post'?'Paste a caption or what was said':'Ask something, e.g. May welcome credit ba?'}" ${S.busy?'disabled':''}><button type="submit" class="ghost" ${S.busy?'disabled':''}>${tab==='post'?'Check':'Ask'}</button></form></div>
    <div style="display:flex;flex-direction:column;gap:10px"><div class="row" style="gap:8px;flex-wrap:wrap"><span class="tick">✓</span><span class="small grow" style="color:var(--body)">${exCount()} of ${exCount()} examples behave: a pass and a fail for every guardrail.</span><button type="button" class="link" data-act="toggleex" aria-expanded="${S.showEx}">${S.showEx?'Hide the examples':'See the examples'}</button></div>${S.showEx?`<div class="glass" style="padding:14px">${examples()}</div>`:''}</div>`;
 }
 
 /* ---------------- campaign brief ---------------- */
 const CSECT=['Campaign','Talking points','How it ends'];
 function campScreen(){
-  const c=S.camp,st=S.cstep,top=gtop(CSECT,st,100,false);
-  const layerline=`<p class="small" style="margin:0">This brief sits on top of who we are and the guardrails. It can add to them, never loosen them.</p>`;
+  const c=S.camp,st=S.cstep;
+  const page=(inner,nav)=>gpage(st+1,inner,nav,CSECT);
   if(st===0){
     const ob=(v,t,d)=>`<button type="button" class="choice" role="radio" aria-checked="${c.obj===v}" data-obj="${v}"><span class="radio"></span><span class="grow"><b style="font-size:16px">${t}</b><span class="small" style="display:block">${d}</span></span></button>`;
-    return gpage(top,head('New campaign','What’s this campaign for?','Name it and pick what counts as a win.')+
+    return page(H('New campaign','What’s this campaign for?')+say('This is the top layer. It sits on GCash’s who we are and guardrails, and can add to them but never loosen them.')+
      `<div style="display:flex;flex-direction:column;gap:8px"><label for="cname" class="label">Campaign name</label><input type="text" id="cname" value="${esc(c.name)}"></div>
-     <div role="radiogroup" aria-label="Goal" style="display:flex;flex-direction:column;gap:8px">${ob('signup','New verified sign-ups','A follower downloads GCash and finishes sign-up')}${ob('deposit','First deposits','A follower makes a first deposit into GSave')}${ob('bills','First bill payment','A follower pays a first bill in the app')}</div>${layerline}`,
-     gnav({primary:'Continue'}));
+     <div role="radiogroup" aria-label="Goal" style="display:flex;flex-direction:column;gap:8px">${ob('signup','New verified sign-ups','A follower downloads GCash and finishes sign-up')}${ob('deposit','First deposits','A follower makes a first deposit into GSave')}${ob('bills','First bill payment','A follower pays a first bill in the app')}</div>`,gnav({primary:'Continue'}));
   }
   if(st===1){
     const n=c.tps.length,sh=shares(n);
-    const rows=c.tps.map((t,i)=>`<div class="tpl"><span class="rid tp">${String(i+1).padStart(2,'0')}</span><span class="nm">${esc(t)}</span><span class="ctl"><span class="share" aria-hidden="true"><b style="width:${sh[i]}%"></b></span><b class="num" style="width:40px;text-align:right">${sh[i]}%</b><button type="button" class="mv" data-up="${i}" aria-label="Move ${esc(t)} up" ${i===0?'disabled':''}>↑</button><button type="button" class="mv" data-down="${i}" aria-label="Move ${esc(t)} down" ${i===n-1?'disabled':''}>↓</button><button type="button" class="mv" data-tprm="${i}" aria-label="Remove ${esc(t)}">✕</button></span></div>`).join('');
+    const rows=c.tps.map((t,i)=>`<div class="tpl ${S.fresh.includes('tp'+t)?'pop':''}" id="tp-${i}"><span class="rid tp">${String(i+1).padStart(2,'0')}</span><span class="nm">${esc(t)}</span><span class="ctl"><span class="share" aria-hidden="true"><b style="width:${sh[i]}%"></b></span><b class="num" style="width:40px;text-align:right">${sh[i]}%</b><button type="button" class="mv" data-up="${i}" aria-label="Move ${esc(t)} up" ${i===0?'disabled':''}>↑</button><button type="button" class="mv" data-down="${i}" aria-label="Move ${esc(t)} down" ${i===n-1?'disabled':''}>↓</button><button type="button" class="mv" data-tprm="${i}" aria-label="Remove ${esc(t)}">✕</button></span></div>`).join('');
     const sugg=SAVED_TPS.filter(t=>!c.tps.includes(t)).map(t=>`<button type="button" class="ghost" data-tpadd="${esc(t)}">+ ${esc(t)}</button>`).join('');
-    return gpage(top,head(esc(c.name)+' · brief','What should creators talk about?','The top one leads most posts. Reorder to change the mix.')+
-     `<div class="lines">${rows||'<div class="li small">Add at least one talking point.</div>'}</div>
+    return page(H(esc(c.name)+' · brief','What should creators talk about?')+say('I pulled these from your Heroes deck. The top one leads most posts. Reorder to change the mix.')+
+     `<div class="cards">${rows||'<div class="card small">Add at least one talking point.</div>'}</div>
      ${sugg?`<div style="display:flex;flex-direction:column;gap:8px"><span class="label">Saved from your material</span><div class="row" style="flex-wrap:wrap;gap:8px">${sugg}</div></div>`:''}`,
      gnav({primary:'Continue',disabled:!c.tps.length}));
   }
   if(st===2){
     const e=(v,t)=>`<button type="button" class="choice" role="radio" aria-checked="${c.ends===v}" data-ends="${v}"><span class="radio"></span><span class="grow"><b style="font-size:16px">${t}</b></span></button>`;
-    return gpage(top,head(esc(c.name)+' · brief','How should every post end?','This is what a follower does next. The checker holds every post to it.')+
+    return page(H(esc(c.name)+' · brief','How should every post end?')+say('This is what a follower does next. I’ll hold every post to it when I check.')+
      `<div role="radiogroup" aria-label="How a post ends" style="display:flex;flex-direction:column;gap:8px">${e('app','On the app sign-up, with the creator’s own link')}${e('page','On the creator’s OkPo page')}</div>
      <div style="display:flex;flex-direction:column;gap:8px"><label for="ctags" class="label">Tags</label><input type="text" id="ctags" value="${esc(c.tags)}"></div>
      <p class="small" style="margin:0">Rewards, pool and the daily cap come next, in the campaign.</p>`,gnav({primary:'Save brief'}));
@@ -493,55 +596,68 @@ function cCampaigns(){
   ${list||`<div class="glass empty"><b style="font-size:16px">No campaigns yet</b><span class="small">Start one to write its brief. We saved ${SAVED_TPS.length} talking points from your material.</span><button type="button" class="btn sm" data-act="newcamp">Start your first campaign</button></div>`}`;
 }
 
+
+
 /* ---------------- render and events ---------------- */
 function render(focus){
+  const key=S.mode+':'+(S.mode==='setup'?S.step+'-'+S.fpage+'-'+S.voice:S.mode==='campaign'?S.cstep:S.page+S.ctab);
+  document.body.dataset.sec=S.mode==='setup'?Math.min(4,SECOF(S.step)):S.mode==='campaign'?4:0;
   $('#app').innerHTML=S.mode==='setup'?setupScreen():S.mode==='exited'?exitedScreen():S.mode==='campaign'?campScreen():consoleScreen();
+  const col=$('#gcol');if(col&&key!==lastKey)col.classList.add('enter');
+  if(key!==lastKey&&lastKey)window.scrollTo(0,0);
+  lastKey=key;S.fresh=[];S.hl=[];
   const ch=$('#chat');if(ch)ch.scrollTop=ch.scrollHeight;
-  if(focus){const el=document.getElementById(focus);if(el){el.focus();if(el.setSelectionRange)el.setSelectionRange(el.value.length,el.value.length)}}
+  if(focus){const el=document.getElementById(focus);if(el){el.focus({preventScroll:true});if(el.setSelectionRange)el.setSelectionRange(el.value.length,el.value.length)}}
 }
-function readAnim(){
-  buildGuards();S.read=0;render();
-  if(RM){S.read=100;render();return}
-  const tick=()=>{if(S.mode!=='setup'||S.step!==3)return;S.read=Math.min(100,S.read+4);render();if(S.read<100)setTimeout(tick,60)};setTimeout(tick,200);
-}
-function go(step){S.step=step;window.scrollTo(0,0);if(step===3)readAnim();else render()}
-function startCamp(){S.camp={name:S.camps.length?'GCash Ipon Challenge':'GCash Heroes',obj:S.camps.length?'deposit':'signup',tps:SAVED_TPS.slice(0,3),ends:'app',tags:S.camps.length?'#IponChallenge':'#GCashHeroes'};S.cstep=0;S.mode='campaign';window.scrollTo(0,0);render()}
-const toConsole=(page='context',tab='overview')=>{S.mode='console';S.page=page;S.ctab=tab;window.scrollTo(0,0);render()};
+function go(step){S.step=step;S.stackOpen=false;if(step===3){runReading();return}render()}
+function startCamp(){S.camp={name:S.camps.length?'GCash Ipon Challenge':'GCash Heroes',obj:S.camps.length?'deposit':'signup',tps:[],ends:'app',tags:S.camps.length?'#IponChallenge':'#GCashHeroes'};S.cstep=0;S.mode='campaign';S.fresh=['brief'];render()}
+const toConsole=(page='context',tab='overview')=>{S.mode='console';S.page=page;S.ctab=tab;render()};
 
-document.addEventListener('click',e=>{
+async function keepPage(){
+  const fs=S.facts.slice(S.fpage*PAGE,S.fpage*PAGE+PAGE);
+  for(const f of fs){const el=$('#fc-'+f.id);if(el){fly(el,'#stk-who');el.classList.add('gone')}await wait(90)}
+  await wait(380);
+  fs.forEach(f=>{if(f.st==='new'){f.st='kept';S.fresh.push(f.id)}});S.fresh.push('who');
+  const pages=Math.ceil(S.facts.length/PAGE);
+  if(S.fpage<pages-1){S.fpage++;render()}else go(5);
+}
+
+document.addEventListener('click',async e=>{
   const b=e.target.closest('button');if(!b||b.closest('.proto'))return;const d=b.dataset;
   if(d.act==='next'){
     if(S.mode==='campaign'){
-      if(S.cstep===0){const n=$('#cname');if(n)S.camp.name=n.value.trim()||S.camp.name}
+      if(S.cstep===0){const n=$('#cname');if(n)S.camp.name=n.value.trim()||S.camp.name;S.cstep=1;if(!S.camp.tps.length){render();for(const t of SAVED_TPS.slice(0,3)){S.camp.tps.push(t);S.fresh.push('tp'+t);render();await wait(160)}}else render();return}
       if(S.cstep===2){const t=$('#ctags');if(t)S.camp.tags=t.value;S.camps.push(S.camp);S.camp=null;toConsole('campaigns');toast('Brief saved. Rewards and pool are next, in the campaign.');return}
-      S.cstep++;window.scrollTo(0,0);render();return}
+      S.cstep++;render();return}
     if(S.step===2){const c=$('#caps');if(c)S.captions=c.value}
-    if(S.step===4){const pages=Math.ceil(S.facts.length/PAGE);S.facts.slice(S.fpage*PAGE,S.fpage*PAGE+PAGE).forEach(f=>{if(f.st==='new')f.st='kept'});if(S.fpage<pages-1){S.fpage++;window.scrollTo(0,0);render();return}}
-    if(S.step===6&&S.voice==='adjust'){const v=$('#vline');if(v)S.line=v.value.trim()||null;S.voice='ok'}
-    if(S.step===9){S.published=true;go(10);return}
+    if(S.step===4){keepPage();return}
+    if(S.step===6){if(S.voice==='adjust'){const v=$('#vline');if(v)S.line=v.value.trim()||null;S.voice='ok'}fly($('#vcard'),'#stk-voice');await wait(380);S.voiceSet=true;S.fresh.push('voice');go(7);return}
+    if(S.step===9){S.published=true;S.fresh.push('who','brief');go(10);return}
     go(S.step+1);return}
   if(d.act==='back'){
     if(S.mode==='campaign'){if(S.cstep===0){S.camp=null;S.published?toConsole(S.page):(S.mode='setup',render())}else{S.cstep--;render()}return}
     if(S.step===6&&S.voice==='adjust'){S.voice=null;render();return}
     if(S.step===4&&S.fpage>0){S.fpage--;render();return}
-    if(S.step===5){S.fpage=Math.ceil(S.facts.length/PAGE)-1}
-    go(Math.max(0,S.step-1));return}
+    if(S.step===5)S.fpage=Math.ceil(S.facts.length/PAGE)-1;
+    if(S.step===4){S.readDone=true}
+    S.step=Math.max(0,S.step-1);S.stackOpen=false;render();return}
   if(d.act==='skip'){
     if(S.step===2){S.captions='';go(3)}
-    else if(S.step===4){S.facts.forEach((f,i)=>{if(i<(S.fpage+1)*PAGE){if(f.st==='new')f.st='kept'}else f.st='draft'});toast(drafts().length+' facts saved as drafts. The AI won’t use them until you check them.');go(5)}
+    else if(S.step===4){S.facts.forEach((f,i)=>{if(i>=(S.fpage)*PAGE&&f.st==='new')f.st='draft'});toast(drafts().length+' facts saved as drafts. I won’t use them until you check them.');go(5)}
     else if(S.step===6){S.voice='adjust';render()}
     return}
+  if(d.act==='stackopen'){S.stackOpen=!S.stackOpen;render();return}
+  if(d.act==='stackclose'){S.stackOpen=false;render();return}
   if(d.act==='saveexit'){S.mode='exited';render();return}
   if(d.act==='resume'){S.mode='setup';render();return}
-  if(d.act==='addfile'){const f=FILES.find(a=>!S.files.some(x=>x.n===a.n));if(f){S.files.push(f);render()}else toast('All sample files added.');return}
+  if(d.act==='addfile'){const f=FILES.find(a=>!S.files.some(x=>x.n===a.n));if(f){S.files.push(f);S.fresh.push(f.n);render()}else toast('All sample files added.');return}
   if(d.rm!==undefined){S.files.splice(+d.rm,1);render();return}
   if(d.act==='samplecaps'){S.captions=SAMPLE_CAPS;render('caps');return}
-  if(d.fk){const f=S.facts.find(x=>x.id===d.fk);f.editing=false;render();return}
   if(d.ff){const f=S.facts.find(x=>x.id===d.ff);f.editing=true;render('f-'+f.id);return}
   if(d.fsave){const f=S.facts.find(x=>x.id===d.fsave);const v=$('#f-'+f.id).value.trim();if(v)f.t=v;f.editing=false;render();return}
   if(d.credit){S.credit=d.credit;render();return}
   if(d.trait){const v=$('#vline');if(v&&v.value.trim()!==voiceLine())S.line=v.value.trim();const t=d.trait;S.traits=S.traits.includes(t)?S.traits.filter(x=>x!==t):[...S.traits,t];render();return}
-  if(d.g!==undefined){S.guards[+d.g].on=!S.guards[+d.g].on;render();return}
+  if(d.g!==undefined){const g=S.guards[+d.g];if(!g.on){fly(b,'#stk-guard');await wait(300);S.fresh.push(g.id)}g.on=!g.on;render();return}
   if(d.tab){S.tryTab=d.tab;render();return}
   if(d.act==='toggleex'){S.showEx=!S.showEx;render();return}
   if(d.act==='newcamp'){startCamp();return}
@@ -551,9 +667,9 @@ document.addEventListener('click',e=>{
   if(d.up!==undefined){const i=+d.up,a=S.camp.tps;[a[i-1],a[i]]=[a[i],a[i-1]];render();return}
   if(d.down!==undefined){const i=+d.down,a=S.camp.tps;[a[i+1],a[i]]=[a[i],a[i+1]];render();return}
   if(d.tprm!==undefined){S.camp.tps.splice(+d.tprm,1);render();return}
-  if(d.tpadd){S.camp.tps.push(d.tpadd);render();return}
+  if(d.tpadd){fly(b,'#stk-brief');await wait(300);S.camp.tps.push(d.tpadd);S.fresh.push('tp'+d.tpadd);render();return}
   if(d.ctab){S.page='context';S.ctab=d.ctab;render();return}
-  if(d.nav){if(d.nav==='context'||d.nav==='campaigns'){S.page=d.nav;if(d.nav==='context')S.ctab=S.ctab||'overview';render()}else toast(b.textContent.trim()+' isn’t part of this prototype.');return}
+  if(d.nav){if(d.nav==='context'||d.nav==='campaigns'){S.page=d.nav;render()}else toast(b.textContent.trim()+' isn’t part of this prototype.');return}
   if(d.act==='hideguide'){S.guideHidden=true;render();toast('Hidden. It comes back if something needs you.');return}
   if(d.act==='captions'){S.captions=SAMPLE_CAPS;render();toast('Captions added. The voice now learns from 3 of your posts.');return}
   if(d.act==='drafts'){S.ff='Drafts';S.ctab='who';render();return}
@@ -568,15 +684,19 @@ document.addEventListener('input',e=>{
   if(e.target.id==='caps')S.captions=e.target.value;
   if(e.target.id==='fq'){S.fq=e.target.value;render('fq')}
 });
-document.addEventListener('submit',e=>{
+document.addEventListener('submit',async e=>{
   e.preventDefault();const f=e.target.dataset.form;
-  if(f==='guard'){const v=$('#newGuard').value.trim();if(!v){toast('Type the guardrail first.');return}S.guards.push({id:'R-'+(15+S.guards.length),t:v,src:'You added it',found:true,coach:['Won’t say it, and warns',''],ask:['Won’t say it',''],sev:'fail',on:true});render('newGuard');toast('Added. It stops a post from counting, like the others.')}
-  if(f==='try'){const v=$('#tryq').value.trim();if(!v)return;const tab=S.tryTab;S.log[tab].push({q:v,...reply(tab,v)});render('tryq')}
+  if(f==='guard'){const v=$('#newGuard').value.trim();if(!v){toast('Type the guardrail first.');return}fly(e.target,'#stk-guard');const id='R-'+(15+S.guards.length);S.guards.push({id,t:v,sh:v.length>26?v.slice(0,24)+'…':v,src:'You added it',found:true,coach:['Won’t say it, and warns',''],ask:['Won’t say it',''],sev:'fail',on:true});S.fresh.push(id);render('newGuard')}
+  if(f==='try'){
+    const v=$('#tryq').value.trim();if(!v||S.busy)return;const tab=S.tryTab;
+    const m={q:v,pending:true};S.log[tab].push(m);S.busy=true;S.hl=[];render();
+    await wait(750);Object.assign(m,reply(tab,v),{pending:false});S.busy=false;S.hl=m.used.slice();render('tryq');
+  }
 });
 const theme=()=>document.documentElement.getAttribute('data-theme')==='dark';
 $('#pMenu').onclick=()=>{const o=$('.proto').classList.toggle('open');$('#pMenu').setAttribute('aria-expanded',String(o))};
-$('#pRestart').onclick=()=>{S=fresh();$('#pWeek').setAttribute('aria-pressed','false');window.scrollTo(0,0);render()};
-$('#pSkip').onclick=()=>{if(!S.files.length)S.files=FILES.slice(0,3);if(!S.guards)buildGuards();if(!S.credit)S.credit='50';S.facts.forEach(f=>{if(f.st==='new')f.st='kept'});S.published=true;toConsole()};
+$('#pRestart').onclick=()=>{S=fresh();lastKey='';$('#pWeek').setAttribute('aria-pressed','false');render()};
+$('#pSkip').onclick=()=>{if(!S.files.length)S.files=FILES.slice(0,3);if(!S.guards)buildGuards();S.guards.forEach(g=>{if(g.found)g.on=true});if(!S.credit)S.credit='50';S.facts.forEach(f=>{if(f.st==='new')f.st='kept'});S.voiceSet=true;S.published=true;toConsole()};
 $('#pWeek').onclick=()=>{S.week=!S.week;$('#pWeek').setAttribute('aria-pressed',String(S.week));render();toast(S.week?'Showing a week of activity.':'Back to day one.')};
 $('#pTheme').onclick=()=>{document.documentElement.setAttribute('data-theme',theme()?'light':'dark');$('#pTheme').textContent=theme()?'Light':'Dark'};
 if(!document.documentElement.getAttribute('data-theme'))document.documentElement.setAttribute('data-theme','light');
