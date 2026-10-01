@@ -1,0 +1,786 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+
+<title>OkPo Earner and Page</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: a thin control strip, then two phones side by side (Ana's earner app, a follower's view of her OkPo page) sharing one state. Colour is reserved for reward takeovers; the phones sit on calm tone-on-tone tiles. */
+:root{
+  --ground:#f6f1e4; --tone:#ebe2cc; --ink:#121212; --body:#4a4640; --mute:#6a655c; --line:rgba(18,18,18,.12);
+  --glass-a:rgba(255,255,255,.66); --glass-b:rgba(255,255,255,.44); --glass-edge:rgba(255,255,255,.95); --glass-shadow:0 16px 36px rgba(18,18,18,.12);
+  --glass-strong:rgba(255,255,255,.8); --soft:rgba(18,18,18,.06); --scrim:rgba(18,18,18,.28);
+  --coral:#ff8787; --yellow:#ffd43b; --orange:#ffa94d; --green:#69db7c; --blue:#74c0fc; --purple:#b197fc;
+  --l-coral:#c92a2a; --l-green:#237a36; --l-yellow:#9c6500; --l-purple:#6741d9;
+  --btn:#121212; --on-btn:#f6f1e4;
+  --display:'Bricolage Grotesque',ui-sans-serif,system-ui,sans-serif;
+  --text:'IBM Plex Sans',ui-sans-serif,system-ui,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  --ease:cubic-bezier(.2,.8,.2,1); --pop:cubic-bezier(.34,1.56,.64,1);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --ground:#0f0f0f; --tone:#1c1b19; --ink:#ececec; --body:#b9bcc0; --mute:#8f949a; --line:rgba(255,255,255,.12);
+  --glass-a:rgba(40,40,40,.7); --glass-b:rgba(18,18,18,.6); --glass-edge:rgba(255,255,255,.22); --glass-shadow:0 16px 36px rgba(0,0,0,.5);
+  --glass-strong:rgba(34,34,34,.86); --soft:rgba(255,255,255,.07); --scrim:rgba(0,0,0,.5);
+  --l-coral:#ff8787; --l-green:#69db7c; --l-yellow:#ffd43b; --l-purple:#b197fc; --btn:#ececec; --on-btn:#121212; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --ground:#0f0f0f; --tone:#1c1b19; --ink:#ececec; --body:#b9bcc0; --mute:#8f949a; --line:rgba(255,255,255,.12);
+  --glass-a:rgba(40,40,40,.7); --glass-b:rgba(18,18,18,.6); --glass-edge:rgba(255,255,255,.22); --glass-shadow:0 16px 36px rgba(0,0,0,.5);
+  --glass-strong:rgba(34,34,34,.86); --soft:rgba(255,255,255,.07); --scrim:rgba(0,0,0,.5);
+  --l-coral:#ff8787; --l-green:#69db7c; --l-yellow:#ffd43b; --l-purple:#b197fc; --btn:#ececec; --on-btn:#121212; color-scheme:dark}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{margin:0;background:var(--ground);color:var(--ink);font:400 14px/1.45 var(--text);-webkit-font-smoothing:antialiased;padding-inline:16px;padding-block:12px 32px}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:8px}
+.mono{font-family:var(--mono)} .num{font-variant-numeric:tabular-nums}
+.label{font:600 10.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.disp{font-family:var(--display);font-weight:800;letter-spacing:-.03em}
+.small{font-size:12.5px;color:var(--mute)} .sub{color:var(--body)}
+.row{display:flex;align-items:center;gap:10px} .grow{flex:1;min-width:0} .spacer{flex:1}
+.wm{font-family:var(--display);font-weight:800;letter-spacing:-.035em;line-height:1;display:inline-flex}
+.wm span:nth-child(1){color:var(--coral)}.wm span:nth-child(2){color:var(--yellow)}.wm span:nth-child(3){color:var(--green)}.wm span:nth-child(4){color:var(--blue)}
+.glass{background:linear-gradient(160deg,var(--glass-a),var(--glass-b));-webkit-backdrop-filter:blur(14px) saturate(1.6);backdrop-filter:blur(14px) saturate(1.6);border:1px solid var(--glass-edge);box-shadow:inset 0 1px 0 var(--glass-edge),var(--glass-shadow);border-radius:20px}
+.glass.strong{background:var(--glass-strong)}
+.press{transition:transform .12s var(--ease)} .press:active{transform:scale(.97)}
+
+/* control strip */
+.strip{max-width:980px;margin:0 auto 18px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:8px 10px 8px 16px}
+.seg{display:inline-flex;gap:2px;padding:3px;border-radius:12px;background:var(--soft)}
+.seg button{border:0;background:transparent;border-radius:9px;padding:6px 11px;font-size:13px;color:var(--body)}
+.seg button[aria-pressed="true"]{background:var(--glass-strong);color:var(--ink);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.ghost{border:1px solid var(--line);background:transparent;border-radius:10px;padding:7px 11px;font-size:13px;font-weight:500}
+.ghost:hover{background:var(--soft)}
+.who{display:none}
+
+/* stage */
+.stage{display:flex;justify-content:center;gap:48px;align-items:flex-start;flex-wrap:wrap}
+.col{display:flex;flex-direction:column;gap:12px;align-items:center;min-width:0}
+.cap{font-size:12.5px;color:var(--mute);text-align:center;max-width:390px}
+.phone{position:relative;width:390px;max-width:100%;height:800px;border-radius:44px;overflow:hidden;background:var(--ground);border:1px solid var(--line);box-shadow:0 30px 60px rgba(0,0,0,.16);isolation:isolate}
+.phone.flash{animation:flash 1s var(--ease)}
+@keyframes flash{30%{box-shadow:0 0 0 6px var(--yellow),0 30px 60px rgba(0,0,0,.16)}}
+.pbg{position:absolute;inset:0;pointer-events:none;z-index:0}
+.pbg svg{position:absolute;display:block}
+.screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding:22px 18px 110px;display:flex;flex-direction:column;gap:14px;z-index:1;scrollbar-width:none}
+.screen::-webkit-scrollbar{display:none}
+.card{padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.big{font-family:var(--display);font-weight:800;font-size:30px;letter-spacing:-.03em;line-height:1.02}
+.btn{border:0;border-radius:14px;padding:12px 16px;font-weight:600;background:var(--btn);color:var(--on-btn)}
+.btn.y{background:var(--btn);color:var(--on-btn)}
+.btn.wide{width:100%}
+.btn:disabled{opacity:.45;cursor:default}
+.link{border:0;background:transparent;padding:4px 0;font-weight:600;text-decoration:underline;text-underline-offset:3px;align-self:flex-start}
+.iconbtn{width:40px;height:40px;border-radius:50%;border:0;display:grid;place-items:center;position:relative;flex:none}
+.av{width:40px;height:40px;border-radius:50%;background:var(--soft);display:grid;place-items:center;font-weight:600;font-size:13px;color:var(--body);flex:none}
+.badge{position:absolute;top:4px;right:4px;min-width:16px;height:16px;border-radius:99px;background:var(--coral);color:#121212;font:700 10px/16px var(--mono);text-align:center;padding:0 4px}
+.li{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--line)}
+.li:first-child{border-top:0}
+.mission{width:100%;border:0;background:transparent;text-align:left;display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line);border-radius:0}
+.mission:first-child{border-top:0}
+.mission .mt{display:block;font-weight:600}
+.mission.done .mt{opacity:.55;text-decoration:line-through}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 9px;border-radius:99px;font:600 10.5px/1 var(--mono);letter-spacing:.08em;white-space:nowrap}
+.chip.go{background:var(--btn);color:var(--on-btn);font:600 13px/1 var(--text);letter-spacing:0;padding:7px 13px}
+.chip.ok{background:rgba(105,219,124,.24);color:var(--l-green)}
+.chip.fix{background:rgba(255,135,135,.22);color:var(--l-coral)}
+.chip.wait{background:var(--soft);color:var(--body)}
+.spin{display:inline-block;width:12px;height:12px;border-radius:50%;border:2px solid var(--mute);border-right-color:transparent;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.progress{display:flex;gap:4px;flex:none}.progress i{flex:1;height:6px;border-radius:9px;background:var(--line);transition:background .4s}.progress i.on{background:var(--orange)}
+.week{display:flex;gap:4px}
+.week span{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;font-size:11px;color:var(--mute)}
+.bar{display:flex;height:12px;border-radius:99px;overflow:hidden;gap:3px;background:var(--soft)}
+.bar i{display:block;height:100%;transition:flex-grow .6s var(--ease)}
+.kv{display:grid;grid-template-columns:110px minmax(0,1fr);font-size:13.5px}
+.kv span{padding:8px 0;border-top:1px solid var(--line)} .kv span:nth-child(-n+2){border-top:0}
+.kv span:nth-child(odd){color:var(--mute);font-family:var(--mono);font-size:12px}
+.copyrow{display:flex;gap:8px}
+.copyrow button{flex:1;border:1px solid var(--line);background:transparent;border-radius:12px;padding:10px 6px;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:500;font-size:13px}
+.field{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:12px;padding:0 12px;height:46px;background:var(--glass-strong)}
+.field input{border:0;background:transparent;outline:none;flex:1;min-width:0;height:100%}
+.field.bad{border-color:var(--l-coral)}
+.check{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:var(--soft)}
+.chat{display:flex;flex-direction:column;gap:12px}
+.bub{max-width:88%;padding:10px 13px;border-radius:16px;line-height:1.5;animation:rise .3s var(--ease)}
+.bub.me{align-self:flex-end;background:var(--soft)}
+.bub.ai{display:flex;gap:10px;padding:0;max-width:100%}
+.used{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.used span{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:99px;padding:2px 8px;font-size:12px;color:var(--body)}
+.dots{display:inline-flex;gap:4px;padding:10px 0}.dots i{width:7px;height:7px;border-radius:50%;background:var(--mute);animation:dot 1s infinite}
+.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+@keyframes dot{0%,80%,100%{opacity:.25;transform:none}40%{opacity:1;transform:translateY(-3px)}}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{border:1px solid var(--line);border-radius:99px;padding:5px 11px;font-size:13px;background:var(--glass-strong)}
+.composer{display:flex;align-items:center;gap:8px;padding:5px 5px 5px 14px;border-radius:16px}
+.composer input{border:0;background:transparent;outline:none;flex:1;min-width:0;height:36px}
+.tabbar{position:absolute;left:12px;right:12px;bottom:12px;height:64px;display:flex;align-items:center;padding:0 6px;border-radius:26px;z-index:20;transition:transform .35s var(--ease)}
+.tabbar.away{transform:translateY(100px)}
+.tabbar button{flex:1;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;color:var(--mute);padding:6px 0}
+.tabbar button[aria-current="page"]{color:var(--ink);font-weight:600}
+.tabbar .ti{display:grid;place-items:center;width:24px;height:24px}
+.tabbar .ti.land{animation:land .6s var(--pop)}
+@keyframes land{40%{transform:scale(1.5)}}
+.sheet{position:absolute;left:0;right:0;bottom:0;border-radius:28px 28px 0 0;padding:12px 18px 22px;display:flex;flex-direction:column;gap:12px;z-index:40}
+.grab{align-self:center;width:40px;height:5px;border-radius:9px;background:var(--line)}
+.scrim{position:absolute;inset:0;background:var(--scrim);z-index:35}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opts button{border:1px solid var(--line);background:transparent;border-radius:14px;padding:12px 8px;display:flex;flex-direction:column;gap:2px;align-items:center}
+.opts button[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.panel{position:absolute;left:10px;right:10px;top:10px;z-index:40;padding:14px 16px;display:flex;flex-direction:column;gap:6px;max-height:70%;overflow:auto}
+.toast{position:absolute;left:14px;right:14px;top:14px;z-index:45;padding:12px 14px;display:flex;align-items:center;gap:10px;animation:drop .35s var(--ease)}
+@keyframes drop{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:none}}
+.otp{display:flex;gap:8px;justify-content:space-between}
+.otp input{width:44px;height:54px;text-align:center;font:600 22px var(--mono);border:1px solid var(--line);border-radius:12px;background:var(--glass-strong)}
+.thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.thumbs button{aspect-ratio:3/4;border-radius:12px;border:0;background:var(--soft);display:flex;align-items:flex-end;padding:8px;color:var(--body)}
+.askbar{position:absolute;left:14px;right:14px;bottom:14px;height:58px;display:flex;align-items:center;gap:10px;padding:0 8px 0 16px;border-radius:22px;border:0;text-align:left;color:var(--body);z-index:20}
+.go-y{width:40px;height:40px;border-radius:14px;background:var(--btn);display:grid;place-items:center;margin-left:auto;color:var(--on-btn)}
+.over{position:absolute;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;padding:18px;background:var(--scrim)}
+.over .glass{padding:20px;display:flex;flex-direction:column;gap:12px;width:100%;animation:rise .3s var(--ease)}
+
+
+/* follower sign-up banner: a smaller reward, still in the yellow-half language */
+.nb{position:absolute;left:12px;right:12px;top:12px;z-index:55;border-radius:22px;overflow:hidden;cursor:pointer;color:#121212;box-shadow:0 14px 34px rgba(0,0,0,.18);background:#fff9db;border:1px solid rgba(255,255,255,.9)}
+.nb .sweep{position:absolute;inset:0;background:#ffd43b}
+.nb .in{position:relative;display:flex;align-items:center;gap:12px;padding:12px 14px 12px 12px}
+.nb .sh{width:46px;height:46px;flex:none;display:grid;place-items:center;border-radius:14px;background:#fff9db}
+.nb .sh svg{overflow:visible}
+.nb b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nb .cnt{font:700 15px/1 var(--mono);background:#121212;color:#ffd43b;border-radius:99px;padding:6px 11px;white-space:nowrap}
+
+/* campaigns */
+.ctag{display:inline-flex;align-items:center;gap:5px;font:600 9.5px/1 var(--mono);letter-spacing:.06em;padding:3px 7px;border-radius:6px;background:var(--soft);color:var(--body);text-transform:uppercase;margin-top:5px;align-self:flex-start}
+.crow{flex:none;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-inline:-2px;padding:2px}
+.crow::-webkit-scrollbar{display:none}
+.cchip{display:inline-flex;align-items:center;gap:6px;padding:7px 11px;border-radius:99px;font-size:12.5px;font-weight:600;white-space:nowrap;border:1px solid var(--line);background:var(--glass-strong)}
+.cchip.add{background:transparent;position:relative}
+.cchip .dot{width:7px;height:7px;border-radius:50%;background:var(--coral)}
+.deal{display:grid;grid-template-columns:1fr auto auto;gap:8px 14px;align-items:baseline;font-size:13.5px}.deal .old{color:var(--mute);text-decoration:line-through}
+.camp{border:0;text-align:left;width:100%;cursor:pointer}
+.camp.off{opacity:.62;cursor:default}
+.seclabel{margin-top:4px}
+.bm{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font:800 15px var(--display);flex:none;background:var(--soft);color:var(--ink)}
+.chip.lock{background:var(--soft);color:var(--mute);font:600 12px/1 var(--text);letter-spacing:0;padding:7px 11px}
+.meter{display:flex;gap:4px}.meter i{flex:1;height:5px;border-radius:9px;background:var(--line)}.meter i.on{background:var(--ink)}
+
+/* brand context v2: rule IDs, talking points, quality bands */
+.rid{display:inline-block;margin-left:6px;font:600 10px/1 var(--mono);letter-spacing:.04em;padding:3px 6px;border-radius:6px;background:var(--soft);color:var(--body);vertical-align:1px;white-space:nowrap}
+.rid.tp{background:rgba(255,212,59,.28);color:var(--l-yellow)}
+.dd{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.dd li{display:flex;gap:8px;align-items:baseline}.dd li span:first-child{flex:1}
+.band{display:inline-flex;align-items:center;gap:6px;padding:4px 9px;border-radius:99px;font:600 11.5px/1 var(--text);white-space:nowrap}
+.band i{width:7px;height:7px;border-radius:50%;background:currentColor}
+.band.s{background:rgba(105,219,124,.24);color:var(--l-green)}
+.band.g{background:var(--soft);color:var(--body)}
+.band.n{background:rgba(255,212,59,.3);color:var(--l-yellow)}
+details.pq,.pq-plain{border-top:1px solid var(--line)}details.pq:first-child,.pq-plain:first-child{border-top:0}.pq-plain .li{border-top:0}
+details.pq summary{list-style:none;cursor:pointer}details.pq summary::-webkit-details-marker{display:none}
+details.pq summary .li{border-top:0}
+details.pq .tips{display:flex;flex-direction:column;gap:8px;padding:0 0 12px 32px}
+details.pq .tips div{display:flex;gap:8px;align-items:baseline;font-size:13px;color:var(--body)}
+details.pq .tips div b{font:600 11px/1 var(--mono);color:var(--mute)}
+/* takeover */
+.take{position:absolute;inset:0;z-index:60;overflow:hidden;cursor:pointer;color:#121212}
+.take .wash{position:absolute;inset:0}
+.take svg{position:absolute;overflow:visible}
+.take .tx{position:absolute;left:0;right:0;display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;padding:0 24px}
+.take .lab{font:600 10.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase}
+
+@media (max-width:900px){
+  .who{display:inline-flex}
+  .stage{gap:0}
+  .stage[data-show="earner"] #colAud,.stage[data-show="aud"] #colEarn{display:none}
+}
+@media (max-width:430px){.phone{height:760px;border-radius:36px}.strip{padding:8px}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+
+<div class="strip glass strong" role="toolbar" aria-label="Prototype controls">
+  <span class="wm" style="font-size:22px" role="img" aria-label="OkPo"><span>O</span><span>k</span><span>P</span><span>o</span></span>
+  <div class="seg who" role="group" aria-label="Phone"><button type="button" id="showE" aria-pressed="true">Earner</button><button type="button" id="showA" aria-pressed="false">Follower</button></div>
+  <span class="spacer"></span>
+  <div class="seg" role="group" aria-label="Backdrop"><button type="button" id="bgTone" aria-pressed="true">Tone</button><button type="button" id="bgColour" aria-pressed="false">Colour</button></div>
+  <div class="seg" role="group" aria-label="Follower arrives from"><button type="button" id="viaH" aria-pressed="true">Follower taps Heroes Reel</button><button type="button" id="viaI" aria-pressed="false">Taps Ipon Story</button></div>
+  <button class="ghost" type="button" id="simConfirm">GCash confirms sign-ups</button>
+  <button class="ghost" type="button" id="simOnb">Replay joining</button>
+  <button class="ghost" type="button" id="simVia">New joiner from Ana’s Reel</button>
+  <button class="ghost" type="button" id="themeBtn">Dark</button>
+  <button class="ghost" type="button" id="resetBtn">Reset</button>
+</div>
+
+<div class="stage" id="stage" data-show="earner">
+  <div class="col" id="colEarn"><div class="phone" id="pE" aria-label="Ana’s phone, OkPo earner app"></div><span class="cap" id="capE">Ana’s phone · tap a mission to start</span></div>
+  <div class="col" id="colAud"><div class="phone" id="pA" aria-label="A follower’s phone, Ana’s OkPo page"></div><span class="cap" id="capA">A follower’s phone · okpo.com/ana.posts · sign up here and watch Ana’s phone</span></div>
+</div>
+
+<script>
+(function(){
+const $=(s,r=document)=>r.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+const peso=n=>'₱'+Math.round(n).toLocaleString('en-PH');
+
+/* ---------- shapes ---------- */
+const P={
+ frame:'<path d="M0 0H100V100H0Z M27 27V73H73V27Z" fill-rule="evenodd" fill="C"/>',
+ quarter:'<path d="M0 100 L0 0 A100 100 0 0 1 100 100 Z" fill="C"/>',
+ diamond:'<path d="M50 0L100 50L50 100L0 50Z M50 28L72 50L50 72L28 50Z" fill-rule="evenodd" fill="C"/>',
+ half:'<path d="M0 100 A50 50 0 0 1 100 100 Z" fill="C"/><rect width="100" height="22" fill="C"/>',
+ pin:'<path d="M0 0 L50 0 L50 50 Z M100 0 L100 50 L50 50 Z M100 100 L50 100 L50 50 Z M0 100 L0 50 L50 50 Z" fill="C"/>',
+ petal:'<path d="M50 50 Q50 2 98 2 Q98 50 50 50 Z M50 50 Q98 50 98 98 Q50 98 50 50 Z M50 50 Q50 98 2 98 Q2 50 50 50 Z M50 50 Q2 50 2 2 Q50 2 50 50 Z" fill="C"/>'};
+/* the reward mapping: each tab's shape and colour */
+const COL={frame:'var(--coral)',quarter:'var(--green)',diamond:'var(--orange)',half:'var(--yellow)',petal:'var(--purple)',pin:'var(--blue)'};
+function tile(k,s=14,outline){
+  let b=P[k];
+  if(outline) b=b.replace(/fill="C"/g,`style="fill:none;stroke:${outline};stroke-width:9"`).replace('fill-rule="evenodd" ','');
+  else b=b.replace(/fill="C"/g,`style="fill:${COL[k]}"`);
+  return `<svg width="${s}" height="${s}" viewBox="-5 -5 110 110" aria-hidden="true" style="flex:none;display:block">${b}</svg>`;
+}
+const IC={bell:'<path d="M6 16V11a6 6 0 0112 0v5l2 2H4z"/><path d="M10 20a2 2 0 004 0"/>',back:'<path d="M15 5l-7 7 7 7"/>',chev:'<path d="M9 6l6 6-6 6"/>',x:'<path d="M6 6l12 12M18 6L6 18"/>',send:'<path d="M4 12l16-8-6 16-2-7z"/>',copy:'<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 00-1-1H5a1 1 0 00-1 1v10a1 1 0 001 1h3"/>',link:'<path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1"/>',mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/>',up:'<path d="M12 19V5M5 12l7-7 7 7"/>',spark:'<path d="M12 3v5M12 16v5M3 12h5M16 12h5"/>',check:'<path d="M5 12l5 5 9-10"/>',play:'<path d="M7 5l12 7-12 7z"/>',shield:'<path d="M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z"/>'};
+const ic=(k,s=18,c='currentColor')=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;display:block">${IC[k]}</svg>`;
+
+/* sloppy filled shapes for takeovers (hand-drawn edge, about 2px) */
+function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function arc(cx,cy,r,a0,a1,n=40){const o=[];for(let i=0;i<=n;i++){const a=(a0+(a1-a0)*i/n)*Math.PI/180;o.push([cx+r*Math.cos(a),cy+r*Math.sin(a)])}return o}
+const POLY={
+ diamond:[[[50,0],[100,50],[50,100],[0,50],[50,0]],[[50,28],[72,50],[50,72],[28,50],[50,28]]],
+ frame:[[[0,0],[100,0],[100,100],[0,100],[0,0]],[[27,27],[73,27],[73,73],[27,73],[27,27]]],
+ quarter:[[[0,100],[0,0],...arc(0,100,100,-90,0),[0,100]]],
+ half:[[...arc(50,100,50,180,360),[0,100]],[[0,0],[100,0],[100,22],[0,22],[0,0]]]};
+function wob(pts,seed,amp){
+  const r=rng(seed),ph=[r()*6.28,r()*6.28,r()*6.28,r()*6.28],f=[.18+r()*.14,.5+r()*.3,.18+r()*.14,.5+r()*.3],q=[];
+  for(let i=0;i<pts.length-1;i++){const[a,b]=pts[i],[c,d]=pts[i+1],n=Math.max(1,Math.floor(Math.hypot(c-a,d-b)/3));for(let j=0;j<n;j++)q.push([a+(c-a)*j/n,b+(d-b)*j/n])}
+  q.push(pts[pts.length-1]);
+  return 'M'+q.map(([x,y],i)=>`${(x+amp*(Math.sin(i*f[0]+ph[0])+.45*Math.sin(i*f[1]+ph[1]))).toFixed(2)} ${(y+amp*(Math.sin(i*f[2]+ph[2])+.45*Math.sin(i*f[3]+ph[3]))).toFixed(2)}`).join(' L')+' Z';
+}
+function sloppy(k,color,size,seed){const amp=Math.min(2/(size/112),1.1);const d=POLY[k].map((p,j)=>wob(p,seed*10+j,amp)).join(' ');return `<path d="${d}" fill="${color}" fill-rule="evenodd" stroke="${color}" stroke-width="1.5" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>`}
+const WASH={orange:['#ffa94d','#d9480f','#ffe8cc'],green:['#69db7c','#2b8a3e','#ebfbee'],coral:['#ff8787','#c92a2a','#ffe3e3'],yellow:['#ffd43b','#e67700','#fff9db']};
+
+/* ---------- state ---------- */
+const DAYS=['M','T','W','T','F','S','S'],TODAY=5;
+const FRESH=()=>({
+ e:{onb:null,num:'',tab:'today',stack:[],notifsOpen:false,sheet:null,
+  missions:[{id:1,camp:'heroes',t:'Reel on today’s brief',type:'Reel',r:40,state:'open',tries:0,tp:'Free to join'},{id:2,camp:'heroes',t:'Story with your sign-up link',type:'Story',r:15,state:'open',tries:0,tp:'Five-minute sign-up'},{id:3,camp:'heroes',t:'Answer a follower question',type:'Reply',r:10,state:'open',tries:0,tp:'Send money home'}],
+  cap:3,weekPassed:3,via:null,
+  camps:[
+   {id:'heroes',name:'GCash Heroes',short:'Heroes',brand:'GCash',k:'half',status:'joined',deal:'₱40 per passed post · ₱12 per activated sign-up',left:'18 days left',stats:'14 posts passed · ₱1,240 earned'},
+   {id:'ipon',name:'GCash Ipon Challenge',short:'Ipon',brand:'GCash',k:'pin',status:'invited',rate:30,open:25,dep:10,weeks:3,ends:'Sat 4 Oct, 7:00 AM',endsIn:'2 days 21 hours',why:'Picked for you because your followers are students in Iloilo.',ask:'Two Reels a week about saving for a goal. Missions arrive in Today, tagged Ipon.'},
+   {id:'kanto',name:'Kanto Kape · first orders',short:'Kanto',brand:'Kanto Kape',k:'diamond',status:'open',fit:true,deal:'₱35 per passed post · ₱15 per first order',who:'For food creators in Metro Manila',ends:'ends 15 Dec'},
+   {id:'baon',name:'Baon Box · trial boxes',short:'Baon',brand:'Baon Box',k:'quarter',status:'open',fit:false,why:'Needs 5,000+ followers in Cebu. Yours are mostly in Iloilo and QC.'}],
+  today:0,week:1240,ready:1180,confirming:[{t:'5 sign-ups from your page',a:60,by:'Mon, 6 Oct'}],
+  streak:6,days:{0:'done',1:'done',2:'done',3:'rest',4:'done'},doneToday:false,
+  posts:[{t:'Reel · GCash Heroes',when:'Fri',state:'passed',r:40,tp:'Free to join',band:'Strong',tips:[['Your hook said “libre” in the first two seconds. Keep opening like that.','R-06'],['Hold the sign-up screen a beat longer at the end.','R-08']]},{t:'Story · GCash Heroes',when:'Fri',state:'passed',r:15,tp:'Five-minute sign-up',band:'Good',tips:[['Say “mga 5 minuto lang” out loud, not only in the caption.','TP'],['Show the real app. The second frame was a screenshot.','R-05']]},{t:'Reel · GCash Heroes',when:'Wed',state:'passed',r:40,tp:'Send money home',band:'Needs work',tips:[['Name who you send money to. It was the talking point, and the Reel never got there.','TP'],['Cut the caption to two Taglish lines.','R-07']]}],
+  chat:[],notifs:[{t:'GCash invited you to Ipon Challenge',b:'A better deal: ₱30 per passed post instead of ₱25. Reply within 72 hours.',time:'7:02 AM',k:'pin',go:'invite'},{t:'Today’s brief is in',b:'3 missions for GCash Heroes. The first takes about 2 minutes.',time:'7:00 AM',k:'frame'},{t:'Heroes replies drop to ₱8 on Sat 4 Oct',b:'3 days’ notice. Replies you post before then keep ₱10.',time:'Wed',k:'half'}],unread:2,
+  signups:9,visits:8237,receipt:null},
+ a:{sheet:false,chat:[],over:null,signed:false,via:'heroes',taps:['heroes']},
+ bg:'tone'});
+let S;try{S=JSON.parse(localStorage.getItem('okpo-ep3')||'null')}catch(e){S=null}
+if(!S||!S.e||!S.a||!S.e.camps)S=FRESH();
+if(!S.a.taps){S.a.via='heroes';S.a.taps=['heroes']}
+S.e.sheet=null;S.e.notifsOpen=false;S.a.over=null;
+const save=()=>{try{localStorage.setItem('okpo-ep3',JSON.stringify(S))}catch(e){}};
+const pE=$('#pE'),pA=$('#pA');
+[ $('#pE'),$('#pA') ].forEach(ph=>ph.addEventListener('scroll',()=>{ph.scrollLeft=0;ph.scrollTop=0}));
+
+/* ---------- backdrop ---------- */
+function backdrop(){
+  const tone=S.bg==='tone';
+  const c=k=>tone?'var(--tone)':COL[k];
+  const s=(k,st)=>`<svg viewBox="-5 -5 110 110" style="${st}">${P[k].replace(/fill="C"/g,`style="fill:${c(k)}"`)}</svg>`;
+  return `<div class="pbg" aria-hidden="true" style="opacity:${tone?1:.7}">${s('quarter','left:-120px;top:-120px;width:420px;height:420px')}${s('petal','left:180px;top:140px;width:300px;height:300px')}${s('half','left:120px;top:520px;width:380px;height:380px')}</div>`;
+}
+
+/* ---------- screen swapping with transitions ---------- */
+function swap(phone,html,kind){
+  const old=phone.querySelector('.screen');
+  const nu=document.createElement('div');nu.className='screen';nu.innerHTML=html;
+  if(old&&kind==='none'){const st=old.scrollTop;old.replaceWith(nu);nu.scrollTop=st;return nu}
+  const bg=phone.querySelector('.pbg');bg?bg.after(nu):phone.prepend(nu);
+  if(!old||RM){old&&old.remove();return nu}
+  const D=320,E='cubic-bezier(.2,.8,.2,1)';
+  if(kind==='push'){nu.animate([{transform:'translateX(100%)'},{transform:'none'}],{duration:D,easing:E});old.style.zIndex=0;old.animate([{transform:'none',opacity:1},{transform:'translateX(-28%)',opacity:.4}],{duration:D,easing:E}).finished.then(()=>old.remove())}
+  else if(kind==='pop'){nu.style.zIndex=0;nu.animate([{transform:'translateX(-28%)',opacity:.4},{transform:'none',opacity:1}],{duration:D,easing:E});old.style.zIndex=2;old.animate([{transform:'none'},{transform:'translateX(100%)'}],{duration:D,easing:E}).finished.then(()=>old.remove())}
+  else{nu.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:260,easing:E});old.animate([{opacity:1},{opacity:0}],{duration:160}).finished.then(()=>old.remove())}
+  return nu;
+}
+function countUps(root){
+  root.querySelectorAll('[data-from]').forEach(el=>{
+    const a=+el.dataset.from,b=+el.dataset.to;delete el.dataset.from;if(a===b||RM){el.textContent=peso(b);return}
+    const t0=performance.now(),D=900;
+    (function f(t){const p=Math.min(1,(t-t0)/D),e=1-Math.pow(1-p,3);el.textContent=peso(a+(b-a)*e);if(p<1)requestAnimationFrame(f)})(t0);
+  });
+}
+function toastIn(phone,html){
+  const t=document.createElement('div');t.className='toast glass strong';t.setAttribute('role','status');t.innerHTML=html;phone.appendChild(t);
+  setTimeout(()=>{if(RM){t.remove();return}t.animate([{opacity:1},{opacity:0,transform:'translateY(-10px)'}],{duration:220}).finished.then(()=>t.remove())},2600);
+}
+
+/* ================= EARNER ================= */
+const camp=id=>S.e.camps.find(c=>c.id===id);
+const joined=()=>S.e.camps.filter(c=>c.status==='joined');
+const usedToday=()=>S.e.missions.filter(m=>m.state!=='open').length;
+const capLeft=()=>Math.max(0,S.e.cap-usedToday());
+const TABS=[['today','Today','frame'],['coach','Coach','petal'],['posts','Posts','diamond'],['wallet','Wallet','quarter'],['page','My page','half']];
+function tabbar(){
+  const hide=S.e.onb||S.e.stack.length;
+  return `<nav class="tabbar glass strong ${hide?'away':''}" aria-label="Earner app">${TABS.map(([id,l,k])=>`<button type="button" data-etab="${id}" ${S.e.tab===id?'aria-current="page"':''}><span class="ti" data-ti="${id}">${S.e.tab===id?tile(k,22):tile(k,21,'var(--mute)')}</span><span>${l}</span></button>`).join('')}</nav>`;
+}
+function head(){
+  return `<div class="row">${'<span class="wm" style="font-size:22px" role="img" aria-label="OkPo"><span>O</span><span>k</span><span>P</span><span>o</span></span>'}<span class="spacer"></span><button class="iconbtn glass press" type="button" data-notifs aria-label="Notifications, ${S.e.unread} new">${ic('bell')}${S.e.unread?`<span class="badge">${S.e.unread}</span>`:''}</button><span class="av">AR</span></div>`;
+}
+function weekRow(){
+  return `<div class="week">${DAYS.map((d,i)=>{const st=S.e.days[i];let t,l=d;
+    if(st==='done')t=tile('frame',24);else if(st==='rest'){t=tile('frame',24,'var(--blue)');l='Rest'}else if(i===TODAY){t=tile('frame',24,'var(--ink)');l='Today'}else t=tile('frame',24,'var(--line)');
+    return `<span>${t}${l}</span>`}).join('')}</div>`;
+}
+function vToday(prev){
+  const E=S.e,m=E.missions,done=m.filter(x=>x.state==='passed').length;
+  const left=capLeft(),J=joined(),inv=E.camps.some(c=>c.status==='invited');
+  return `${head()}
+  <div><span class="sub">Magandang umaga, Ana</span><div class="big">${left?`${left} mission${left>1?'s':''} left today`:(done>=E.cap?'All done for today':'Waiting on checks')}</div><span class="small">${m.length>E.cap?`Pick any ${E.cap} of ${m.length}. OkPo caps it at ${E.cap} a day across campaigns, so your feed stays yours.`:`Up to ${E.cap} a day across all your campaigns.`}</span></div>
+  <div class="crow" role="list" aria-label="Your campaigns">${J.map(c=>`<span class="cchip" role="listitem">${tile(c.k,14)}${esc(c.short==='Heroes'?'GCash Heroes':c.name.replace('GCash ',''))}</span>`).join('')}<button class="cchip add press" type="button" data-camps>${inv?'<span class="dot" aria-hidden="true"></span>':''}+ Campaigns${inv?'<span style="position:absolute;left:-9999px">, 1 invite waiting</span>':''}</button></div>
+  <div class="progress" aria-label="${done} of ${E.cap} done today">${Array.from({length:E.cap},(_,i)=>`<i class="${i<done?'on':''}"></i>`).join('')}</div>
+  <div class="card glass strong" style="gap:10px">
+    <div class="row"><span class="label grow">Earned today</span>${E.today?`<span class="chip ok">Paid Friday</span>`:''}</div>
+    <div class="big num" style="font-size:46px" ${prev?`data-from="${prev.today}" data-to="${E.today}"`:''}>${peso(E.today)}</div>
+    <div class="row small" style="gap:14px;flex-wrap:wrap"><span><b style="color:var(--ink)" class="num" ${prev?`data-from="${prev.week}" data-to="${E.week}"`:''}>${peso(E.week)}</b> this week${J.length>1?' · both campaigns':''}</span>${checkingAmt()?`<span><b style="color:var(--ink)">${peso(checkingAmt())}</b> being checked</span>`:''}</div>
+  </div>
+  <div class="card glass" style="padding:4px 16px;gap:0">${m.map(missionRow).join('')}</div>
+  <div class="card glass" style="gap:12px">
+    <div class="row"><span class="grow"><span class="label">Posting streak</span><div class="big num">${E.streak} days</div></span>${tile('frame',40)}</div>
+    ${weekRow()}
+    <span class="small">${E.doneToday?'Today counts. See you tomorrow.':`One passed post today${J.length>1?', in any campaign,':''} makes it ${E.streak+1}. You get one rest day a week, used automatically: Thursday.`}</span>
+  </div>
+  <div class="card glass" style="gap:8px"><div class="row"><span class="label grow">Weekly bonus</span><b class="num">${Math.min(E.weekPassed,5)} of 5</b></div><div class="meter" aria-hidden="true">${[0,1,2,3,4].map(i=>`<i class="${i<E.weekPassed?'on':''}"></i>`).join('')}</div><span class="small">${E.weekPassed>=5?'Unlocked. [₱X] from OkPo lands on Friday.':`${5-E.weekPassed} more passed post${5-E.weekPassed>1?'s':''} this week and OkPo adds [₱X] on Friday.`}</span></div>
+  <button class="card glass press" type="button" data-etab="coach" style="flex-direction:row;align-items:center;border-radius:99px;padding:12px 16px;text-align:left">${tile('petal',18)}<span class="grow" style="color:var(--body)">Stuck? Ask Heroes Coach</span>${ic('chev',16)}</button>`;
+}
+const BANDK={Strong:'s',Good:'g','Needs work':'n'};
+const bandChip=b=>`<span class="band ${BANDK[b]}"><i></i>${b}</span>`;
+const rid=r=>r==='TP'?'<span class="rid tp">Talking point</span>':`<span class="rid">${r}</span>`;
+const PASS_TIPS={1:['Strong',[['You opened on “libre”. That is today’s talking point, done right.','R-06'],['End on the app sign-up screen, not your face.','R-08']]],2:['Good',[['Fixed and passed. Turn on Paid partnership before posting next time.','R-01'],['Say “mga 5 minuto lang” out loud.','TP']]],3:['Strong',[['Your reply named who you send money to. Keep it that specific.','TP'],['Two short Taglish lines is the sweet spot.','R-07']]],4:['Good',[['Show the deposit screen for two seconds, not one.','R-05'],['Name the goal in the first line of the caption.','TP']]]};
+const checkingAmt=()=>S.e.missions.filter(x=>x.state==='checking').reduce((a,b)=>a+b.r,0);
+function missionRow(x){
+  const st=x.state;
+  let right,sub;
+  const locked=st==='open'&&capLeft()===0;
+  if(locked){right=`<span class="chip lock">Tomorrow</span>`;sub='Daily cap reached. It’s back in tomorrow’s brief.'}
+  else if(st==='open'){right=`<span class="chip go">Start</span>`;sub=`+${peso(x.r)} when it passes${x.camp==='ipon'?' · your invite deal':''}${S.e.doneToday?'':' · keeps the streak'}`}
+  else if(st==='checking'){right=`<span class="chip wait"><span class="spin"></span>Checking</span>`;sub='AI is reading your post, usually 10 minutes'}
+  else if(st==='fix'){right=`<span class="chip fix">Needs a fix</span>`;sub='Tap to see what to change'}
+  else{right=`<span class="chip ok">+${peso(x.r)}</span>`;sub='Passed · added to today'}
+  const icon=st==='passed'?tile('diamond',22):tile('diamond',22,st==='fix'?'var(--l-coral)':'var(--mute)');
+  const c=camp(x.camp),tag=joined().length>1?`<span class="ctag">${tile(c.k,9)}${esc(c.short)}</span>`:'';
+  return `<button class="mission ${st==='passed'?'done':''}" type="button" data-mission="${x.id}" ${st==='passed'||st==='checking'||locked?'aria-disabled="true"':''} id="mrow${x.id}">${icon}<span class="grow" style="display:flex;flex-direction:column"><span class="mt">${esc(x.t)}</span><span class="small">${x.tp?`Talking point: ${esc(x.tp)} · `:''}${sub}</span>${tag}</span>${right}</button>`;
+}
+function vMission(id){
+  const x=S.e.missions.find(m=>m.id===id);
+  const fix=x.state==='fix',c=camp(x.camp),ip=x.camp==='ipon';
+  return `<div class="row"><button class="iconbtn glass press" type="button" data-back aria-label="Back to today">${ic('back')}</button><span class="small grow">${esc(c.name)} · ${x.type}</span></div>
+  <div><div class="big" style="font-size:28px">${esc(x.t)}</div><p class="sub" style="margin:6px 0 0"><b>+${peso(x.r)}</b> when it passes, ${ip?'plus ₱10 for every first deposit':'more for every activated sign-up'}</p></div>
+  ${fix?`<div class="check" style="background:rgba(255,135,135,.16)">${tile('frame',16,'var(--l-coral)')}<span><b>Needs a fix</b>${rid('R-01')}<br>The Paid partnership label isn’t on. Turn it on in the post’s settings, then paste the link again. Your streak is safe until midnight.</span></div>`:''}
+  ${x.tp?`<div class="card glass strong" style="flex-direction:row;align-items:center;gap:12px">${tile('pin',22)}<span class="grow"><span class="label">Today’s talking point</span><b style="display:block;font-size:17px;margin-top:4px">${esc(x.tp)}</b><span class="small">Lead with this. Other ${ip?'savers':'Heroes'} get other talking points today, so feeds don’t repeat.</span></span></div>`:''}
+  ${(()=>{const D=ip?{do:[['Show your own first ₱50 going into GSave, in the real app.','R-05'],['Name one goal you’re saving for.','TP'],['Tag #IponChallenge.','R-12'],['Turn on Paid partnership.','R-01']],dont:[['Lead with loans or credit.','R-09'],['Promise approval, amounts or returns.','R-03']]}:{do:[['Show the Heroes sign-up in the real app, under 20 seconds.','R-05'],['Say it’s free to join.','R-06'],['Tag #GCashHeroes.','R-13'],['Turn on Paid partnership.','R-01'],['End on the app sign-up, not the website.','R-08']],dont:[['Promise approval, amounts or dates.','R-03'],['Compare fees with other wallets.','R-04']]};
+   const li=a=>`<ul class="dd">${a.map(([t,r])=>`<li><span>${t}</span>${rid(r)}</li>`).join('')}</ul>`;
+   return `<div class="card glass"><span class="label">Do</span>${li(D.do)}<span class="label" style="margin-top:6px">Don’t</span>${li(D.dont)}<span class="small" style="margin-top:4px">Each line is a rule from ${ip?'GCash':'GCash'}’s brief. Your post is checked against the same numbers, so a fix always tells you which one.</span></div>`})()}
+  <div class="card glass"><b>Copy what you need</b><div class="copyrow"><button type="button" class="press" data-copy="${ip?'gcash.com/ipon?ref=ana':'gcash.com/heroes?ref=ana'}">${ic('link',15)}Your link</button><button type="button" class="press" data-copy="${ip?'Una kong ₱50 sa ipon! #IponChallenge':'Libre mag-join sa GCash Heroes! #GCashHeroes'}">${ic('copy',15)}Caption</button></div><span class="small">Your link is how sign-ups from your followers are counted.</span></div>
+  <div class="card glass"><b>Make it here</b><div class="copyrow">${[['Record','mic'],['Upload','up'],['AI voice','spark']].map(([t,i])=>`<button type="button" class="press" data-noop="${t}">${ic(i,16)}${t}</button>`).join('')}</div></div>
+  <form class="card glass" data-form="submit" data-mid="${x.id}"><label for="plink"><b>${fix?'Fixed it? Paste the link again':'Posted it? Paste the link'}</b></label>
+   <div class="field" id="plinkf">${ic('link',16,'var(--mute)')}<input id="plink" type="text" inputmode="url" autocomplete="off" placeholder="tiktok.com/@ana.posts/…"></div>
+   <button class="btn y wide press" type="button" data-paste>Paste a sample link</button>
+   <button class="btn wide press" type="submit">Submit for check</button>
+   <span class="small">AI checks it against the brief. In this demo it takes a few seconds.</span></form>`;
+}
+function vCoach(){
+  return `<div class="row">${tile('petal',22)}<b style="font-size:17px" class="grow">Heroes Coach</b><span class="small">Knows the GCash brief</span></div>
+  <div class="card glass" style="min-height:330px"><div class="chat" id="coachChat">${chatHtml(S.e.chat,'Ask anything about today’s missions. Answers come from GCash’s own brief.')}</div></div>
+  <div class="pills">${['Pwede ba sa TikTok bio?','Magkano per sign-up?','Pwede bang sabihing sure approval?'].map(q=>`<button class="pill press" type="button" data-ask="coach" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>
+  <form class="composer glass strong" data-form="coach"><label for="coachIn" style="position:absolute;left:-9999px">Message the coach</label><input id="coachIn" placeholder="Magtanong…" autocomplete="off"><button class="btn press" type="submit" style="padding:8px 12px">Ask</button></form>`;
+}
+function vPosts(){
+  const E=S.e;const live=E.missions.filter(m=>m.state!=='open').map(m=>({t:`${m.type} · ${camp(m.camp).name}`,when:'Today',state:m.state,r:m.r,id:m.id,tp:m.tp,band:m.band,tips:m.tips}));
+  const all=[...live,...E.posts];
+  const row=p=>`<div class="li">${p.state==='passed'?tile('diamond',20):tile('diamond',20,p.state==='fix'?'var(--l-coral)':'var(--mute)')}<span class="grow"><span style="display:block;font-weight:600">${p.t}</span><span class="small">${p.when}${p.tp?` · ${esc(p.tp)}`:''}</span>${p.band?`<span style="display:flex;margin-top:6px">${bandChip(p.band)}</span>`:''}</span>${p.state==='passed'?`<span class="chip ok">+${peso(p.r)}</span>`:p.state==='fix'?`<button class="chip fix press" type="button" style="border:0" data-mission="${p.id}">Fix · R-01</button>`:`<span class="chip wait"><span class="spin"></span>Checking</span>`}</div>`;
+  return `<b style="font-size:17px">My posts</b><span class="small">Every post is checked against the brief before it counts. Tap a passed post for two tips.</span>
+  <div class="card glass" style="padding:4px 16px;gap:0">${all.map(p=>p.band?`<details class="pq"><summary>${row(p)}</summary><div class="tips">${p.tips.map(([t,r],i)=>`<div><b>${i+1}</b><span style="flex:1">${t}</span>${rid(r)}</div>`).join('')}</div></details>`:`<div class="pq-plain">${row(p)}</div>`).join('')}</div>
+  <div class="card glass" style="flex-direction:row;gap:10px;align-items:flex-start">${tile('quarter',16)}<span class="small">The band shows how well a post fits the brief: Strong, Good or Needs work. It never changes your pay. Passed is passed.</span></div>`;
+}
+function vWallet(prev){
+  const E=S.e,conf=E.confirming.reduce((a,b)=>a+b.a,0),chk=checkingAmt(),tot=Math.max(1,E.ready+conf+chk);
+  return `<div class="row"><b style="font-size:17px" class="grow">Wallet</b><span class="small">${joined().length>1?'All campaigns':'GCash Heroes'}</span></div>
+  <div class="card glass strong" style="gap:12px;padding:18px" id="readyCard">
+    <span class="label">Ready to claim</span>
+    <div class="big num" style="font-size:46px" ${prev?`data-from="${prev.ready}" data-to="${E.ready}"`:''}>${peso(E.ready)}</div>
+    <div class="bar" role="img" aria-label="Ready ${peso(E.ready)}, confirming ${peso(conf)}, checking ${peso(chk)}"><i style="flex-grow:${E.ready/tot};background:var(--green)"></i><i style="flex-grow:${conf/tot};background:var(--yellow)"></i><i style="flex-grow:${chk/tot};background:var(--mute)"></i></div>
+    <div class="row small" style="flex-wrap:wrap;gap:12px"><span class="row" style="gap:6px"><i style="width:10px;height:10px;border-radius:3px;background:var(--green)"></i>Ready ${peso(E.ready)}</span><span class="row" style="gap:6px"><i style="width:10px;height:10px;border-radius:3px;background:var(--yellow)"></i>Confirming ${peso(conf)}</span><span class="row" style="gap:6px"><i style="width:10px;height:10px;border-radius:3px;background:var(--mute)"></i>Checking ${peso(chk)}</span></div>
+    <button class="btn y wide press" type="button" data-claim ${E.ready?'':'disabled'}>${E.ready?'Claim to GCash':'Nothing to claim yet'}</button>
+  </div>
+  <div class="card glass" style="padding:8px 16px;gap:0">
+    <span class="label" style="padding:8px 0 4px">Confirming · GCash checks the account is active</span>
+    ${E.confirming.length?E.confirming.map(c=>`<div class="li">${tile('half',20)}<span class="grow"><span style="display:block">${esc(c.t)}</span><span class="small">Confirmed by ${c.by}</span></span><span class="mono">${peso(c.a)}</span></div>`).join(''):'<span class="small" style="padding:8px 0">Nothing waiting.</span>'}
+    <span class="label" style="padding:12px 0 4px">Checking · AI reads your post</span>
+    ${chk?E.missions.filter(x=>x.state==='checking').map(x=>`<div class="li">${tile('diamond',20,'var(--mute)')}<span class="grow"><span style="display:block">${esc(x.t)}</span><span class="small">A few seconds in this demo</span></span><span class="mono">${peso(x.r)}</span></div>`).join(''):'<span class="small" style="padding:8px 0">Nothing being checked.</span>'}
+    <span class="label" style="padding:12px 0 4px">Didn’t count</span>
+    <div class="li">${tile('frame',20,'var(--l-coral)')}<span class="grow"><span style="display:block">1 sign-up not activated</span><span class="small">GCash couldn’t verify the account · removed Tue</span></span><span class="mono" style="text-decoration:line-through;color:var(--mute)">₱12</span></div>
+  </div>`;
+}
+function vPage(){
+  const E=S.e;
+  return `<div class="row"><b style="font-size:17px" class="grow">My page</b><button class="btn press" type="button" data-seefollower style="padding:9px 12px">See it as a follower</button></div>
+  <div class="card glass strong"><span class="label">okpo.com/ana.posts</span><div class="row" style="gap:22px;flex-wrap:wrap"><span><span class="big num">${E.visits.toLocaleString()}</span><br><span class="small">visits this campaign</span></span><span><span class="big num">${E.signups}</span><br><span class="small">sign-ups this week</span></span></div>
+  <div class="copyrow"><button type="button" class="press" data-copy="okpo.com/ana.posts">${ic('copy',15)}Copy page link</button></div></div>
+  <div class="card glass" style="gap:10px"><div class="row">${tile('frame',18)}<b class="grow">Invite a creator friend</b></div><span class="sub" style="font-size:13.5px">When their first 3 posts pass, OkPo adds <b style="color:var(--ink)">[₱X]</b> to your Wallet. It doesn’t come out of any brand’s pool.</span><div class="copyrow"><button type="button" class="press" data-copy="okpo.com/join?ref=ana">${ic('link',15)}Copy invite link</button></div></div>
+  <div class="card glass" style="padding:8px 16px;gap:0"><span class="label" style="padding:8px 0 4px">What followers ask your AI</span>${['May bayad ba mag-sign up?','Paano kung wala pa akong GCash?','Ano ang makukuha ko?'].map(q=>`<div class="li">${tile('petal',14)}<span class="grow">${q}</span></div>`).join('')}</div>`;
+}
+function vReceipt(){
+  const r=S.e.receipt;
+  return `<div class="row"><button class="iconbtn glass press" type="button" data-back aria-label="Back to wallet">${ic('back')}</button><span class="grow"></span></div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;padding-top:8px">${tile('quarter',60)}<span class="label">Sent to your GCash</span><div class="big num" style="font-size:54px">${peso(r.a)}</div><span class="sub">Nice one, Ana. That’s this week’s posts and sign-ups.</span></div>
+  <div class="card glass" style="gap:12px" id="steps">${[['Claimed',r.t1],['Sent by OkPo',r.t1],['In your GCash',r.t2]].map(([l,t],i)=>`<div class="row" data-step="${i}" style="opacity:.35;transition:opacity .3s"><span style="color:var(--l-green)">${ic('check',16)}</span><span class="grow">${i===2?'<b>'+l+'</b>':l}</span><span class="mono small">${t}</span></div>`).join('')}</div>
+  <div class="card glass" style="padding:6px 16px"><div class="kv"><span>To</span><span>GCash · 0917 ••• 4567</span><span>Campaign</span><span>GCash Heroes · week 2</span><span>Reference</span><span class="mono">${r.ref}</span></div></div>
+  <div class="copyrow"><button type="button" class="press" data-noop="Save receipt">Save receipt</button><button type="button" class="press" data-copy="${r.ref}">Copy reference</button></div>`;
+}
+function vCamps(){
+  const E=S.e,C=E.camps,J=C.filter(c=>c.status==='joined'||c.status==='trial'),I=C.filter(c=>c.status==='invited'),O=C.filter(c=>c.status==='open');
+  const seg=`<div class="row small" style="gap:14px"><span>Joined · ${J.length}</span><span>Invited · ${I.length}</span><span>Open · ${O.length}</span></div>`;
+  const inv=I.map(c=>`<button class="camp card glass strong press" type="button" data-invite="${c.id}" style="gap:8px"><div class="row">${tile(c.k,22)}<span class="label grow">${esc(c.brand)} invited you</span><span class="chip wait">Ends in ${c.endsIn}</span></div><b style="font-size:17px">${esc(c.name)}</b><span class="small">Your deal: <b style="color:var(--ink)">${peso(c.rate)} per passed post</b> (open call ${peso(c.open)}) · ${peso(c.dep)} per first deposit</span><span class="row" style="justify-content:space-between"><span class="small">${c.weeks} weeks · 2 Reels a week</span><span class="chip go">See invite</span></span></button>`).join('');
+  const jn=J.map(c=>`<div class="card glass" style="gap:6px"><div class="row">${tile(c.k,22)}<b class="grow">${esc(c.name)}</b><span class="chip ${c.status==='trial'?'wait':'ok'}">${c.status==='trial'?'Trial · 0 of 3':'Joined'}</span></div><span class="small">${esc(c.deal||'')}${c.left?' · '+c.left:''}</span>${c.stats?`<span class="small" style="color:var(--body)">${c.stats}</span>`:''}${c.status==='trial'?'<span class="small" style="color:var(--body)">Your first 3 posts are a trial. When they pass, you’re in fully. Missions start in tomorrow’s brief.</span>':''}</div>`).join('');
+  const op=O.map(c=>`<div class="card glass ${c.fit?'':'off'}" style="gap:8px"><div class="row"><span class="bm">${c.brand.split(' ').map(w=>w[0]).join('').slice(0,2)}</span><span class="grow"><b style="display:block">${esc(c.name)}</b><span class="small">${c.fit?'You qualify':'Not yet'}</span></span></div>${c.fit?`<span class="small">${esc(c.deal)} · ${esc(c.who)}</span><div class="row"><span class="small grow">Open call · 3-post trial · ${esc(c.ends)}</span><button class="btn press" type="button" data-joincamp="${c.id}" style="padding:9px 14px">Join</button></div>`:`<span class="small">${esc(c.why)}</span>`}</div>`).join('');
+  return `<div class="row"><button class="iconbtn glass press" type="button" data-back aria-label="Back to today">${ic('back')}</button><b style="font-size:17px" class="grow">Campaigns</b></div>${seg}
+  ${I.length?`<span class="label seclabel">Invited</span>${inv}`:''}
+  <span class="label seclabel">Joined</span>${jn}
+  <span class="label seclabel">Open to join</span>${op}
+  <span class="small">Missions from every campaign you join arrive in one brief, up to ${E.cap} a day.</span>`;
+}
+function vInvite(id){
+  const c=camp(id);
+  return `<div class="row"><button class="iconbtn glass press" type="button" data-back aria-label="Back to campaigns">${ic('back')}</button><span class="small grow">Campaigns · invite</span></div>
+  <div style="display:flex;flex-direction:column;gap:8px">${tile(c.k,44)}<span class="label">${esc(c.brand)} invited you</span><div class="big">${esc(c.name)}</div><span class="sub">Help students start saving with ₱50. ${esc(c.why)}</span></div>
+  <div class="card glass strong" style="gap:10px"><span class="label">Your deal</span><div class="deal"><span>Per passed post</span><b class="num">${peso(c.rate)}</b><span class="old num">${peso(c.open)}</span><span>Per first deposit</span><b class="num">${peso(c.dep)}</b><span></span><span>Lasts</span><b>${c.weeks} weeks</b><span></span></div><span class="small">The open call pays ${peso(c.open)}. Your ${peso(c.rate)} replaces it; it doesn’t add to it.</span></div>
+  <div class="card glass" style="gap:8px"><span class="label">What they ask</span><span>${esc(c.ask)}</span><span class="small">You stay in GCash Heroes too. One streak counts both, and you still do up to ${S.e.cap} missions a day in total. No trial: invited creators start straight away.</span></div>
+  <div class="row" style="gap:10px"><button class="btn grow press" type="button" data-accept="${c.id}" style="padding:13px">Accept</button><button class="btn press" type="button" data-back style="background:var(--soft);color:var(--ink);padding:13px 18px">Not now</button></div>
+  <span class="small" style="text-align:center">Invite stays open 72 hours: until ${c.ends} (${c.endsIn} left).</span>`;
+}
+/* onboarding */
+function vOnb(){
+  const o=S.e.onb;
+  const via=S.e.via;
+  if(o==='welcome')return `<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:16px;min-height:600px">${via?`<div class="card glass strong" style="flex-direction:row;align-items:center;gap:10px"><span class="av">AR</span><span class="grow"><b style="display:block">From @ana.posts</b><span class="small">You tapped her GCash Heroes Reel</span></span>${tile('half',18)}</div>`:''}<span class="wm" style="font-size:40px"><span>O</span><span>k</span><span>P</span><span>o</span></span><div class="big" style="font-size:40px">Get paid for posts that bring people in.</div><span class="sub" style="font-size:16px">A short brief every morning, a coach when you’re stuck, and pay every Friday to your GCash.</span><button class="btn y wide press" type="button" data-onb="number" style="padding:15px;font-size:16px">Start with my mobile number</button><span class="small">One number for signing in and for payouts.</span></div>`;
+  if(o==='number')return `<button class="iconbtn glass press" type="button" data-onb="welcome" aria-label="Back">${ic('back')}</button><div class="big">What’s your mobile number?</div><span class="sub">We’ll text you a 6-digit code.</span><form data-form="num" style="display:flex;flex-direction:column;gap:12px"><label class="small" for="jnum">Mobile number</label><div class="field" id="jnumf"><span class="mono small">+63</span><input id="jnum" inputmode="tel" autocomplete="tel" placeholder="917 123 4567" value="${esc(S.e.num)}"></div><button class="btn y wide press" type="submit" style="padding:14px">Send me a code</button><button class="link" type="button" data-fillnum>Use a sample number</button></form>`;
+  if(o==='code')return `<button class="iconbtn glass press" type="button" data-onb="number" aria-label="Back">${ic('back')}</button><div class="big">Enter the code</div><span class="sub">Sent to +63 ${esc(S.e.num)}. Demo code: 123456.</span><div class="otp" role="group" aria-label="6-digit code">${[0,1,2,3,4,5].map(i=>`<input id="otp${i}" inputmode="numeric" maxlength="1" aria-label="Digit ${i+1}" autocomplete="one-time-code">`).join('')}</div><button class="link" type="button" data-fillotp>Fill the demo code</button><span class="small" id="otpMsg"></span>`;
+  if(o==='verifying')return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;min-height:600px"><span class="spin" style="width:28px;height:28px;border-width:3px"></span><span class="sub">Checking the code…</span></div>`;
+  if(via)return `<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:14px;min-height:640px">${tile('frame',56)}<div class="big" style="font-size:34px">You’re in, Mika.</div>
+  <span class="sub" style="font-size:15px">You came from <b style="color:var(--ink)">@ana.posts</b>’s Reel, so you start in the same campaign.</span>
+  <div class="card glass strong" style="gap:6px"><div class="row">${tile('half',18)}<b class="grow">GCash Heroes</b><span class="chip wait">Trial · 0 of 3</span></div><span class="small">₱40 per passed post · ₱12 per activated sign-up</span><span class="small" style="color:var(--body)">Your first 3 posts are a trial. When they pass, you’re in fully.</span></div>
+  <div class="card glass" style="flex-direction:row;align-items:center;gap:10px">${tile('pin',18)}<span class="grow">1 more campaign is open to you</span>${ic('chev',16)}</div>
+  <div class="card glass" style="gap:4px"><span class="small">Ana invited you. When your first 3 posts pass, OkPo adds [₱X] to her Wallet. It costs you nothing.</span></div>
+  <button class="btn wide press" type="button" data-onbdone style="padding:15px">See today’s missions</button></div>`;
+  return `<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:14px;min-height:600px">${tile('frame',56)}<div class="big" style="font-size:36px">You’re in, Ana.</div><span class="sub" style="font-size:16px">Your first brief is waiting. Link your TikTok or Instagram after your first mission.</span><button class="btn y wide press" type="button" data-onbdone style="padding:15px">See today’s missions</button></div>`;
+}
+function renderE(kind='none',prev){
+  const E=S.e;let html;
+  if(E.onb)html=vOnb();
+  else if(E.stack.length){const top=E.stack[E.stack.length-1];html=top.v==='mission'?vMission(top.id):top.v==='camps'?vCamps():top.v==='invite'?vInvite(top.id):vReceipt()}
+  else html={today:vToday,coach:vCoach,posts:vPosts,wallet:vWallet,page:vPage}[E.tab](prev);
+  if(!pE.querySelector('.pbg'))pE.insertAdjacentHTML('afterbegin',backdrop());
+  const scr=swap(pE,html,kind);
+  const oldTab=pE.querySelector('.tabbar');const tmp=document.createElement('div');tmp.innerHTML=tabbar();const nt=tmp.firstElementChild;
+  if(oldTab){oldTab.className=nt.className;oldTab.innerHTML=nt.innerHTML}else pE.appendChild(nt);
+  countUps(scr);
+  const cc=$('#coachChat',pE);if(cc)scr.scrollTop=scr.scrollHeight;
+  if(E.stack.length&&E.stack[E.stack.length-1].v==='receipt'&&!E.receipt.shown){E.receipt.shown=true;
+    [...scr.querySelectorAll('[data-step]')].forEach((el,i)=>setTimeout(()=>el.style.opacity=1,RM?0:350+i*600))}
+  else scr.querySelectorAll('[data-step]').forEach(el=>el.style.opacity=1);
+  if(E.onb==='code')wireOtp();
+  save();
+}
+function overlayE(){
+  pE.querySelectorAll('.scrim,.sheet,.panel').forEach(n=>n.remove());
+  const E=S.e;
+  if(E.notifsOpen){
+    pE.insertAdjacentHTML('beforeend',`<div class="scrim" data-closeov></div><div class="panel glass strong" role="dialog" aria-label="Notifications"><div class="row"><b class="grow">Notifications</b><button class="iconbtn" type="button" data-closeov aria-label="Close" style="width:32px;height:32px;background:var(--soft)">${ic('x',14)}</button></div>${E.notifs.map(n=>{const inner=`${tile(n.k,20)}<span class="grow"><span class="row"><b class="grow" style="font-weight:600">${esc(n.t)}</b><span class="small">${n.time}</span></span><span class="small" style="color:var(--body)">${esc(n.b)}</span></span>`;return n.go&&camp('ipon').status==='invited'?`<button class="li press" type="button" data-notego="${n.go}" style="align-items:flex-start;border-left:0;border-right:0;border-bottom:0;background:transparent;text-align:left;width:100%">${inner}</button>`:`<div class="li" style="align-items:flex-start">${inner}</div>`}).join('')}</div>`);
+    const p=pE.querySelector('.panel');if(!RM)p.animate([{opacity:0,transform:'translateY(-20px)'},{opacity:1,transform:'none'}],{duration:280,easing:'cubic-bezier(.2,.8,.2,1)'});
+  }
+  if(E.sheet){
+    const now=E.sheet.opt==='now';
+    pE.insertAdjacentHTML('beforeend',`<div class="scrim" data-closeov></div><div class="sheet glass strong" role="dialog" aria-label="Claim to GCash"><span class="grab"></span>
+      <div class="row"><b class="grow disp" style="font-size:24px">Claim to GCash</b><button class="iconbtn" type="button" data-closeov aria-label="Close" style="width:34px;height:34px;background:var(--soft)">${ic('x',14)}</button></div>
+      <div style="text-align:center"><span class="label">Amount</span><div class="big num" style="font-size:52px">${peso(E.ready)}</div><span class="small">Everything that’s ready. Confirming money stays until it’s ready.</span></div>
+      <div class="check" style="align-items:center"><span class="av" style="background:#0d6efd;color:#fff;width:34px;height:34px">G</span><span class="grow"><b style="display:block">GCash · 0917 ••• 4567</b><span class="small">The number you joined with</span></span></div>
+      <div class="opts" role="group" aria-label="When"><button type="button" data-opt="now" aria-pressed="${now}"><b>Now</b><span class="small">2% fee · ${peso(fee())}</span></button><button type="button" data-opt="friday" aria-pressed="${!now}"><b>Friday</b><span class="small">Free · automatic</span></button></div>
+      <button class="btn y wide press" type="button" data-doclaim style="padding:14px;font-size:16px">${now?`Get ${peso(E.ready-fee())} now`:`Send ${peso(E.ready)} Friday`}</button></div>`);
+    const sh=pE.querySelector('.sheet');if(!RM&&!E.sheet.drawn){sh.animate([{transform:'translateY(100%)'},{transform:'none'}],{duration:340,easing:'cubic-bezier(.2,.8,.2,1)'});pE.querySelector('.scrim').animate([{opacity:0},{opacity:1}],{duration:240})}
+    E.sheet.drawn=true;
+  }
+}
+const fee=()=>Math.round(S.e.ready*0.02);
+function wireOtp(){
+  const ins=[...pE.querySelectorAll('.otp input')];setTimeout(()=>{ins[0]&&ins[0].isConnected&&ins[0].focus({preventScroll:true});pE.scrollLeft=0},RM?0:360);
+  ins.forEach((el,i)=>{
+    el.addEventListener('input',()=>{el.value=el.value.replace(/\D/g,'').slice(-1);if(el.value&&ins[i+1])ins[i+1].focus();checkOtp(ins)});
+    el.addEventListener('keydown',e=>{if(e.key==='Backspace'&&!el.value&&ins[i-1])ins[i-1].focus()});
+    el.addEventListener('paste',e=>{const t=(e.clipboardData.getData('text')||'').replace(/\D/g,'').slice(0,6);if(t.length){e.preventDefault();t.split('').forEach((c,j)=>{if(ins[j])ins[j].value=c});checkOtp(ins)}});
+  });
+}
+function checkOtp(ins){
+  const v=ins.map(i=>i.value).join('');if(v.length<6)return;
+  if(v!=='123456'){$('#otpMsg',pE).textContent='That code doesn’t match. Try 123456.';ins.forEach(i=>i.value='');ins[0].focus();if(!RM)pE.querySelector('.otp').animate([{transform:'translateX(0)'},{transform:'translateX(-8px)'},{transform:'translateX(8px)'},{transform:'none'}],{duration:300});return}
+  S.e.onb='verifying';renderE('fade');setTimeout(()=>{S.e.onb='in';renderE('fade')},1200);
+}
+
+/* ---------- takeovers ---------- */
+let queue=Promise.resolve();
+const enqueue=fn=>{queue=queue.then(fn).catch(err=>console.error(err));return queue};
+function centerOf(el,phone){const a=el.getBoundingClientRect(),b=phone.getBoundingClientRect();return[a.left-b.left+a.width/2,a.top-b.top+a.height/2]}
+/* spec: colour key, deep?, shape, target tab, layout fn, text html fn */
+async function takeover(phone,spec,originEl){
+  const W=phone.clientWidth,H=phone.clientHeight;
+  const [wash,deep,pale]=WASH[spec.colour];const fill=spec.deep?deep:pale;
+  const [ox,oy]=originEl&&originEl.isConnected?centerOf(originEl,phone):[W/2,H/2];
+  const tabEl=phone.querySelector(`[data-ti="${spec.tab}"]`);
+  const [tx,ty]=tabEl?centerOf(tabEl,phone):[W/2,H-40];
+  const ov=document.createElement('div');ov.className='take';ov.setAttribute('role','status');ov.setAttribute('aria-label',spec.say);
+  const shapes=spec.shapes(W,H);  /* [{k,size,cx,cy,rot,from}] */
+  ov.innerHTML=`<div class="wash" style="background:${wash}"></div>`+shapes.map((s,i)=>`<svg data-s="${i}" viewBox="-6 -6 112 112" style="left:${s.cx-s.size/2}px;top:${s.cy-s.size/2}px;width:${s.size}px;height:${s.size}px;transform:rotate(${s.rot||0}deg)">${sloppy(s.k,fill,s.size,spec.seed+i)}</svg>`).join('')+spec.text(W,H);
+  phone.appendChild(ov);
+  const wEl=ov.querySelector('.wash'),svgs=[...ov.querySelectorAll('svg')],txt=[...ov.querySelectorAll('.tx')];
+  let skip=false;ov.addEventListener('click',()=>skip=true);
+  const R=Math.hypot(W,H);
+  if(RM){ov.animate([{opacity:0},{opacity:1}],{duration:150});await holdFor(1400,()=>skip);await ov.animate([{opacity:1},{opacity:0}],{duration:150}).finished;ov.remove();landTab(phone,spec.tab);return}
+  wEl.animate([{clipPath:`circle(0px at ${ox}px ${oy}px)`},{clipPath:`circle(${R}px at ${ox}px ${oy}px)`}],{duration:460,easing:'cubic-bezier(.3,.7,.2,1)',fill:'both'});
+  svgs.forEach((el,i)=>{const s=shapes[i];const fx=(s.from?s.from[0]:ox)-s.cx,fy=(s.from?s.from[1]:oy)-s.cy;
+    el.animate([{transform:`translate(${fx}px,${fy}px) scale(.06) rotate(${(s.rot||0)-25}deg)`},{transform:`translate(0,0) scale(1) rotate(${s.rot||0}deg)`}],{duration:620,delay:80+i*70,easing:'cubic-bezier(.34,1.45,.64,1)',fill:'both'})});
+  txt.forEach((el,i)=>el.animate([{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{duration:320,delay:300+i*90,easing:'cubic-bezier(.2,.8,.2,1)',fill:'both'}));
+  if(spec.after)spec.after(ov);
+  await holdFor(spec.hold||1500,()=>skip);
+  txt.forEach(el=>el.animate([{opacity:1},{opacity:0}],{duration:160,fill:'forwards'}));
+  const outs=svgs.map((el,i)=>{const s=shapes[i];const k=26/s.size;
+    return el.animate([{transform:`translate(0,0) scale(1) rotate(${s.rot||0}deg)`},{transform:`translate(${tx-s.cx}px,${ty-s.cy}px) scale(${k}) rotate(${s.rot||0}deg)`}],{duration:560,delay:i*40,easing:'cubic-bezier(.6,0,.3,1)',fill:'forwards'}).finished});
+  wEl.animate([{clipPath:`circle(${R}px at ${tx}px ${ty}px)`},{clipPath:`circle(0px at ${tx}px ${ty}px)`}],{duration:520,easing:'cubic-bezier(.6,0,.3,1)',fill:'forwards'});
+  await Promise.all(outs);ov.remove();landTab(phone,spec.tab);
+}
+
+async function signupBanner(phone,n,cid){const ip=cid==='ipon';
+  const nb=document.createElement('div');nb.className='nb';nb.setAttribute('role','status');
+  nb.innerHTML=`<div class="sweep"></div><div class="in"><span class="sh"><svg width="34" height="34" viewBox="-6 -6 112 112" aria-hidden="true">${sloppy('half','#e67700',34,9)}</svg></span><span class="grow"><b>${ip?'Ipon Challenge sign-up':'A follower signed up'}</b><span style="font-size:12.5px">From your page · +₱${ip?10:12} once confirmed</span></span><span style="display:flex;flex-direction:column;align-items:center;gap:3px;flex:none"><span class="cnt"><span data-n style="display:inline-block">${n-1}</span></span><span style="font:600 9.5px/1 var(--mono);letter-spacing:.06em">THIS WEEK</span></span></div>`;
+  phone.appendChild(nb);
+  let skip=false;nb.addEventListener('click',()=>{skip=true;S.e.tab='page';S.e.stack=[];});
+  const sh=nb.querySelector('.sh svg'),sw=nb.querySelector('.sweep'),cnt=nb.querySelector('[data-n]');
+  if(RM){await holdFor(2200,()=>skip);nb.remove();landTab(phone,'page');return}
+  nb.animate([{transform:'translateY(-120%) scale(.96)'},{transform:'none'}],{duration:420,easing:'cubic-bezier(.34,1.4,.64,1)'});
+  sw.animate([{clipPath:'inset(0 100% 0 0 round 22px)'},{clipPath:'inset(0 0 0 0 round 22px)'},{clipPath:'inset(0 0 0 100% round 22px)'}],{duration:1100,delay:250,easing:'cubic-bezier(.6,0,.3,1)',fill:'forwards'});
+  sh.animate([{transform:'scale(0) rotate(-40deg)'},{transform:'scale(1.25) rotate(8deg)',offset:.7},{transform:'none'}],{duration:620,delay:380,easing:'cubic-bezier(.34,1.4,.64,1)',fill:'both'});
+  setTimeout(()=>{cnt.animate([{transform:'none',opacity:1},{transform:'translateY(-10px)',opacity:0}],{duration:160}).finished.then(()=>{cnt.textContent=n;cnt.animate([{transform:'translateY(10px)',opacity:0},{transform:'none',opacity:1}],{duration:260,easing:'cubic-bezier(.34,1.56,.64,1)'})})},900);
+  await holdFor(2400,()=>skip);
+  const tabEl=phone.querySelector('[data-ti="page"]');const [tx,ty]=tabEl?centerOf(tabEl,phone):[phone.clientWidth-40,phone.clientHeight-40];
+  const [sx,sy]=centerOf(sh,phone);
+  const fly=document.createElement('div');fly.style.cssText=`position:absolute;left:${sx-17}px;top:${sy-17}px;width:34px;height:34px;z-index:70;pointer-events:none`;
+  fly.innerHTML=`<svg width="34" height="34" viewBox="-6 -6 112 112" aria-hidden="true" style="overflow:visible">${sloppy('half','#ffd43b',34,9)}</svg>`;phone.appendChild(fly);
+  sh.style.visibility='hidden';
+  nb.animate([{transform:'none',opacity:1},{transform:'translateY(-120%)',opacity:.6}],{duration:320,easing:'ease-in',fill:'forwards'});
+  await fly.animate([{transform:'none'},{transform:`translate(${(tx-sx)*.5}px,${(ty-sy)*.35}px) scale(1.4)`,offset:.45},{transform:`translate(${tx-sx}px,${ty-sy}px) scale(.62)`}],{duration:760,easing:'cubic-bezier(.5,0,.3,1)',fill:'forwards'}).finished;
+  fly.remove();nb.remove();landTab(phone,'page');
+}
+function holdFor(ms,skipped){return new Promise(r=>{const t0=performance.now();(function f(){if(skipped()||performance.now()-t0>ms)r();else requestAnimationFrame(f)})()})}
+function landTab(phone,tab){const t=phone.querySelector(`[data-ti="${tab}"]`);if(!t)return;t.innerHTML=tile(TABS.find(x=>x[0]===tab)[2],22);t.classList.remove('land');void t.offsetWidth;t.classList.add('land');setTimeout(()=>{if(S.e.tab!==tab&&t.isConnected)t.innerHTML=tile(TABS.find(x=>x[0]===tab)[2],21,'var(--mute)')},1600)}
+const TX=(top,inner)=>`<div class="tx" style="top:${top}px">${inner}</div>`;
+const SPEC={
+ passed:(m)=>({colour:'orange',deep:false,tab:'posts',seed:3,say:'Post passed',
+   shapes:(W,H)=>[{k:'diamond',size:W*1.44,cx:W/2,cy:H*.5}],
+   text:(W,H)=>TX(H*.12,`<span class="lab">GCash Heroes · ${m.type}</span>`)+`<div class="tx" style="top:${H*.5-26}px"><div class="disp" style="font-size:44px;line-height:1">Passed</div></div>`+TX(H*.86,`<span>Follows today’s brief</span>`)}),
+ money:(amt,from,to,label)=>({colour:'green',deep:false,tab:'wallet',seed:5,say:`${peso(amt)} added`,
+   shapes:(W,H)=>[{k:'quarter',size:W*1.13,cx:W*.48,cy:H*.4+W*.565}],
+   text:(W,H)=>TX(H*.13,`<span class="lab">${label}</span><div class="disp num" style="font-size:84px;line-height:1">+${peso(amt)}</div><span style="font-size:16px">This week <b class="num" data-cf="${from}" data-ct="${to}">${peso(from)}</b></span>`),
+   after:ov=>{const el=ov.querySelector('[data-cf]');setTimeout(()=>{const a=+el.dataset.cf,b=+el.dataset.ct,t0=performance.now();(function f(t){const p=Math.min(1,(t-t0)/800);el.textContent=peso(a+(b-a)*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(f)})(t0)},500)}}),
+ streak:(n)=>({colour:'coral',deep:true,tab:'today',seed:7,say:`Streak ${n} days`,hold:1700,
+   shapes:(W,H)=>[{k:'frame',size:W*.92,cx:W/2,cy:H*.47}],
+   text:(W,H)=>`<div class="tx" style="top:${H*.47-60}px"><div class="disp num" style="font-size:112px;line-height:1;height:112px;overflow:hidden"><span data-flip style="display:block">${n-1}</span></div></div>`+TX(H*.78,`<b style="font-size:18px">days posting in a row</b>`),
+   after:ov=>{const el=ov.querySelector('[data-flip]');setTimeout(()=>{el.animate([{transform:'none',opacity:1},{transform:'translateY(-60px)',opacity:0}],{duration:220,easing:'ease-in'}).finished.then(()=>{el.textContent=n;el.animate([{transform:'translateY(60px)',opacity:0},{transform:'none',opacity:1}],{duration:360,easing:'cubic-bezier(.34,1.56,.64,1)'})})},700)}}),
+ signup:()=>({colour:'yellow',deep:false,tab:'page',seed:9,say:'A follower signed up',
+   shapes:(W,H)=>[{k:'half',size:W*.92,cx:W/2,cy:H*.52+W*.46}],
+   text:(W,H)=>TX(H*.16,`<span class="av" style="width:68px;height:68px;font-size:22px;background:#fff;color:#121212">MK</span><div class="disp" style="font-size:36px;line-height:1.04">A follower signed up from your page</div><span>+₱12 once GCash confirms</span>`)}),
+ payday:(amt)=>({colour:'green',deep:true,tab:'wallet',seed:11,say:`${peso(amt)} sent to your GCash`,hold:1900,
+   shapes:(W,H)=>{const s=W*.44,cx=W/2,cy=H*.55,g=s*.5;return[
+     {k:'quarter',size:s,cx:cx+g,cy:cy-g,rot:0,from:[W+s,-s]},{k:'quarter',size:s,cx:cx-g,cy:cy-g,rot:270,from:[-s,-s]},
+     {k:'quarter',size:s,cx:cx-g,cy:cy+g,rot:180,from:[-s,H+s]},{k:'quarter',size:s,cx:cx+g,cy:cy+g,rot:90,from:[W+s,H+s]}]},
+   text:(W,H)=>TX(H*.08,`<span class="lab">Payday · in your GCash</span><div class="disp num" style="font-size:60px;line-height:1">${peso(amt)}</div>`)})
+};
+
+/* ---------- earner flows ---------- */
+function submitMission(id,link){
+  const m=S.e.missions.find(x=>x.id===id);m.state='checking';m.tries++;m.link=link;
+  S.e.stack=[];renderE('pop');
+  setTimeout(()=>resolveMission(id),2600);
+}
+function resolveMission(id){
+  const m=S.e.missions.find(x=>x.id===id);if(!m||m.state!=='checking')return;
+  if(m.id===2&&m.tries===1){m.state='fix';S.e.notifs.unshift({t:'Your Story needs a fix · R-01',b:'Turn on the Paid partnership label, then paste the link again.',time:'Now',k:'frame'});S.e.unread++;
+    rerenderIfVisible();toastIn(pE,`${tile('frame',16,'var(--l-coral)')}<span><b>Needs a fix · R-01.</b> Paid partnership is off. Tap the mission to fix it.</span>`);return}
+  enqueue(async()=>{
+    const origin=pE.querySelector('#mrow'+id)||null;
+    const prev={today:S.e.today,week:S.e.week,ready:S.e.ready};
+    m.state='passed';{const pt=PASS_TIPS[m.id]||['Good',[['Kept to the brief.','R-06'],['Two Taglish lines in the caption.','R-07']]];m.band=pt[0];m.tips=pt[1]}S.e.today+=m.r;S.e.week+=m.r;S.e.ready+=m.r;S.e.weekPassed++;
+    if(S.e.weekPassed===5)S.e.notifs.unshift({t:'Weekly bonus unlocked',b:'5 passed posts this week. OkPo adds [₱X] on Friday.',time:'Now',k:'quarter'});
+    const first=!S.e.doneToday;
+    if(first){S.e.doneToday=true;S.e.streak++;S.e.days[TODAY]='done'}
+    S.e.notifs.unshift({t:`Your ${m.type} passed`,b:`+${peso(m.r)}. That’s ${peso(S.e.today)} today.`,time:'Now',k:'diamond'});S.e.unread++;
+    save();
+    await takeover(pE,SPEC.passed(m),origin);
+    await takeover(pE,SPEC.money(m.r,prev.week,S.e.week,'Added to this week'),null);
+    if(first)await takeover(pE,SPEC.streak(S.e.streak),null);
+    rerenderIfVisible(prev);
+  });
+}
+function rerenderIfVisible(prev){if(!S.e.onb&&!S.e.stack.length)renderE('none',prev);else save()}
+function doClaim(){
+  const E=S.e,amt=E.ready-fee();E.sheet=null;overlayE();
+  enqueue(async()=>{
+    const now=new Date();const t=d=>d.toLocaleTimeString('en-PH',{hour:'numeric',minute:'2-digit'});
+    E.receipt={a:amt,t1:t(now),t2:t(new Date(now.getTime()+60000)),ref:'OKP-'+String(Math.floor(1000+Math.random()*8999))+'-'+String(Math.floor(1000+Math.random()*8999)),shown:false};
+    E.ready=0;E.notifs.unshift({t:`${peso(amt)} is in your GCash`,b:'Payday. Your receipt is in Wallet.',time:'Now',k:'quarter'});E.unread++;save();
+    await takeover(pE,SPEC.payday(amt),pE.querySelector('#readyCard'));
+    E.tab='wallet';E.stack=[{v:'receipt'}];renderE('push');
+  });
+}
+function followerSignedUp(cid){cid=cid||'heroes';const ip=cid==='ipon',amt=ip?10:12;
+  const E=S.e;E.signups++;E.visits+=3;E.confirming.push({t:ip?'1 first deposit · Ipon Challenge':'1 sign-up · GCash Heroes',a:amt,by:'Mon, 6 Oct'});
+  E.notifs.unshift({t:ip?'A follower started the Ipon Challenge':'A follower signed up',b:`From your page, credited to ${ip?'Ipon Challenge':'GCash Heroes'}${S.a.taps.length>1?' (the last link they tapped)':''}. +₱${amt} once GCash confirms.`,time:'Now',k:'half'});E.unread++;save();
+  if(E.onb){return}
+  focusPhone('earner');
+  enqueue(async()=>{const was=S.e.tab;await signupBanner(pE,E.signups,cid);if(S.e.tab!==was)renderE('tab');else rerenderIfVisible()});
+}
+function gcashConfirms(){
+  const E=S.e;const amt=E.confirming.reduce((a,b)=>a+b.a,0);
+  if(!amt){toastIn(pE,`${tile('half',16)}<span>Nothing is waiting on GCash right now. Sign up from the follower’s phone first.</span>`);return}
+  if(E.onb){E.onb=null;renderE('fade')}
+  focusPhone('earner');
+  const prev={today:E.today,week:E.week,ready:E.ready};
+  E.ready+=amt;E.week+=amt;E.confirming=[];E.notifs.unshift({t:`${peso(amt)} confirmed`,b:'GCash confirmed your sign-ups. It’s ready to claim.',time:'Now',k:'quarter'});E.unread++;save();
+  enqueue(async()=>{await takeover(pE,SPEC.money(amt,prev.week,E.week,'Sign-ups confirmed'),null);rerenderIfVisible(prev)});
+}
+
+/* ================= AUDIENCE ================= */
+function renderA(kind='none'){
+  const A=S.a;
+  if(!pA.querySelector('.pbg'))pA.insertAdjacentHTML('afterbegin',backdrop());
+  const ip=A.via==='ipon',other=ip?'heroes':'ipon',otherOn=camp(other).status==='joined';
+  const CARD={heroes:{k:'half',t:'Join GCash Heroes',d:'Libre mag-join. About 5 minutes on the GCash app.',b:'Sign up on GCash',src:'Reel'},ipon:{k:'pin',t:'Start the Ipon Challenge',d:'Ipon ng ₱50 sa GSave. Libre at mga 3 minuto.',b:'Start saving on GCash',src:'Story'}};
+  const C=CARD[A.via],O=CARD[other];
+  swap(pA,`<div class="row small"><span class="grow mono">okpo.com/ana.posts${ip?'?c=ipon':'?c=heroes'}</span><span class="wm" style="font-size:15px"><span>O</span><span>k</span><span>P</span><span>o</span></span></div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center"><span class="av" style="width:84px;height:84px;font-size:24px">AR</span><span class="disp" style="font-size:26px">Ana Reyes</span><span class="sub">@ana.posts · food and budget tips, QC</span><span class="chip wait" style="letter-spacing:.04em">${ic('shield',12)}Paid partnership with GCash</span></div>
+  <div class="card glass strong"><span class="label">You came from Ana’s ${C.src}</span><span class="row">${tile(C.k,16)}<b style="font-size:16px">${C.t}</b></span><span class="sub">${C.d}</span>
+   <button class="btn y wide press" type="button" data-signup ${A.signed?'disabled':''}>${A.signed?'You’re signed up':C.b}</button><span class="small">${A.signed?`Credited once, to ${A.creditName}.`:'Opens GCash. Ana gets credit when GCash confirms it.'}</span></div>
+  ${otherOn?`<button class="card glass press" type="button" data-switchvia="${other}" style="flex-direction:row;align-items:center;gap:10px;text-align:left">${tile(O.k,16)}<span class="grow"><b style="display:block">${O.t}</b><span class="small">Also on Ana’s page</span></span>${ic('chev',16)}</button>`:''}
+  <button class="card glass press" type="button" data-becomeearner style="flex-direction:row;align-items:center;gap:10px;text-align:left">${tile('frame',18)}<span class="grow"><b style="display:block">Post like Ana and get paid</b><span class="small">Join OkPo with your mobile number</span></span>${ic('chev',16)}</button>
+  <b>Posts</b><div class="thumbs">${['Heroes sign-up in 14s','₱500 grocery run','Budget ulam','Paano mag-GCash','Baon hacks','Week of meals'].map(t=>`<button type="button" class="press" data-noopa="${t}">${ic('play',12)}<span style="font-size:11px;text-align:left;margin-left:4px">${t}</span></button>`).join('')}</div>`,kind);
+  pA.querySelectorAll('.askbar,.sheet,.scrim,.over').forEach(n=>n.remove());
+  if(!A.sheet)pA.insertAdjacentHTML('beforeend',`<button class="askbar glass strong press" type="button" data-aopen>${tile('petal',20)}<span>Ask Ana’s AI about ${A.via==='ipon'?'the Ipon Challenge':'GCash Heroes'}</span><span class="go-y">${ic('send',16)}</span></button>`);
+  else{
+    pA.insertAdjacentHTML('beforeend',`<div class="scrim" data-aclose></div><div class="sheet glass strong" role="dialog" aria-label="Ana’s AI" style="height:600px"><span class="grab"></span>
+     <div class="row">${tile('petal',18)}<b class="grow">Ana’s AI</b><span class="small">Answers from GCash</span><button class="iconbtn" type="button" data-aclose aria-label="Close" style="width:32px;height:32px;background:var(--soft)">${ic('x',14)}</button></div>
+     <div class="chat" id="audChat" style="flex:1;overflow:auto">${chatHtml(A.chat,`Ask about ${A.via==='ipon'?'the Ipon Challenge':'GCash Heroes'}. Answers come from GCash’s own info for this campaign.`)}</div>
+     <div class="pills">${(A.via==='ipon'?['Magkano ang kailangan?','May ₱50 welcome credit ba?','Paano kung wala pa akong GCash?']:['May bayad ba mag-sign up?','May ₱50 welcome credit ba?','Paano kung wala pa akong GCash?']).map(q=>`<button class="pill press" type="button" data-ask="aud" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>
+     <button class="btn y wide press" type="button" data-signup ${A.signed?'disabled':''}>${A.signed?'You’re signed up':A.via==='ipon'?'Start saving on GCash':'Sign up on GCash'}</button>
+     <form class="composer glass" data-form="aud"><label for="audIn" style="position:absolute;left:-9999px">Ask a question</label><input id="audIn" placeholder="Magtanong…" autocomplete="off"><button class="btn press" type="submit" style="padding:8px 12px">Ask</button></form></div>`);
+    const sh=pA.querySelector('.sheet');if(kind==='sheet'&&!RM){sh.animate([{transform:'translateY(100%)'},{transform:'none'}],{duration:360,easing:'cubic-bezier(.2,.8,.2,1)'});pA.querySelector('.scrim').animate([{opacity:0},{opacity:1}],{duration:240})}
+    const ch=$('#audChat',pA);ch.scrollTop=ch.scrollHeight;
+  }
+  if(A.over)pA.insertAdjacentHTML('beforeend',`<div class="over"><div class="glass strong" role="dialog" aria-modal="true" aria-label="Leaving for GCash">${A.over==='done'?`${tile(A.via==='ipon'?'pin':'half',40)}<b style="font-size:20px">You’re in. Salamat!</b><span class="sub">GCash confirms it, then Ana gets credit for ${esc(A.creditName||'')}. (Demo: no real sign-up happened.)</span><button class="btn y press" type="button" data-overclose>Back to Ana’s page</button>`:`<b style="font-size:20px">Opening GCash</b><span class="sub">You’ll finish in the GCash app. Ana gets credit for <b>${A.via==='ipon'?'GCash Ipon Challenge':'GCash Heroes'}</b>${A.taps.length>1?', the last of her links you tapped in the past 7 days. One sign-up, one credit.':'.'}</span><div class="row"><button class="btn y grow press" type="button" data-signupgo>Continue to GCash</button><button class="btn press" type="button" data-overclose style="background:var(--soft);color:var(--ink)">Not now</button></div>`}</div></div>`);
+  save();
+}
+
+/* ---------- chat ---------- */
+function chatHtml(arr,empty){if(!arr.length)return `<span class="small">${empty}</span>`;return arr.map(m=>m.me?`<div class="bub me">${esc(m.t)}</div>`:m.typing?`<div class="bub ai">${tile('petal',22)}<span class="dots" aria-label="Typing"><i></i><i></i><i></i></span></div>`:`<div class="bub ai">${tile('petal',22)}<div><span>${m.t}</span>${m.used?`<div class="used">${m.used.map(u=>`<span>${tile(u[1],9)}${u[0]}</span>`).join('')}</div>`:''}</div></div>`).join('')}
+function answer(q,aud){q=q.toLowerCase();const inIpon=aud&&S.a.via==='ipon';
+ if(/welcome|credit|promo/.test(q))return inIpon?{t:'Wala pong welcome credit sa Ipon Challenge. Ang kailangan lang ay first deposit na ₱50 o higit pa sa GSave.',used:[['Ipon facts','pin']]}:{t:'Opo! New verified users get a ₱50 welcome credit, until 31 Oct.',used:[['Fact K2 · Rule R-15','half']]};
+ if(inIpon&&/magkano|kailangan|minimum|deposit/.test(q))return{t:'₱50 lang po ang first deposit sa GSave. Pwede mo nang dagdagan kahit kailan.',used:[['Ipon facts','pin']]};
+ if(/sure|guarantee|approval/.test(q))return{t:'Hindi po natin puwedeng sabihin yan. Puwede mong sabihin: “Libre mag-join, at mabilis ang sign-up.”',used:[['Rule R-03','frame'],['Voice and tone','half']]};
+ if(/magkano|how much|bayad|per sign/.test(q))return aud?{t:'Libre po ang pag-join. Walang bayad.',used:[['Campaign facts','pin']]}:{t:'May bayad ka sa bawat passed post, at dagdag sa bawat sign-up na na-activate mula sa page mo. Makikita mo sa Wallet.',used:[['Campaign facts','pin']]};
+ if(/tiktok|bio|link|facebook/.test(q))return{t:'Opo! Gamitin mo yung link na may code mo. I-tag ang #GCashHeroes at i-on ang Paid partnership.',used:[['Rules R-11 · R-13 · R-01','quarter'],['Campaign facts','pin']]};
+ if(/gcash|wala|app|paano|how/.test(q))return{t:'I-download ang GCash app, i-verify ang number mo, tapos sundan ang link. Mga 5 minuto lang po.',used:[['Campaign facts','pin']]};
+ if(/makukuha|get/.test(q))return{t:'Makakagamit ka ng GCash para magbayad, mag-ipon at magpadala. Libre ang sign-up.',used:[['Campaign facts','pin']]};
+ return{t:'Magandang tanong po. Ipapasa ko ito sa GCash team para masagot nang tama.',used:[['Voice and tone','half']]}}
+function ask(which,q){
+  const arr=which==='coach'?S.e.chat:S.a.chat;arr.push({me:1,t:q});const typing={typing:1};arr.push(typing);
+  which==='coach'?renderE('none'):renderA('none');
+  setTimeout(()=>{const i=arr.indexOf(typing);const a=answer(q,which==='aud');arr.splice(i,1,{t:a.t,used:a.used});
+    if(which==='coach'){if(S.e.tab==='coach'&&!S.e.stack.length&&!S.e.onb)renderE('none');else save()}else renderA('none')},RM?200:1100);
+}
+
+/* ---------- phone focus on narrow screens ---------- */
+function focusPhone(w){const st=$('#stage');if(matchMedia('(max-width:900px)').matches){st.dataset.show=w;$('#showE').setAttribute('aria-pressed',String(w==='earner'));$('#showA').setAttribute('aria-pressed',String(w==='aud'))}}
+$('#showE').onclick=()=>focusPhone('earner');$('#showA').onclick=()=>focusPhone('aud');
+
+/* ---------- events ---------- */
+function copy(v,phone){const ok=()=>toastIn(phone,`${ic('check',16)}<span>Copied: ${esc(v)}</span>`);try{navigator.clipboard.writeText(v).then(ok,ok)}catch(e){ok()}}
+pE.addEventListener('click',e=>{
+  const t=e.target.closest('button,[data-closeov]');if(!t||t.closest('.take'))return;const d=t.dataset;const E=S.e;
+  if('closeov' in d){E.notifsOpen=false;E.sheet=null;overlayE();return}
+  if(d.etab){if(E.onb)return;const same=E.tab===d.etab&&!E.stack.length;E.tab=d.etab;E.stack=[];if(!same)renderE('tab');return}
+  if('notifs' in d){E.notifsOpen=true;E.unread=0;renderE('none');overlayE();return}
+  if(d.mission){const m=E.missions.find(x=>x.id===+d.mission);if(m&&m.state==='open'&&capLeft()===0){toastIn(pE,`${tile('frame',16,'var(--mute)')}<span>That’s ${E.cap} for today. This one comes back in tomorrow’s brief.</span>`);return}if(m&&(m.state==='open'||m.state==='fix')){E.stack=[{v:'mission',id:m.id}];renderE('push')}return}
+  if('camps' in d){E.stack=[{v:'camps'}];renderE('push');return}
+  if(d.invite){E.stack.push({v:'invite',id:d.invite});renderE('push');return}
+  if(d.notego){E.notifsOpen=false;overlayE();E.tab='today';E.stack=[{v:'camps'},{v:'invite',id:'ipon'}];renderE('push');return}
+  if(d.accept){const c=camp(d.accept);c.status='joined';c.deal=`${peso(c.rate)} per passed post · ${peso(c.dep)} per first deposit`;c.left=`${c.weeks} weeks`;c.stats='Starts today';
+    E.missions.splice(1,0,{id:4,camp:'ipon',t:'Story: your first ₱50 deposit',type:'Story',r:c.rate,state:'open',tries:0,tp:'Save for one goal'});
+    E.notifs=E.notifs.filter(n=>!n.go);E.notifs.unshift({t:'You joined GCash Ipon Challenge',b:`${peso(c.rate)} per passed post. Its first mission is in today’s brief.`,time:'Now',k:'pin'});
+    E.stack=[];E.tab='today';renderE('pop');toastIn(pE,`${tile('pin',16)}<span><b>Joined.</b> Ipon’s first mission is in Today. Still ${E.cap} a day in total.</span>`);return}
+  if(d.joincamp){const c=camp(d.joincamp);c.status='trial';renderE('none');toastIn(pE,`${tile('diamond',16)}<span><b>You’re on a 3-post trial</b> with ${esc(c.brand)}. Missions start tomorrow.</span>`);return}
+  if('back' in d){E.stack.pop();renderE('pop');return}
+  if('paste' in d){const i=$('#plink',pE);i.value='tiktok.com/@ana.posts/video/'+Math.floor(7e9+Math.random()*1e9);$('#plinkf',pE).classList.remove('bad');return}
+  if(d.copy){copy(d.copy,pE);return}
+  if(d.noop){toastIn(pE,`<span>${esc(d.noop)} opens the composer in the real app.</span>`);return}
+  if(d.ask==='coach'){ask('coach',d.q);return}
+  if('claim' in d){E.sheet={opt:'now'};overlayE();return}
+  if(d.opt){E.sheet.opt=d.opt;overlayE();return}
+  if('doclaim' in d){if(E.sheet.opt==='friday'){E.sheet=null;overlayE();toastIn(pE,`${tile('quarter',16)}<span>Scheduled. ${peso(E.ready)} goes to your GCash on Friday, free.</span>`);return}doClaim();return}
+  if('seefollower' in d){focusPhone('aud');pA.classList.remove('flash');void pA.offsetWidth;pA.classList.add('flash');return}
+  if(d.onb){E.onb=d.onb;renderE(t.getAttribute('aria-label')==='Back'?'pop':'push');return}
+  if('fillnum' in d){$('#jnum',pE).value='917 123 4567';return}
+  if('fillotp' in d){const ins=[...pE.querySelectorAll('.otp input')];'123456'.split('').forEach((c,i)=>ins[i].value=c);checkOtp(ins);return}
+  if('onbdone' in d){const v=E.via;E.onb=null;E.via=null;E.tab='today';renderE('fade');if(v)toastIn(pE,'<span>Demo: back on Ana’s phone.</span>');return}
+});
+pE.addEventListener('submit',e=>{e.preventDefault();const f=e.target,k=f.dataset.form;
+  if(k==='submit'){const v=$('#plink',pE).value.trim();if(!v){$('#plinkf',pE).classList.add('bad');$('#plink',pE).placeholder='Paste the link to your post first';$('#plink',pE).focus();return}submitMission(+f.dataset.mid,v);return}
+  if(k==='coach'){const i=$('#coachIn',pE);const q=i.value.trim();if(!q)return;ask('coach',q);setTimeout(()=>{const n=$('#coachIn',pE);n&&n.focus({preventScroll:true})},0);return}
+  if(k==='num'){const v=$('#jnum',pE).value.replace(/\D/g,'');if(v.length!==10){$('#jnumf',pE).classList.add('bad');$('#jnum',pE).focus();toastIn(pE,'<span>Enter a 10-digit mobile number, like 917 123 4567.</span>');return}S.e.num=v.replace(/(\d{3})(\d{3})(\d{4})/,'$1 $2 $3');S.e.onb='code';renderE('push');return}
+});
+pA.addEventListener('click',e=>{
+  const t=e.target.closest('button,[data-aclose]');if(!t)return;const d=t.dataset;const A=S.a;
+  if('aopen' in d){A.sheet=true;renderA('sheet');return}
+  if('aclose' in d){if(!RM){const sh=pA.querySelector('.sheet');sh.animate([{transform:'none'},{transform:'translateY(100%)'}],{duration:260,easing:'ease-in'}).finished.then(()=>{A.sheet=false;renderA('none')})}else{A.sheet=false;renderA('none')}return}
+  if(d.ask==='aud'){ask('aud',d.q);return}
+  if('signup' in d){A.over='handoff';renderA('none');return}
+  if('signupgo' in d){A.signed=true;A.credit=A.via;A.creditName=A.via==='ipon'?'GCash Ipon Challenge':'GCash Heroes';A.over='done';A.sheet=false;renderA('none');setTimeout(()=>followerSignedUp(A.via),500);return}
+  if(d.switchvia){A.via=d.switchvia;if(A.taps[A.taps.length-1]!==A.via)A.taps.push(A.via);paintVia();renderA('fade');return}
+  if('overclose' in d){A.over=null;renderA('none');return}
+  if('becomeearner' in d){startVia();return}
+  if(d.noopa){toastIn(pA,`${ic('play',14)}<span>Opens “${esc(d.noopa)}” on TikTok.</span>`);return}
+});
+pA.addEventListener('submit',e=>{e.preventDefault();const i=$('#audIn',pA);const q=i.value.trim();if(!q)return;ask('aud',q);setTimeout(()=>{const n=$('#audIn',pA);n&&n.focus({preventScroll:true})},0)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(S.e.sheet||S.e.notifsOpen){S.e.sheet=null;S.e.notifsOpen=false;overlayE()}if(S.a.sheet){S.a.sheet=false;renderA('none')}}});
+
+/* ---------- controls ---------- */
+function setBg(b){S.bg=b;$('#bgTone').setAttribute('aria-pressed',String(b==='tone'));$('#bgColour').setAttribute('aria-pressed',String(b==='colour'));[pE,pA].forEach(p=>{const o=p.querySelector('.pbg');const t=document.createElement('div');t.innerHTML=backdrop();o?o.replaceWith(t.firstElementChild):p.prepend(t.firstElementChild)});save()}
+$('#bgTone').onclick=()=>setBg('tone');$('#bgColour').onclick=()=>setBg('colour');
+$('#simConfirm').onclick=gcashConfirms;
+function paintVia(){$('#viaH').setAttribute('aria-pressed',String(S.a.via==='heroes'));$('#viaI').setAttribute('aria-pressed',String(S.a.via==='ipon'));const t=S.a.taps.map(x=>x==='ipon'?'Ipon Story':'Heroes Reel').join(', then ');$('#capA').textContent=`A follower’s phone · tapped ${t} · credit goes to the last link tapped`}
+function arrive(c){if(c==='ipon'&&camp('ipon').status!=='joined'){toastIn(pA,`${tile('pin',16)}<span>Ana hasn’t joined Ipon yet. Accept the invite on her phone first (+ Campaigns).</span>`);return}if(S.a.signed){toastIn(pA,'<span>This follower already signed up. One sign-up, one credit. Reset to try again.</span>');return}S.a.via=c;if(S.a.taps[S.a.taps.length-1]!==c)S.a.taps.push(c);S.a.chat=[];S.a.sheet=false;paintVia();focusPhone('aud');renderA('fade')}
+$('#viaH').onclick=()=>arrive('heroes');$('#viaI').onclick=()=>arrive('ipon');
+$('#simVia').onclick=()=>startVia();
+function startVia(){focusPhone('earner');S.e.via='ana';S.e.num='';S.e.onb='welcome';S.e.stack=[];S.e.sheet=null;S.e.notifsOpen=false;overlayE();renderE('fade')}
+$('#simOnb').onclick=()=>{focusPhone('earner');S.e.via=null;S.e.onb='welcome';S.e.stack=[];S.e.sheet=null;S.e.notifsOpen=false;overlayE();renderE('fade')};
+$('#resetBtn').onclick=()=>{const bg=S.bg;S=FRESH();S.bg=bg;setTimeout(paintVia,0);pE.querySelectorAll('.take,.toast').forEach(n=>n.remove());overlayE();renderE('fade');renderA('fade')};
+function curTheme(){const a=document.documentElement.getAttribute('data-theme');return a||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}
+const paintTheme=()=>$('#themeBtn').textContent=curTheme()==='dark'?'Light':'Dark';
+$('#themeBtn').onclick=()=>{document.documentElement.setAttribute('data-theme',curTheme()==='dark'?'light':'dark');paintTheme()};paintTheme();
+
+setBg(S.bg||'tone');
+paintVia();renderE('none');renderA('none');
+})();
+</script>
+
+</body></html>

@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>OkPo Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* OkPo design tokens. Product register (console, earner app, earner page).
+   Source of truth: DESIGN.md. Fonts: Bricolage Grotesque 800, IBM Plex Sans 400/500/600, IBM Plex Mono 500/600. */
+:root{
+  /* glazes */
+  --coral:#ff8787; --yellow:#ffd43b; --orange:#ffa94d; --green:#69db7c; --blue:#74c0fc; --purple:#b197fc;
+  /* label shades: coloured text on light */
+  --l-coral:#c92a2a; --l-yellow:#9c6500; --l-orange:#c2410c; --l-green:#237a36; --l-blue:#1971c2; --l-purple:#6741d9;
+  /* neutrals */
+  --ground:#f6f1e4; --tone:#ebe2cc; --ink:#121212; --body:#4a4640; --mute:#6a655c;
+  --line:rgba(18,18,18,.12); --soft:rgba(18,18,18,.06); --scrim:rgba(18,18,18,.28);
+  --btn:#121212; --on-btn:#f6f1e4;
+  /* glass */
+  --glass-a:rgba(255,255,255,.66); --glass-b:rgba(255,255,255,.44); --glass-edge:rgba(255,255,255,.95);
+  --glass-strong:rgba(255,255,255,.8); --glass-shadow:0 16px 36px rgba(18,18,18,.12);
+  /* type */
+  --display:'Bricolage Grotesque',ui-sans-serif,system-ui,sans-serif;
+  --text:'IBM Plex Sans',ui-sans-serif,system-ui,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  /* radius */
+  --r-card:20px; --r-btn:14px; --r-ghost:10px; --r-chip:99px; --r-id:6px; --r-tabbar:26px; --r-sheet:28px;
+  /* motion */
+  --ease:cubic-bezier(.2,.8,.2,1); --pop:cubic-bezier(.34,1.56,.64,1); --exit:cubic-bezier(.6,0,.3,1);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0f0f0f; --tone:#1c1b19; --ink:#ececec; --body:#b9bcc0; --mute:#8f949a;
+  --line:rgba(255,255,255,.12); --soft:rgba(255,255,255,.07); --scrim:rgba(0,0,0,.5);
+  --btn:#ececec; --on-btn:#121212;
+  --glass-a:rgba(40,40,40,.7); --glass-b:rgba(18,18,18,.6); --glass-edge:rgba(255,255,255,.22);
+  --glass-strong:rgba(34,34,34,.86); --glass-shadow:0 16px 36px rgba(0,0,0,.5);
+  --l-coral:#ff8787; --l-yellow:#ffd43b; --l-orange:#ffa94d; --l-green:#69db7c; --l-blue:#74c0fc; --l-purple:#b197fc;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --ground:#0f0f0f; --tone:#1c1b19; --ink:#ececec; --body:#b9bcc0; --mute:#8f949a;
+  --line:rgba(255,255,255,.12); --soft:rgba(255,255,255,.07); --scrim:rgba(0,0,0,.5);
+  --btn:#ececec; --on-btn:#121212;
+  --glass-a:rgba(40,40,40,.7); --glass-b:rgba(18,18,18,.6); --glass-edge:rgba(255,255,255,.22);
+  --glass-strong:rgba(34,34,34,.86); --glass-shadow:0 16px 36px rgba(0,0,0,.5);
+  --l-coral:#ff8787; --l-yellow:#ffd43b; --l-orange:#ffa94d; --l-green:#69db7c; --l-blue:#74c0fc; --l-purple:#b197fc;
+  color-scheme:dark}
+
+/* core components */
+.glass{background:linear-gradient(160deg,var(--glass-a),var(--glass-b));-webkit-backdrop-filter:blur(14px) saturate(1.6);backdrop-filter:blur(14px) saturate(1.6);border:1px solid var(--glass-edge);box-shadow:inset 0 1px 0 var(--glass-edge),var(--glass-shadow);border-radius:var(--r-card)}
+.glass.strong{background:var(--glass-strong)}
+.btn{border:0;border-radius:var(--r-btn);padding:12px 16px;font:600 14px/1 var(--text);background:var(--btn);color:var(--on-btn);cursor:pointer;transition:transform .12s var(--ease)}
+.btn:active{transform:scale(.97)}
+.ghost{border:1px solid var(--line);background:transparent;border-radius:var(--r-ghost);padding:7px 11px;font:500 13px/1.2 var(--text);color:var(--ink);cursor:pointer}
+.label{font:600 10.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 9px;border-radius:var(--r-chip);font:600 10.5px/1 var(--mono);letter-spacing:.08em;white-space:nowrap}
+.chip.ok{background:rgba(105,219,124,.24);color:var(--l-green)}
+.chip.fix{background:rgba(255,135,135,.22);color:var(--l-coral)}
+.chip.wait{background:var(--soft);color:var(--body)}
+.chip.go{background:var(--btn);color:var(--on-btn);font:600 13px/1 var(--text);letter-spacing:0;padding:7px 13px}
+.rid{display:inline-block;font:600 10px/1 var(--mono);letter-spacing:.04em;padding:3px 6px;border-radius:var(--r-id);background:var(--soft);color:var(--body);white-space:nowrap}
+.rid.tp{background:rgba(255,212,59,.28);color:var(--l-yellow)}
+.band{display:inline-flex;align-items:center;gap:6px;padding:4px 9px;border-radius:var(--r-chip);font:600 11.5px/1 var(--text);white-space:nowrap}
+.band::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.band.strong{background:rgba(105,219,124,.24);color:var(--l-green)}
+.band.good{background:var(--soft);color:var(--body)}
+.band.work{background:rgba(255,212,59,.3);color:var(--l-yellow)}
+.wordmark{font:800 1em/1 var(--display);letter-spacing:-.035em;display:inline-flex}
+.wordmark span:nth-child(1){color:var(--coral)}.wordmark span:nth-child(2){color:var(--yellow)}.wordmark span:nth-child(3){color:var(--green)}.wordmark span:nth-child(4){color:var(--blue)}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* Layout: a sticky section index on wide screens, one column of specimens on the tone-tile backdrop; every specimen is the real product component. */
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font:400 15px/1.55 var(--text);-webkit-font-smoothing:antialiased;padding-inline:16px;padding-block:20px 64px}
+.bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}.bg svg{position:absolute;fill:var(--tone)}
+.wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;display:grid;grid-template-columns:200px minmax(0,1fr);gap:40px}
+nav.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 20px);align-self:start;display:flex;flex-direction:column;gap:4px;padding-top:6px}
+nav.toc a{color:var(--body);text-decoration:none;font-size:13.5px;padding:5px 10px;border-radius:9px}
+nav.toc a:hover{background:var(--soft);color:var(--ink)}
+main{display:flex;flex-direction:column;gap:56px;min-width:0}
+header.top{display:flex;flex-direction:column;gap:14px;padding-top:8px}
+header.top .row1{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+h1{margin:0;font:800 clamp(40px,7vw,76px)/.95 var(--display);letter-spacing:-.045em;text-wrap:balance}
+h2{margin:0;font:800 30px/1.05 var(--display);letter-spacing:-.03em;text-wrap:balance}
+h3{margin:0;font:600 15px/1.3 var(--text)}
+p{margin:0}.lede{font-size:18px;color:var(--body);max-width:62ch}
+.sub{color:var(--body)}.small{font-size:13px;color:var(--mute)}.mono{font-family:var(--mono)}.num{font-variant-numeric:tabular-nums}
+section{display:flex;flex-direction:column;gap:18px;scroll-margin-top:20px}
+.sh{display:flex;flex-direction:column;gap:8px;max-width:70ch}
+.status{align-self:flex-start}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g6{grid-template-columns:repeat(6,minmax(0,1fr))}
+.card{padding:16px 18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.grow{flex:1;min-width:0}
+.sw{height:72px;border-radius:12px}
+.hex{font:500 12px/1.3 var(--mono);color:var(--mute)}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:560px}
+th{text-align:left;font:600 10.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute);padding:10px 14px 10px 0;border-bottom:1px solid var(--line)}
+td{padding:11px 14px 11px 0;border-bottom:1px solid var(--line);vertical-align:middle}
+.tile{width:22px;height:22px;display:block;flex:none}
+.spec{display:grid;grid-template-columns:150px minmax(0,1fr);gap:8px 18px;align-items:baseline}
+.dd{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px}
+.dd li{display:flex;gap:10px;align-items:baseline}.dd li span:first-child{flex:1}
+.phone{position:relative;width:min(360px,100%);border-radius:36px;overflow:hidden;background:var(--ground);border:1px solid var(--line);padding:20px 16px;display:flex;flex-direction:column;gap:12px;isolation:isolate}
+.phone .pbg{position:absolute;inset:0;z-index:-1}.phone .pbg svg{position:absolute;fill:var(--tone)}
+.mission{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--line)}.mission:first-child{border-top:0}
+.mt{display:block;font-weight:600}
+.check{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:rgba(255,135,135,.16)}
+.tips{display:flex;flex-direction:column;gap:8px;padding-left:34px}
+.tips div{display:flex;gap:8px;align-items:baseline;font-size:13.5px;color:var(--body)}.tips b{font:600 11px/1 var(--mono);color:var(--mute)}
+.tp{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:var(--glass-strong);border:1px solid var(--line)}
+.reg{display:flex;flex-direction:column;gap:12px}
+.drawn{position:relative;display:inline-flex;align-items:center;justify-content:center;width:150px;height:46px;font-weight:600;color:#121212}
+.drawn svg{position:absolute;inset:0;overflow:visible}.drawn span{position:relative}
+.links a{display:flex;align-items:center;gap:12px;padding:14px 16px;text-decoration:none;color:var(--ink)}
+.links a:hover{transform:translateY(-1px)}
+.donts li{display:flex;gap:10px}
+.theme{margin-left:auto}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:8px}
+@media (max-width:900px){.wrap{grid-template-columns:minmax(0,1fr)}nav.toc{display:none}.g6{grid-template-columns:repeat(3,minmax(0,1fr))}.g3{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:600px){.g2{grid-template-columns:minmax(0,1fr)}.g6{grid-template-columns:repeat(2,minmax(0,1fr))}.spec{grid-template-columns:minmax(0,1fr)}}
+</style>
+
+</head>
+<body>
+<div class="bg" aria-hidden="true">
+  <svg viewBox="-5 -5 110 110" style="left:-260px;top:-300px;width:860px;height:860px"><path d="M0 100 L0 0 A100 100 0 0 1 100 100 Z"/></svg>
+  <svg viewBox="-5 -5 110 110" style="right:-180px;top:30vh;width:560px;height:560px"><path d="M50 50 Q50 2 98 2 Q98 50 50 50 Z M50 50 Q98 50 98 98 Q50 98 50 50 Z M50 50 Q50 98 2 98 Q2 50 50 50 Z M50 50 Q2 50 2 2 Q50 2 50 50 Z"/></svg>
+  <svg viewBox="-5 -5 110 110" style="left:20vw;top:78vh;width:720px;height:720px"><path d="M0 100 A50 50 0 0 1 100 100 Z"/><rect width="100" height="22"/></svg>
+</div>
+
+<div class="wrap">
+<nav class="toc" aria-label="Sections">
+  <a href="#registers">Two registers</a><a href="#colour">Colour</a><a href="#type">Type</a><a href="#surfaces">Backdrop and glass</a><a href="#moments">Moments</a><a href="#context">Rules and talking points</a><a href="#quality">Quality bands</a><a href="#components">Components</a><a href="#prototypes">Prototypes</a><a href="#coders">For AI coders</a>
+</nav>
+<main>
+<header class="top">
+  <div class="row1"><span class="wordmark" style="font-size:40px" role="img" aria-label="OkPo"><span>O</span><span>k</span><span>P</span><span>o</span></span><span class="label">Product design system · v2 · 1 Oct 2026</span><button class="ghost theme" type="button" id="themeBtn">Dark</button></div>
+  <h1>Calm glass, loud rewards.</h1>
+  <p class="lede">How OkPo’s brand console, earner app and earner page are built. Controls stay crisp and quiet so the moments that pay an earner can take over the screen. Every specimen below is the real component, styled from <span class="mono">tokens.css</span>.</p>
+</header>
+
+<section id="registers">
+  <div class="sh"><span class="chip ok status">Settled</span><h2>Two registers</h2><p class="sub">The marketing site is drawn by a loose hand. The product is sleek. Never mix them on one screen.</p></div>
+  <div class="grid g2">
+    <div class="card glass reg"><span class="label">Site · okpo.com</span>
+      <span class="drawn"><svg width="150" height="46" viewBox="0 0 150 46" aria-hidden="true"><path d="M2.0 1.7 L14.0 1.3 L25.6 2.5 L35.7 2.4 L44.3 1.6 L53.6 1.0 L64.5 1.5 L76.1 1.9 L84.7 3.0 L94.4 1.6 L103.8 2.7 L113.4 2.9 L124.2 1.2 L136.0 2.4 L145.2 1.3 L147.0 2.3 L148.6 12.5 L148.1 22.5 L148.3 34.0 L148.1 44.7 L138.7 43.4 L129.8 43.7 L119.3 44.3 L107.6 44.2 L96.5 44.1 L86.3 44.9 L77.1 43.4 L65.7 44.4 L55.4 44.9 L44.6 43.5 L33.8 43.2 L24.6 44.8 L15.8 43.1 L5.5 43.0 L1.5 43.7 L2.4 34.4 L1.0 23.4 L2.3 12.5 L1.0 3.3Z" fill="#ffd43b" stroke="#ffd43b" stroke-width="2" stroke-linejoin="round"/></svg><span>Book a call</span></span>
+      <p class="small">Yellow glaze, edges wobble 1.6 to 2.2px, no CSS radius anywhere.</p></div>
+    <div class="card glass reg"><span class="label">Product · console, app, page</span>
+      <div class="row"><button class="btn" type="button">Claim to GCash</button><button class="ghost" type="button">Not now</button></div>
+      <p class="small">Ink button, crisp 14px radius. Sloppy shapes appear only inside reward moments.</p></div>
+  </div>
+</section>
+
+<section id="colour">
+  <div class="sh"><span class="chip ok status">Settled</span><h2>Six glazes, one job each</h2><p class="sub">On a light ground a glaze is graphic only. Coloured text uses its label shade, which passes 4.5 to 1.</p></div>
+  <div class="grid g6">
+    <div class="card glass"><div class="sw" style="background:var(--coral)"></div><b>Coral</b><span class="hex">#FF8787<br>label #C92A2A</span><span class="small">Fixes, streak</span></div>
+    <div class="card glass"><div class="sw" style="background:var(--yellow)"></div><b>Yellow</b><span class="hex">#FFD43B<br>label #9C6500</span><span class="small">Sign-ups, My page</span></div>
+    <div class="card glass"><div class="sw" style="background:var(--orange)"></div><b>Orange</b><span class="hex">#FFA94D<br>label #C2410C</span><span class="small">Posts, passed</span></div>
+    <div class="card glass"><div class="sw" style="background:var(--green)"></div><b>Green</b><span class="hex">#69DB7C<br>label #237A36</span><span class="small">Money, always</span></div>
+    <div class="card glass"><div class="sw" style="background:var(--blue)"></div><b>Blue</b><span class="hex">#74C0FC<br>label #1971C2</span><span class="small">Leads, focus</span></div>
+    <div class="card glass"><div class="sw" style="background:var(--purple)"></div><b>Purple</b><span class="hex">#B197FC<br>label #6741D9</span><span class="small">Coach, AI</span></div>
+  </div>
+  <div class="grid g3">
+    <div class="card glass"><div class="sw" style="background:var(--ground);border:1px solid var(--line)"></div><b>Ground</b><span class="hex">#F6F1E4 · dark #0F0F0F</span></div>
+    <div class="card glass"><div class="sw" style="background:var(--tone)"></div><b>Tone</b><span class="hex">#EBE2CC · dark #1C1B19</span><span class="small">Backdrop tiles only</span></div>
+    <div class="card glass"><div class="sw" style="background:var(--ink)"></div><b>Ink</b><span class="hex">#121212 · dark #ECECEC</span><span class="small">Text and the main button</span></div>
+  </div>
+</section>
+
+<section id="type">
+  <div class="sh"><span class="chip ok status">Settled</span><h2>Three faces</h2></div>
+  <div class="card glass">
+    <div class="spec"><span class="label">Display 800</span><span style="font:800 84px/1 var(--display);letter-spacing:-.03em" class="num">+₱40</span>
+    <span class="label">Title 30</span><span style="font:800 30px/1.05 var(--display);letter-spacing:-.03em">3 missions left today</span>
+    <span class="label">Sans 15</span><span>Show the Heroes sign-up in the real app, under 20 seconds.</span>
+    <span class="label">Mono 10.5</span><span class="label" style="color:var(--ink)">Ready to claim · GCash Heroes</span></div>
+    <p class="small">Bricolage Grotesque 800, IBM Plex Sans, IBM Plex Mono. All free Google Fonts. Taglish copy, “po” when the other person uses it.</p>
+  </div>
+</section>
+
+<section id="surfaces">
+  <div class="sh"><span class="chip ok status">Settled</span><h2>Tone-on-tone backdrop, clear glass</h2><p class="sub">Three tiles a shade off the ground sit behind every screen: quarter top left, petals right, half rising from the bottom. Crisp, never blurred, never a glaze colour. Content sits on clear glass; anything that floats is strong glass.</p></div>
+  <div class="row" style="align-items:flex-start;gap:24px">
+    <div class="phone">
+      <div class="pbg" aria-hidden="true"><svg viewBox="-5 -5 110 110" style="left:-110px;top:-110px;width:360px;height:360px"><path d="M0 100 L0 0 A100 100 0 0 1 100 100 Z"/></svg><svg viewBox="-5 -5 110 110" style="left:170px;top:130px;width:260px;height:260px"><path d="M50 50 Q50 2 98 2 Q98 50 50 50 Z M50 50 Q98 50 98 98 Q50 98 50 50 Z M50 50 Q50 98 2 98 Q2 50 50 50 Z M50 50 Q2 50 2 2 Q50 2 50 50 Z"/></svg><svg viewBox="-5 -5 110 110" style="left:100px;top:380px;width:330px;height:330px"><path d="M0 100 A50 50 0 0 1 100 100 Z"/><rect width="100" height="22"/></svg></div>
+      <span class="sub">Magandang umaga, Ana</span>
+      <div style="font:800 28px/1.04 var(--display);letter-spacing:-.03em">2 missions left today</div>
+      <div class="card glass strong"><span class="label">Earned today</span><span class="num" style="font:800 42px/1 var(--display);letter-spacing:-.03em">₱40</span><span class="small"><b style="color:var(--ink)">₱1,280</b> this week</span></div>
+      <div class="card glass" style="padding:4px 16px;gap:0">
+        <div class="mission"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true"><path d="M50 0L100 50L50 100L0 50Z M50 28L72 50L50 72L28 50Z" fill-rule="evenodd" fill="var(--orange)"/></svg><span class="grow"><span class="mt" style="opacity:.55;text-decoration:line-through">Reel: free to join</span><span class="small">Passed · +₱40 · Strong</span></span><span class="chip ok">+₱40</span></div>
+        <div class="mission"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true"><path d="M50 0L100 50L50 100L0 50Z M50 28L72 50L50 72L28 50Z" fill="none" stroke="var(--mute)" stroke-width="9"/></svg><span class="grow"><span class="mt">Story with your sign-up link</span><span class="small">Talking point: Five-minute sign-up · +₱15</span></span><span class="chip go">Start</span></div>
+      </div>
+    </div>
+    <div class="card glass" style="flex:1;min-width:260px;max-width:440px"><h3>Glass recipe</h3><pre class="mono small" style="margin:0;white-space:pre-wrap">background: linear-gradient(160deg, var(--glass-a), var(--glass-b));
+backdrop-filter: blur(14px) saturate(1.6);
+border: 1px solid var(--glass-edge);
+box-shadow: inset 0 1px 0 var(--glass-edge), var(--glass-shadow);
+border-radius: 20px;</pre><p class="small">Strong glass swaps the gradient for <span class="mono">--glass-strong</span>: tab bar, sheets, banners, toasts.</p></div>
+  </div>
+</section>
+
+<section id="moments">
+  <div class="sh"><span class="chip wait status">Takeovers open, mapping settled</span><h2>Each moment owns a shape and a colour</h2><p class="sub">The big moment teaches the shape. The tab icon brings it back every day. Wins the earner makes happen take over the screen; things other people do arrive as a top banner.</p></div>
+  <div class="card glass tbl"><table>
+    <thead><tr><th>Moment</th><th>Shape</th><th>Tab</th><th>Size</th><th>Shade</th></tr></thead>
+    <tbody>
+    <tr><td>Post passed</td><td><svg class="tile" viewBox="-5 -5 110 110" aria-label="Cut diamond, orange"><path d="M50 0L100 50L50 100L0 50Z M50 28L72 50L50 72L28 50Z" fill-rule="evenodd" fill="var(--orange)"/></svg></td><td>Posts</td><td>Takeover</td><td>Pale</td></tr>
+    <tr><td>Money landed</td><td><svg class="tile" viewBox="-5 -5 110 110" aria-label="Quarter disc, green"><path d="M0 100 L0 0 A100 100 0 0 1 100 100 Z" fill="var(--green)"/></svg></td><td>Wallet</td><td>Takeover</td><td>Pale</td></tr>
+    <tr><td>Streak ticked</td><td><svg class="tile" viewBox="-5 -5 110 110" aria-label="Square in square, coral"><path d="M0 0H100V100H0Z M27 27V73H73V27Z" fill-rule="evenodd" fill="var(--coral)"/></svg></td><td>Today</td><td>Takeover</td><td>Deep</td></tr>
+    <tr><td>Payday</td><td><svg class="tile" viewBox="-5 -5 110 110" aria-label="Four quarters, green"><path d="M50 50 L50 0 A50 50 0 0 1 100 50Z M50 50 L100 50 A50 50 0 0 1 50 100Z M50 50 L50 100 A50 50 0 0 1 0 50Z M50 50 L0 50 A50 50 0 0 1 50 0Z" fill="var(--green)"/></svg></td><td>Wallet</td><td>Takeover</td><td>Deep</td></tr>
+    <tr><td>Follower signed up</td><td><svg class="tile" viewBox="-5 -5 110 110" aria-label="Half disc, yellow"><path d="M0 100 A50 50 0 0 1 100 100 Z" fill="var(--yellow)"/><rect width="100" height="22" fill="var(--yellow)"/></svg></td><td>My page</td><td>Top banner</td><td>Pale</td></tr>
+    <tr><td>Coach</td><td><svg class="tile" viewBox="-5 -5 110 110" aria-label="Petals, purple"><path d="M50 50 Q50 2 98 2 Q98 50 50 50 Z M50 50 Q98 50 98 98 Q50 98 50 50 Z M50 50 Q50 98 2 98 Q2 50 50 50 Z M50 50 Q2 50 2 2 Q50 2 50 50 Z" fill="var(--purple)"/></svg></td><td>Coach</td><td colspan="2">Never a reward</td></tr>
+    </tbody></table></div>
+  <p class="small">The brand console wears the same tiles per section (picked 1 Oct) but never takes over the screen: one pulse per section per minute, then a counter.</p>
+</section>
+
+<section id="context">
+  <div class="sh"><span class="chip ok status">Settled 1 Oct</span><h2>Rules, facts and talking points</h2><p class="sub">Rules say what a post must never do, and each has an ID. Facts are the only claims the AI may make. Talking points say what a post leads with; they live in each campaign’s brief, steer the mix, and never override a rule.</p></div>
+  <div class="grid g2">
+    <div class="card glass"><span class="label">Brand console · talking points, in order</span>
+      <div class="tp"><span class="mono small">01</span><b class="grow">Free to join</b><span class="small num">60%</span></div>
+      <div class="tp"><span class="mono small">02</span><b class="grow">Five-minute sign-up</b><span class="small num">25%</span></div>
+      <div class="tp"><span class="mono small">03</span><b class="grow">Send money home</b><span class="small num">15%</span></div>
+      <p class="small">Moving one to first is how the brand shifts the message without rewriting anything.</p></div>
+    <div class="card glass"><span class="label">Earner · mission detail</span>
+      <div class="tp" style="background:transparent"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true"><path d="M0 0 L50 0 L50 50 Z M100 0 L100 50 L50 50 Z M100 100 L50 100 L50 50 Z M0 100 L0 50 L50 50 Z" fill="var(--blue)"/></svg><span class="grow"><span class="label">Today’s talking point</span><b style="display:block;font-size:17px;margin-top:4px">Free to join</b></span></div>
+      <span class="label">Do</span><ul class="dd"><li><span>Show the Heroes sign-up in the real app.</span><span class="rid">R-05</span></li><li><span>Say it’s free to join.</span><span class="rid">R-06</span></li><li><span>Turn on Paid partnership.</span><span class="rid">R-01</span></li></ul>
+      <span class="label">Don’t</span><ul class="dd"><li><span>Promise approval, amounts or dates.</span><span class="rid">R-03</span></li><li><span>Compare fees with other wallets.</span><span class="rid">R-04</span></li></ul></div>
+  </div>
+</section>
+
+<section id="quality">
+  <div class="sh"><span class="chip wait status">Bands settled · split open</span><h2>Quality bands</h2><p class="sub">Pass or fail decides pay. Quality sits beside it and never changes pay. The brand sees the number and its four parts; the earner sees a band and two tips.</p></div>
+  <div class="grid g3">
+    <div class="card glass"><span class="label">Bands</span><div class="row"><span class="band strong">Strong</span><span class="small">80 to 100</span></div><div class="row"><span class="band good">Good</span><span class="small">60 to 79</span></div><div class="row"><span class="band work">Needs work</span><span class="small">below 60, still paid</span></div><p class="small">Never coral. Coral means fix this, and a low band is not a failure.</p></div>
+    <div class="card glass"><span class="label">Earner · a post, opened</span>
+      <div class="row" style="align-items:flex-start;flex-wrap:nowrap"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true"><path d="M50 0L100 50L50 100L0 50Z M50 28L72 50L50 72L28 50Z" fill-rule="evenodd" fill="var(--orange)"/></svg><span class="grow"><b style="display:block">Reel · GCash Heroes</b><span class="small">Wed · Send money home</span><span style="display:flex;margin-top:6px"><span class="band work">Needs work</span></span></span><span class="chip ok">+₱40</span></div>
+      <div class="tips"><div><b>1</b><span style="flex:1">Name who you send money to.</span><span class="rid tp">Talking point</span></div><div><b>2</b><span style="flex:1">Cut the caption to two Taglish lines.</span><span class="rid">R-07</span></div></div></div>
+    <div class="card glass"><span class="label">Earner · a fix</span>
+      <div class="check"><svg width="16" height="16" viewBox="-5 -5 110 110" aria-hidden="true" style="flex:none"><path d="M0 0H100V100H0Z M27 27V73H73V27Z" fill="none" stroke="var(--l-coral)" stroke-width="9"/></svg><span><b>Needs a fix</b> <span class="rid">R-01</span><br><span style="font-size:13.5px">The Paid partnership label isn’t on. Turn it on, then paste the link again.</span></span></div>
+      <p class="small">Every fix names the rule the brand approved. Disputes go to the OkPo team.</p></div>
+  </div>
+  <div class="card glass"><span class="label">Brand console · same post</span>
+    <div class="row"><span class="num" style="font:800 40px/1 var(--display)">58</span><span class="small grow">of 100 · Needs work</span><span class="small mono">Brief fit 18/35 · Clear and true 22/25 · Craft 13/20 · Style 5/20</span></div></div>
+</section>
+
+<section id="components">
+  <div class="sh"><h2>Components</h2></div>
+  <div class="grid g2">
+    <div class="card glass"><span class="label">Buttons</span><div class="row"><button class="btn" type="button">Submit for check</button><button class="ghost" type="button">↑ First</button></div></div>
+    <div class="card glass"><span class="label">Status chips</span><div class="row"><span class="chip go">Start</span><span class="chip ok">+₱40</span><span class="chip fix">Needs a fix</span><span class="chip wait">Checking</span></div></div>
+    <div class="card glass"><span class="label">Rule IDs</span><div class="row"><span class="rid">R-01</span><span class="rid">R-13 · R-01</span><span class="rid tp">Talking point</span><span class="rid">K2</span></div></div>
+    <div class="card glass"><span class="label">Wordmark</span><div class="row"><span class="wordmark" style="font-size:36px" role="img" aria-label="OkPo"><span>O</span><span>k</span><span>P</span><span>o</span></span><span class="small">O coral, k yellow, P green, o blue. Minimum 20px.</span></div></div>
+  </div>
+</section>
+
+<section id="prototypes">
+  <div class="sh"><h2>Working prototypes</h2><p class="sub">All three share these rules. Fork the repo and open them locally.</p></div>
+  <div class="grid g3 links">
+    <a class="glass" href="prototypes/console.html"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true"><path d="M50 50 Q50 2 98 2 Q98 50 50 50 Z M50 50 Q98 50 98 98 Q50 98 50 50 Z M50 50 Q50 98 2 98 Q2 50 50 50 Z M50 50 Q2 50 2 2 Q50 2 50 50 Z" fill="var(--purple)"/></svg><span class="grow"><b style="display:block">Brand console</b><span class="small">Brand context, campaigns, posts</span></span></a>
+    <a class="glass" href="prototypes/earner.html"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true"><path d="M50 0L100 50L50 100L0 50Z M50 28L72 50L50 72L28 50Z" fill-rule="evenodd" fill="var(--orange)"/></svg><span class="grow"><b style="display:block">Earner and page</b><span class="small">Ana’s phone and a follower’s</span></span></a>
+    <a class="glass" href="prototypes/connected.html"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true"><path d="M0 0 L50 0 L50 50 Z M100 0 L100 50 L50 50 Z M100 100 L50 100 L50 50 Z M0 100 L0 50 L50 50 Z" fill="var(--blue)"/></svg><span class="grow"><b style="display:block">Connected</b><span class="small">Console and both phones, one state</span></span></a>
+  </div>
+</section>
+
+<section id="coders">
+  <div class="sh"><h2>For AI coders</h2><p class="sub">Point your coding agent at <a href="DESIGN.md" style="color:var(--ink)">DESIGN.md</a> and import <span class="mono">tokens.css</span>. The short list it must never break:</p></div>
+  <div class="card glass"><ul class="dd donts">
+    <li><span>No sloppy edges on product controls.</span></li>
+    <li><span>No glaze colour behind a screen.</span></li>
+    <li><span>Never show the earner their quality number.</span></li>
+    <li><span>Say “talking point”, never “angle”.</span></li>
+    <li><span>No full-screen moments in the brand console.</span></li>
+    <li><span>No blur on backdrop tiles. No em dashes in copy.</span></li>
+  </ul></div>
+</section>
+</main>
+</div>
+<script>
+(function(){
+const b=document.getElementById('themeBtn');
+const cur=()=>document.documentElement.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+const paint=()=>{b.textContent=cur()==='dark'?'Light':'Dark'};
+b.addEventListener('click',()=>{document.documentElement.setAttribute('data-theme',cur()==='dark'?'light':'dark');paint()});paint();
+})();
+</script>
+
+</body>
+</html>
