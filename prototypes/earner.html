@@ -17,7 +17,8 @@
   --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
   --ease:cubic-bezier(.2,.8,.2,1); --pop:cubic-bezier(.34,1.56,.64,1);
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+/* Light first (settled 1 Oct): dark only when the person picks it. */
+@media (prefers-color-scheme: dark){:root[data-theme="system-dark"]{
   --ground:#0f0f0f; --tone:#1c1b19; --ink:#ececec; --body:#b9bcc0; --mute:#8f949a; --line:rgba(255,255,255,.12);
   --glass-a:rgba(40,40,40,.7); --glass-b:rgba(18,18,18,.6); --glass-edge:rgba(255,255,255,.22); --glass-shadow:0 16px 36px rgba(0,0,0,.5);
   --glass-strong:rgba(34,34,34,.86); --soft:rgba(255,255,255,.07); --scrim:rgba(0,0,0,.5);
@@ -257,6 +258,7 @@ function wob(pts,seed,amp){
   return 'M'+q.map(([x,y],i)=>`${(x+amp*(Math.sin(i*f[0]+ph[0])+.45*Math.sin(i*f[1]+ph[1]))).toFixed(2)} ${(y+amp*(Math.sin(i*f[2]+ph[2])+.45*Math.sin(i*f[3]+ph[3]))).toFixed(2)}`).join(' L')+' Z';
 }
 function sloppy(k,color,size,seed){const amp=Math.min(2/(size/112),1.1);const d=POLY[k].map((p,j)=>wob(p,seed*10+j,amp)).join(' ');return `<path d="${d}" fill="${color}" fill-rule="evenodd" stroke="${color}" stroke-width="1.5" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>`}
+const DARKWASH={orange:'#1d150c',green:'#0f1a12',coral:'#1d1010',yellow:'#1d1a0c'};
 const WASH={orange:['#ffa94d','#d9480f','#ffe8cc'],green:['#69db7c','#2b8a3e','#ebfbee'],coral:['#ff8787','#c92a2a','#ffe3e3'],yellow:['#ffd43b','#e67700','#fff9db']};
 
 /* ---------- state ---------- */
@@ -537,13 +539,16 @@ function centerOf(el,phone){const a=el.getBoundingClientRect(),b=phone.getBoundi
 /* spec: colour key, deep?, shape, target tab, layout fn, text html fn */
 async function takeover(phone,spec,originEl){
   const W=phone.clientWidth,H=phone.clientHeight;
-  const [wash,deep,pale]=WASH[spec.colour];const fill=spec.deep?deep:pale;
+  const [wash0,deep,pale]=WASH[spec.colour];const DK=curTheme()==='dark';
+  /* Dark mode (settled 1 Oct, option C): a dark ground tinted toward the moment's colour, and the shape glows in its glaze. */
+  const wash=DK?DARKWASH[spec.colour]:wash0;const fill=DK?wash0:(spec.deep?deep:pale);
   const [ox,oy]=originEl&&originEl.isConnected?centerOf(originEl,phone):[W/2,H/2];
   const tabEl=phone.querySelector(`[data-ti="${spec.tab}"]`);
   const [tx,ty]=tabEl?centerOf(tabEl,phone):[W/2,H-40];
   const ov=document.createElement('div');ov.className='take';ov.setAttribute('role','status');ov.setAttribute('aria-label',spec.say);
   const shapes=spec.shapes(W,H);  /* [{k,size,cx,cy,rot,from}] */
-  ov.innerHTML=`<div class="wash" style="background:${wash}"></div>`+shapes.map((s,i)=>`<svg data-s="${i}" viewBox="-6 -6 112 112" style="left:${s.cx-s.size/2}px;top:${s.cy-s.size/2}px;width:${s.size}px;height:${s.size}px;transform:rotate(${s.rot||0}deg)">${sloppy(s.k,fill,s.size,spec.seed+i)}</svg>`).join('')+spec.text(W,H);
+  if(DK)ov.style.color='#ececec';
+  ov.innerHTML=`<div class="wash" style="background:${wash}"></div>`+shapes.map((s,i)=>`<svg data-s="${i}" viewBox="-6 -6 112 112" style="${DK&&!spec.deep?'opacity:.62;':''}left:${s.cx-s.size/2}px;top:${s.cy-s.size/2}px;width:${s.size}px;height:${s.size}px;transform:rotate(${s.rot||0}deg)">${sloppy(s.k,fill,s.size,spec.seed+i)}</svg>`).join('')+spec.text(W,H);
   phone.appendChild(ov);
   const wEl=ov.querySelector('.wash'),svgs=[...ov.querySelectorAll('svg')],txt=[...ov.querySelectorAll('.tx')];
   let skip=false;ov.addEventListener('click',()=>skip=true);
@@ -774,7 +779,7 @@ $('#simVia').onclick=()=>startVia();
 function startVia(){focusPhone('earner');S.e.via='ana';S.e.num='';S.e.onb='welcome';S.e.stack=[];S.e.sheet=null;S.e.notifsOpen=false;overlayE();renderE('fade')}
 $('#simOnb').onclick=()=>{focusPhone('earner');S.e.via=null;S.e.onb='welcome';S.e.stack=[];S.e.sheet=null;S.e.notifsOpen=false;overlayE();renderE('fade')};
 $('#resetBtn').onclick=()=>{const bg=S.bg;S=FRESH();S.bg=bg;setTimeout(paintVia,0);pE.querySelectorAll('.take,.toast').forEach(n=>n.remove());overlayE();renderE('fade');renderA('fade')};
-function curTheme(){const a=document.documentElement.getAttribute('data-theme');return a||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}
+function curTheme(){const a=document.documentElement.getAttribute('data-theme');return a||'light'}
 const paintTheme=()=>$('#themeBtn').textContent=curTheme()==='dark'?'Light':'Dark';
 $('#themeBtn').onclick=()=>{document.documentElement.setAttribute('data-theme',curTheme()==='dark'?'light':'dark');paintTheme()};paintTheme();
 

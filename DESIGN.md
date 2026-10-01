@@ -83,6 +83,10 @@ Site neutrals: cream `#FFFDF6`, bisque `#F3EFE6`, rule `#E2DCCD`, panel dark `#1
 
 All three are free Google Fonts. Never use Inter, Roboto or Arial. Nothing lighter than 800 for display.
 
+### Theme (Settled 1 Oct)
+
+Light first. The product opens light whatever the phone's setting; dark is a choice in settings. Build both, default to light.
+
 ### Motion (Settled unless marked)
 
 - Pop: `cubic-bezier(.34,1.56,.64,1)`. Ease: `cubic-bezier(.2,.8,.2,1)`. Exits: `cubic-bezier(.6,0,.3,1)`.
@@ -130,7 +134,9 @@ All three are free Google Fonts. Never use Inter, Roboto or Arial. Nothing light
 - Tab icons: outline in `--mute` when idle, filled glaze when active.
 - Brand console (Settled 1 Oct, option B): each section wears its tile, the same as the earner app. Posts orange diamond, Leads blue pinwheel, Brand context purple petals, Talking points green quarter, Recruiting yellow half, Pool green quarter. Status colours keep their meaning everywhere.
 - The console never takes over the screen. One pulse per section per minute, then a counter. No sound.
-- **Open**: the takeover system as a whole, streak rules, claim-now fee, weekly bonus, dark-mode washes.
+- Dark mode (Settled 1 Oct): the wash becomes a dark ground tinted toward the moment's colour (orange `#1D150C`, green `#0F1A12`, coral `#1D1010`, yellow `#1D1A0C`), the shape keeps its glaze and glows, text goes `#ECECEC`. Pale moments show the shape at 62% opacity.
+- Settled 30 Sep: claim now costs 2% (Friday free), a weekly bonus for 5 passed posts, a streak with one automatic rest day a week.
+- **Open**: the takeover system as a whole.
 
 ---
 
@@ -149,6 +155,7 @@ These words are product vocabulary. Use them exactly.
 - Rule severities: **Fail** (post doesn't count), **Needs a fix** (fix and resubmit), **Note** (lowers quality only).
 - Every Do and Don't line on a mission carries its rule ID as a mono chip. Lines that come from the talking point carry a yellow "Talking point" chip instead.
 - Every fix names its rule: "Needs a fix · R-01".
+- Paid-post disclosure on the earner's OkPo page (Settled 1 Oct): the quiet chip "Paid partnership with GCash" under the earner's name, matching the platform's own wording. On the post itself, rules R-01 and R-02 apply.
 - Rule changes go to the brand for approval before they are live. Money changes need a second tap ("Send to GCash", "Approve and publish").
 
 ```html

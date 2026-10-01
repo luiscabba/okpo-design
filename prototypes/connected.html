@@ -16,7 +16,8 @@
   --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
   --ease:cubic-bezier(.2,.8,.2,1);
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+/* Light first (settled 1 Oct): dark only when the person picks it. */
+@media (prefers-color-scheme: dark){:root[data-theme="system-dark"]{
   --ground:#0f0f0f; --tone:#1c1b19; --ink:#ececec; --body:#b9bcc0; --mute:#8f949a; --line:rgba(255,255,255,.12);
   --panel:rgba(34,34,34,.88); --panel2:rgba(26,26,26,.7); --edge:rgba(255,255,255,.16); --shadow:0 16px 36px rgba(0,0,0,.5);
   --soft:rgba(255,255,255,.07); --btn:#ececec; --on-btn:#121212;
@@ -320,7 +321,7 @@ $('#nextDay').onclick=()=>{if(S.day>=6){toast('That’s the end of the demo week
 
 $('#resetBtn').onclick=()=>{S=FRESH();writeBrief();renderAll()};
 $$('[data-show]').forEach(b=>b.onclick=()=>{$('#stage').dataset.show=b.dataset.show;$$('[data-show]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)))});
-function curTheme(){const a=document.documentElement.getAttribute('data-theme');return a||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}
+function curTheme(){const a=document.documentElement.getAttribute('data-theme');return a||'light'}
 const paintTheme=()=>$('#themeBtn').textContent=curTheme()==='dark'?'Light':'Dark';
 $('#themeBtn').onclick=()=>{document.documentElement.setAttribute('data-theme',curTheme()==='dark'?'light':'dark');paintTheme()};paintTheme();
 renderAll();

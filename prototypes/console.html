@@ -18,7 +18,8 @@
   --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
   --ease:cubic-bezier(.2,.8,.2,1);
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+/* Light first (settled 1 Oct): dark only when the person picks it. */
+@media (prefers-color-scheme: dark){:root[data-theme="system-dark"]{
   --ground:#0f0f0f; --tone:#1c1b19; --ink:#ececec; --body:#b9bcc0; --mute:#8f949a; --line:rgba(255,255,255,.12);
   --glass-a:rgba(40,40,40,.7); --glass-b:rgba(18,18,18,.6); --glass-edge:rgba(255,255,255,.18); --glass-shadow:0 16px 36px rgba(0,0,0,.5);
   --glass-strong:rgba(32,32,32,.88); --soft:rgba(255,255,255,.07); --scrim:rgba(0,0,0,.55);
@@ -757,7 +758,7 @@ document.addEventListener('submit',e=>{e.preventDefault();const f=e.target,k=f.d
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeOv();if(e.key==='Enter'){const r=e.target.closest&&e.target.closest('tr[data-post],tr[data-lead]');if(r){r.dataset.post!==undefined?openPost(+r.dataset.post):openLead(r.dataset.lead)}}});
 function setRole(r){S.role=r;render({quiet:true});toast(r==='team'?'Viewing as the OkPo team. You can edit everything.':'Viewing as GCash. You approve and adjust; setup stays with OkPo.')}
 $('#roleTeam').onclick=()=>setRole('team');$('#roleBrand').onclick=()=>setRole('brand');
-function curTheme(){const a=document.documentElement.getAttribute('data-theme');return a||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}
+function curTheme(){const a=document.documentElement.getAttribute('data-theme');return a||'light'}
 const paintTheme=()=>$('#themeBtn').textContent=curTheme()==='dark'?'Light':'Dark';
 $('#themeBtn').onclick=()=>{document.documentElement.setAttribute('data-theme',curTheme()==='dark'?'light':'dark');paintTheme()};paintTheme();
 
