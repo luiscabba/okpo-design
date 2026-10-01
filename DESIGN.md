@@ -165,6 +165,15 @@ These words are product vocabulary. Use them exactly.
 
 ---
 
+### Three layers and guided setup (Proposed 1 Oct, prototype at /setup)
+
+- **Who we are** (brand level): facts (`K`) and the voice. The only claims the AI may make, and how it sounds.
+- **Guardrails** (brand level, shown in the UI as "Guardrails", IDs stay `R-xx`): only things that stop a post. OkPo's four are locked. Lines that are really a fact, the voice or a brief item do not belong here.
+- **Campaign brief** (per campaign, lives only in Campaigns): talking points, how a post ends, tags, campaign facts. It sits on top and can add or tighten, never loosen. A brief-related fix cites `Brief · Ends on`, not a rule ID.
+- Guardrails get no tile or icon of their own. Who we are uses the Brand context petal; the brief uses the talking-points quarter.
+- **Setup is a separate mode**: full screen, no sidebar, one question per screen, one ink button, "Skip for now" on optional steps, "Save and exit" on every screen. Facts are checked in pages of five; anything skipped stays a draft the AI does not use. Publishing goes through a "Ready to go live?" summary and "Approve and publish".
+- **The configured console is organized**: Brand context tabs are Overview, Who we are, Guardrails, Test, Learn. Leftover setup tasks sit in a dismissible "Finish setting up" card. Day-one screens show empty states, never invented activity.
+
 ## 8. Quality score (Settled 1 Oct, parts open)
 
 - Pass or fail decides pay. Quality sits beside it and **never changes pay**.
