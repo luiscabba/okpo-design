@@ -5,7 +5,12 @@ The product design system for OkPo: the brand console, the earner app and the ea
 - `index.html` is the showcase. Every specimen on it is the real component.
 - `DESIGN.md` is the brief for AI coding agents. Point Claude Code, Cursor or any agent at it before they build OkPo UI.
 - `tokens.css` holds every colour, type, radius and motion token, light and dark, plus the core components.
-- `prototypes/` holds three working prototypes: the brand console, the earner app with a follower's page, and the connected view where all three share one state.
+- `prototypes/` holds four working prototypes. Short links on the live site:
+  - `/console`: the brand console
+  - `/earner`: the earner app, with a follower's page beside it
+  - `/audience`: the same file, opened on the follower's page
+  - `/lobby`: okpo.com for visitors and signed-in earners (campaigns, posts that passed, Earn with OkPo)
+  - `/connected`: all three sharing one state
 
 It is plain static HTML. No build step.
 
