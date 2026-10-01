@@ -785,6 +785,7 @@ $('#themeBtn').onclick=()=>{document.documentElement.setAttribute('data-theme',c
 
 setBg(S.bg||'tone');
 paintVia();renderE('none');renderA('none');
+if(location.hash==='#follower'||location.hash==='#audience'){focusPhone('aud');pA.classList.add('flash')}
 })();
 </script>
 

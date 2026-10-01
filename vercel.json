@@ -1,0 +1,30 @@
+{
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/console",
+      "destination": "/prototypes/console.html",
+      "permanent": false
+    },
+    {
+      "source": "/earner",
+      "destination": "/prototypes/earner.html",
+      "permanent": false
+    },
+    {
+      "source": "/audience",
+      "destination": "/prototypes/earner.html#follower",
+      "permanent": false
+    },
+    {
+      "source": "/lobby",
+      "destination": "/prototypes/lobby.html#lobby",
+      "permanent": false
+    },
+    {
+      "source": "/connected",
+      "destination": "/prototypes/connected.html",
+      "permanent": false
+    }
+  ]
+}
