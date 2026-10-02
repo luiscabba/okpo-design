@@ -1,11 +1,35 @@
 # OkPo design system, for AI coders
 
-Read this before you write any OkPo UI. It describes the system **as the working prototypes build it** (`prototypes/console.html`, `earner.html`, `lobby.html`, `connected.html`), audited on 2 Oct 2026. If this file and a prototype disagree, this file wins, and the prototype is due a fix. If a screen you are asked to build breaks a rule here, follow this file and say so in your summary.
+Read this before you write any OkPo UI. It describes the system **as the working prototypes build it** (`prototypes/console.html`, `setup.html`, `earner.html`, `lobby.html`, `connected.html`), audited on 2 Oct 2026. If this file and a prototype disagree, this file wins, and the prototype is due a fix. If a screen you are asked to build breaks a rule here, follow this file and say so in your summary.
 
 Status words:
 
-- **Settled**: build it this way.
+- **Locked**: Luis decided it and it stays closed. Build it this way. Do not suggest alternatives, redesigns or "small improvements" to it, and do not raise it in reviews. It reopens only when Luis says so in so many words. Everything that was Settled became Locked on 2 Oct 2026.
+- **On trial**: in use and kept for now. Do not change it; Luis will call it.
 - **Open**: build the current default, keep it easy to change, and do not invent a new answer.
+
+### Locked register (2 Oct 2026)
+
+Review time goes to flow and usability, not to these:
+
+| Area | What is locked | Where |
+|---|---|---|
+| Registers | Marketing site is hand-drawn; product is crisp glass with an ink main button | §2 |
+| Tokens | Glazes, label shades, neutrals, status tints, type, glass, radius, light first | §3 |
+| Wordmark | OkPo, four glazes, 20px minimum, all four letters or none | §4 |
+| Backdrop | Three crisp tone tiles, fixed placement, never moves | §5 |
+| Icons | Six tiles, the line-icon set, avatars and monograms, nothing invented | §6 |
+| Section tiles | One tile per section and tab | §6 |
+| Layout | Console shell, phone shell, Lobby wrap, screen header | §7 |
+| Tab titles | `.big` 26px on every earner tab | §7 |
+| Components | Everything in §8 | §8 |
+| Motion | The five curves, the durations, the takeover, the banner, the console moments | §9 |
+| Vocabulary | Fact, Voice, Rule, Talking point, Brand context | §10 |
+| Brand setup | The console's new-brand flow, full screen, one question per screen | §10 |
+| Voice | Chrome in second person, OkPo's guide in first person, the AI in third person | §11 |
+| Copy | Names from data, button and toast shapes, money format, no em dashes | §11 |
+
+On trial: frame and coral for Overview and Today (§6). Open: the Lobby's register (§2), Luis to review.
 
 The golden rule for new screens: **reuse a pattern that already exists in a prototype before inventing one.** No new icons, badges, marks or shortened wordmarks. Visuals come from the six tiles, the line-icon set in §6, and the full wordmark.
 
@@ -26,7 +50,7 @@ First client: GCash. Campaign names are plain client names ("GCash Heroes", "GCa
 
 ---
 
-## 2. Registers (Settled, one Open)
+## 2. Registers (Locked, one Open)
 
 | | Marketing site (okpo.com landing) | Product (console, earner app, earner page, Lobby) |
 |---|---|---|
@@ -35,7 +59,7 @@ First client: GCash. Campaign names are plain client names ("GCash Heroes", "GCa
 | Main button | Yellow glaze, drawn edge | **Ink** (`--btn`) |
 | Surface | Cream and bisque, solid cards | Liquid glass over the tone-on-tone backdrop |
 
-Never mix registers on one screen. **Open:** the Lobby lives on okpo.com but is built in the product register. Keep it that way until decided.
+Never mix registers on one screen. **Open, Luis to review:** the Lobby lives on okpo.com but is built in the product register. Keep it that way until he decides.
 
 ---
 
@@ -43,7 +67,7 @@ Never mix registers on one screen. **Open:** the Lobby lives on okpo.com but is 
 
 `tokens.css` is the source. Every prototype should load it instead of redeclaring `:root` (today each one redeclares, with small drift; §12 lists it).
 
-### Glazes (Settled)
+### Glazes (Locked)
 
 | Token | Hex | Tile | Label shade on light |
 |---|---|---|---|
@@ -59,7 +83,7 @@ Never mix registers on one screen. **Open:** the Lobby lives on okpo.com but is 
 3. A full glaze block takes ink text.
 4. The wordmark is the only place glazes colour letters on light.
 
-### Neutrals (Settled)
+### Neutrals (Locked)
 
 | Token | Light | Dark |
 |---|---|---|
@@ -73,7 +97,7 @@ Never mix registers on one screen. **Open:** the Lobby lives on okpo.com but is 
 | `--scrim` | `rgba(18,18,18,.28)` | `rgba(0,0,0,.55)` |
 | `--btn` / `--on-btn` | `#121212` / `#F6F1E4` | `#ECECEC` / `#121212` |
 
-### Status tints (Settled)
+### Status tints (Locked)
 
 | Meaning | Background | Text |
 |---|---|---|
@@ -85,7 +109,7 @@ Never mix registers on one screen. **Open:** the Lobby lives on okpo.com but is 
 
 **"Needs a fix" is coral everywhere** (posts, rules, missions). Yellow means "waiting or needs a look", never "fix".
 
-### Type (Settled)
+### Type (Locked)
 
 | Role | Face | Size |
 |---|---|---|
@@ -96,7 +120,7 @@ Never mix registers on one screen. **Open:** the Lobby lives on okpo.com but is 
 
 Never Inter, Roboto or Arial. Do not load Bricolage 700.
 
-### Glass (Settled, values from the built prototypes)
+### Glass (Locked, values from the built prototypes)
 
 ```css
 --glass-a: rgba(255,255,255,.66);  --glass-b: rgba(255,255,255,.44);
@@ -112,7 +136,7 @@ Never Inter, Roboto or Arial. Do not load Bricolage 700.
 
 Strong glass is for things that float (tab bar, sheets, drawers, modals, toasts, the topbar and sidebar) **and** for the one hero card in a group that must read first (Earned today, Ready to claim, the sign-up card, the main table).
 
-### Radius (Settled)
+### Radius (Locked)
 
 | Token | Value | Use |
 |---|---|---|
@@ -126,19 +150,19 @@ Strong glass is for things that float (tab bar, sheets, drawers, modals, toasts,
 | `--r-id` | 6px | rule IDs, tags |
 | `--r-pill` | 99px | chips, pills, bands |
 
-### Theme (Settled 1 Oct)
+### Theme (Locked 1 Oct)
 
 Light first. **The OS dark setting is ignored**; dark applies only when the person picks it (`data-theme="dark"`). Build both.
 
 ---
 
-## 4. Wordmark (Settled)
+## 4. Wordmark (Locked)
 
 `OkPo`: Bricolage 800, `-0.035em`, letters coral, yellow, green, blue. Minimum 20px; below that write OkPo in the text face. All four letters or none: never two letters, never a badge, avatar or app icon made from it, never built from tiles.
 
 ---
 
-## 5. Backdrop (Settled)
+## 5. Backdrop (Locked)
 
 Three crisp `--tone` tiles behind every product screen, no blur, never a glaze behind a screen.
 
@@ -148,7 +172,7 @@ Three crisp `--tone` tiles behind every product screen, no blur, never a glaze b
 
 ---
 
-## 6. Iconography (Settled)
+## 6. Iconography (Locked)
 
 1. **Tiles.** Six shapes, `viewBox="-5 -5 110 110"`. Filled with their glaze, or outlined `fill:none;stroke:<colour>;stroke-width:9`.
    - Nav and tab icons: outline in `--mute` when idle (14 to 21px), filled glaze when active (15 to 22px).
@@ -157,7 +181,7 @@ Three crisp `--tone` tiles behind every product screen, no blur, never a glaze b
 4. **Avatars:** `.av` circle with 1 or 2 initials on `--soft`. Brand monogram `.bm` rounded square (radius 12) with initials.
 5. Nothing else. No invented badges or marks.
 
-### Section tiles (Settled)
+### Section tiles (Locked)
 
 Each console section and each earner tab wears one tile.
 
@@ -171,13 +195,13 @@ Each console section and each earner tab wears one tile.
 | Brand context, Coach, Ask AI, publish | petal | purple |
 | Talking points and the brief | quarter | green |
 
-**Open:** frame and coral for Overview and Today. Strictly the coral rule allows only fix, fail, the streak and the O. See §12.
+**On trial (2 Oct):** frame and coral stay on Overview and Today. Do not change them; Luis will call it.
 
 ---
 
 ## 7. Layout
 
-### Console (Settled)
+### Console (Locked)
 
 ```css
 .app{display:grid;grid-template-columns:244px minmax(0,1fr);gap:16px;padding:16px}
@@ -194,21 +218,21 @@ Each console section and each earner tab wears one tile.
   - one or two sentence `.sub`
   - actions on the right
 
-### Phone (Settled)
+### Phone (Locked)
 
 - Phone 390×800, radius 44.
 - Screen padding `22px 18px 110px`, gap 14px.
 - Floating tab bar: strong glass, 64px tall, radius 26px, 12px from the edges, five tabs (Today, Coach, Posts, Wallet, My page). It slides away on pushed screens.
 - Pushed screens open with a back icon button and a breadcrumb `.small`.
-- **Open:** Coach, Posts, Wallet and My page use a 17px Plex title while Today uses `.big`. Recommended: `.big` 26px on every tab.
+- **Locked (2 Oct):** every tab title is `.big` 26px, Today included. Coach, Posts, Wallet and My page still use a 17px Plex title in the prototype; see §12.
 
-### Lobby (Settled)
+### Lobby (Locked)
 
 `.wrap` max 1180px, gap 56px. Site nav glass strong, current link underlined in ink.
 
 ---
 
-## 8. Components (Settled unless marked)
+## 8. Components (Locked unless marked)
 
 | Component | Spec |
 |---|---|
@@ -246,7 +270,7 @@ Each console section and each earner tab wears one tile.
 
 ---
 
-## 9. Moments and motion (Settled, from the built engines)
+## 9. Moments and motion (Locked, from the built engines)
 
 ### Motion tokens
 
@@ -269,7 +293,7 @@ Each console section and each earner tab wears one tile.
 - Meters and bars grow 800ms.
 - Overlays: drawer 360ms, modal 280ms, sheet 340ms, close 220 to 260ms.
 
-### Earner reward takeover (Settled)
+### Earner reward takeover (Locked)
 
 The shape and its colour come from §6. The sequence:
 
@@ -284,7 +308,7 @@ The shape and its colour come from §6. The sequence:
 - Light wash is the full glaze, with the shape in its deep or pale shade.
 - Dark wash is a tinted dark ground (`#1D150C`, `#0F1A12`, `#1D1010`, `#1D1A0C`), with the shape in its glaze (62% on pale moments) and `#ECECEC` text.
 
-### Things other people do (Settled)
+### Things other people do (Locked)
 
 These arrive as the **top banner** and never interrupt:
 
@@ -295,9 +319,9 @@ These arrive as the **top banner** and never interrupt:
 5. Hold 2.4s.
 6. The shape flies to its tab with `--arc`.
 
-**Open:** the banner is still hard-coded light; it needs a strong-glass and dark version.
+The banner's dark version is still to build (§12).
 
-### Console (Settled)
+### Console (Locked)
 
 The console never takes over the screen. Its moments are local:
 
@@ -306,7 +330,14 @@ The console never takes over the screen. Its moments are local:
 - **Checked:** the card flashes a green-tint ring over 0.7s. (Fix: today it uses the green glaze, which is a thin glaze line; use `--l-green`.)
 - **Approve:** avatars arc into the Joined column with `--arc`, 700ms.
 
-**Open:** "one pulse per section per minute, then a counter" is specced but not built.
+"One pulse per section per minute, then a counter" is specced but not built (§12).
+
+### What moves on a screen (Locked 2 Oct)
+
+- A step or screen change fades the main column once, 260ms. Inside a step only the part that changed moves.
+- Text never animates word by word and never blurs in.
+- Things are not thrown across the screen. The only flights are the publish petal (console and setup) and the earner's reward shapes. Confirmed items change in place.
+- New things join the end of a list, so nothing below them jumps.
 
 ### Reduced motion
 
@@ -316,7 +347,7 @@ Everything becomes a short fade with the **same hold times**. Demo delays stay t
 
 ## 10. Brand context, rules, facts, talking points
 
-Vocabulary used in UI copy (Settled): **Fact** (`K1`), **Rule** (`R-01`), **Talking point**. Never "angle". Retire "Know", "Aim" and "Direction" from the console copy.
+Vocabulary used in UI copy (Locked): **Brand context**, **Fact** (`K1`), **Voice**, **Rule** (`R-01`), **Talking point**. Never "angle".
 
 - Rule severities: **Fail** (post doesn't count), **Needs a fix** (fix and resubmit), **Note** (lowers quality only).
 - Every Do and Don't line carries its rule ID chip, or a yellow "Talking point" chip.
@@ -324,24 +355,39 @@ Vocabulary used in UI copy (Settled): **Fact** (`K1`), **Rule** (`R-01`), **Talk
 - The paid-post label on the earner page reads "Paid partnership with GCash".
 - Rule and money changes go to the brand for approval. The second tap reads "Send to GCash for approval", then "Approve and publish vN".
 
-### Three layers and guided setup (Proposed 1 Oct, not yet in the console)
+### Brand context (Locked 2 Oct)
 
-- **Who we are:** facts and voice, brand level.
-- **Guardrails:** only what stops a post. IDs stay `R-xx`. OkPo's four are locked.
-- **Campaign brief:** lives in Campaigns, sits on top, can add or tighten, never loosen.
+Brand context is one thing with one name everywhere: the checked facts, the voice and the rules a brand's AI works from. Earlier names are retired: "Know", "Aim", "Direction", "Who we are", "Guardrails" and "Your [brand] AI".
 
-The console today still has tabs Facts, Rules, Learn, Test, and a five-step new-brand flow inside the console shell (Sources, Read, Check facts, Rules, Test and publish). **Setup work must start from that flow and its motion.** Proposed changes:
+| Part | IDs | What it holds |
+|---|---|---|
+| Facts | `K1` | What's true. The AI only states what a checked fact says. |
+| Voice | `Voice` | How the brand sounds. |
+| Rules | `R-01` | What stops a post. OkPo's four (`R-01`, `R-02`, `R-11`, `R-14`) are the same for every brand and locked. |
+| Campaign brief | | Talking points, goal and ending. Lives in Campaigns, written after a campaign is created, sits on top, can add or tighten, never loosen. Never part of setup. |
 
-- run setup full screen
-- one question per screen
-- facts checked in pages of five, with skipped facts saved as drafts
-- a "Ready to go live?" summary before publishing
+### Brand setup (Locked 2 Oct, `prototypes/setup.html`)
+
+Setup **is** the console's new-brand flow, run full screen. Same five steps, same components, same motion; only the layout changes.
+
+- Top bar (strong glass): wordmark, brand switcher, the console's `.stepper` (Sources, Read, Check facts, Rules, Test and publish), "Save and exit". Under 900px the stepper becomes "2 of 5 · Read".
+- One question per screen, in this order: brand name · sources · three quick questions (optional) · read · facts in pages of five · the conflict picker · voice · questions nothing answered (optional) · rules · test · "Ready to go live?" · live.
+- **Brand context panel** on the right (regular glass, sticky). Title "Brand context". The brand's name appears only in its eyebrow ("GCash · v1"), with a Draft or Live chip. Sections: Facts, Voice, Rules, then Campaign brief as the last line, empty. Only checked items enter it. On a phone it is a strong-glass bar ("Brand context · 9 facts · 4 rules") that opens a sheet.
+- Read: the console's read engine. Each card rises 14px at .96 into the bottom of its column (Facts, Voice, Rules) with `--pop-soft` over 420ms; the count ticks up; scans turn into checks in place. No re-render at the end.
+- Check: "Keep these 5" ticks each card in place with the green flash ring (0.7s, 60ms stagger), and its chip pops into the panel. Cards never leave the screen. Then only the list fades (160ms out, 260ms in); the heading stays. "Check the rest later" saves the rest as drafts the AI does not use.
+- Test: the console's test chat. Every answer names the fact or rule it used, and that row flashes in the panel.
+- Publish: the console's moment. A petal pops at the button and flies to the brand switcher over 1.3s, the switcher pulses, the live card pops, and the toast reads "**GCash brand context v1 is live.** The coach, daily briefs and every OkPo page use it now."
+- Live ends on the campaign brief as the next layer, with "Start the first campaign", which opens the console's new campaign.
 
 ---
 
-## 11. Copy (Settled)
+## 11. Copy (Locked)
 
 - **Chrome is English**, short, second person. Taglish lives in data, AI answers, earner greetings and follower-facing lines. Use "po" when the other person uses it.
+- **Three voices, never mixed (Locked 2 Oct):**
+  - **Chrome** (headings, buttons, labels, toasts): second person. "Is this right?", "Check the rest later".
+  - **OkPo's guide** (setup and other guided flows only): first person, plain, one or two sentences. "I drafted 8 facts. Nothing is used until you check it." It sits in a `.say` block: `--soft` ground, radius 14, a mono "OkPo" label above the text, no avatar, no mark. It rises once, 10px over 320ms, in one piece, and only when its words change. Never word by word.
+  - **The brand's AI** as described in the console: third person. "The AI drafts cards. Nothing is used until someone checks it." When the AI answers in a chat it speaks for itself, with the petal and its `used` chips.
 - **Names come from data, never from templates.** A brand or person name appears where the screen is about that account: the brand switcher, eyebrow scope ("Brand context · GCash"), buttons that send to them ("Send to GCash"), the earner's own greeting. Flow headings and questions stay general ("Is this true about your brand?" not "Is this true about GCash?"), because the same flow serves every brand.
 - Titles: plain nouns ("Campaigns", "Pool and billing") or one clear claim ("Your numbers, next to ours").
 - Subtitles: one or two sentences that explain who decides or pays.
@@ -354,7 +400,7 @@ The console today still has tabs Facts, Rules, Learn, Test, and a five-step new-
 
 ## 12. Known drift to fix in the prototypes
 
-1. Every prototype redeclares `:root` instead of loading `tokens.css`. The values drift: glass saturate, strong-glass alpha, dark edge.
+1. Every prototype except `setup.html` redeclares `:root` instead of loading `tokens.css`. The values drift: glass saturate, strong-glass alpha, dark edge.
 2. Focus rings use `var(--blue)`. Change to `2px solid var(--l-blue)`.
 3. Glaze rings on light: the console's green check flash, the yellow example ring and the coral verdict border. Change them to label shades or tints.
 4. "Needs a fix" is yellow in the console rules. Change to coral.
@@ -363,7 +409,11 @@ The console today still has tabs Facts, Rules, Learn, Test, and a five-step new-
 7. The connected prototype's takeover is a text-only linear fade. Replace with the earner engine.
 8. Console copy still says Know, Aim and Direction.
 9. The follower page wordmark is 15px, under the 20px minimum. Write "OkPo" in the text face instead.
-10. Coral appears on the notification badge, the invite dot and non-streak frame tiles. **Open:** decide whether frame and coral is "Today and Overview" or only the streak.
+10. Coral appears on the notification badge and the invite dot. Frame and coral on Overview and Today stay while on trial.
+11. Earner tabs Coach, Posts, Wallet and My page still use the 17px Plex title. Change to `.big` 26px.
+12. The "other people" banner is hard-coded light. Build its strong-glass and dark version.
+13. "One pulse per section per minute, then a counter" is specced for the console but not built.
+14. The console's own new-brand view still says Know, Aim and Direction, and still asks for starter talking points in Rules. Setup is the reference; bring the console view in line.
 
 ---
 
@@ -374,7 +424,9 @@ The console today still has tabs Facts, Rules, Learn, Test, and a five-step new-
 - Invent icons, badges or partial wordmarks.
 - Put a brand's name in a flow's headings.
 - Show the earner their quality number.
-- Write "angle", "Know", "Aim" or "Direction".
+- Write "angle", "Know", "Aim", "Direction", "Who we are", "Guardrails" or "Your [brand] AI".
+- Reopen, restyle or offer alternatives to anything Locked.
+- Animate text word by word, or throw confirmed items across the screen.
 - Add a full-screen moment to the brand console.
 - Blur or animate the backdrop tiles.
 - Use any easing other than the five motion tokens.

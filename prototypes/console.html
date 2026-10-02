@@ -1091,6 +1091,8 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')$('.bmenu')?.remove(
 if(S.nb&&S.nb.read==='run'){S.nb.read=S.nb.cards.length?'done':'no';if(!S.nb.cards.length){S.nb.step=0}}
 
 $('#resetBtn').onclick=()=>{S=FRESH();closeOv();lastView=null;render();toast('Demo reset.')};
+/* arriving from brand setup: setup.html links here with #new-campaign */
+if(location.hash==='#new-campaign'){S.view='campaigns';S.cview='new';history.replaceState(null,'',location.pathname)}
 render();
 })();
 </script>
