@@ -33,7 +33,7 @@
   },
   {
    "source": "/onboard",
-   "destination": "/prototypes/onboard.html",
+   "destination": "/prototypes/setup.html",
    "permanent": false
   }
  ]

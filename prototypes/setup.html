@@ -8,7 +8,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <link rel="stylesheet" href="../tokens.css">
 <style>
-/* Brand setup: the console's new-brand flow (Sources, Read, Check facts, Rules, Test and publish), run full screen,
+/* Fast brand onboarding: one input, a few answer cards, live. Replaced the 12-screen detailed setup on 2 Oct; that version is in git history.
+   Brand setup base styles follow: the console new-brand flow (Sources, Read, Check facts, Rules, Test and publish), run full screen,
    one question per screen. The Brand context panel on the right fills as things are checked.
    Built from tokens.css and the console's own components and motion. Nothing here is new to the system. */
 *{box-sizing:border-box}
@@ -129,6 +130,34 @@ select.txt{appearance:auto}
   .kv2{grid-template-columns:minmax(0,1fr);gap:2px 0}.kv2>span:nth-child(even){margin-bottom:10px}
   .proto{left:auto;right:12px}
 }
+/* fast onboarding additions */
+.lvl{display:flex;flex-direction:column;gap:8px}
+.lvl .segs{display:flex;gap:6px}
+.lvl .segs i{display:block;flex:1;height:6px;border-radius:99px;background:var(--soft);transition:background .5s var(--ease)}
+.lvl .segs i.on{background:var(--l-purple)}
+.lvl .segs i.next{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--l-purple) 55%,transparent) 0 4px,color-mix(in srgb,var(--l-purple) 18%,transparent) 4px 8px)}
+.trust{white-space:nowrap}
+.fact{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.fact:first-of-type{border-top:0}
+.fact b{font-weight:500}
+.srow{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line);font-size:14px}
+.srow:first-of-type{border-top:0}
+.srow b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.srow .small{white-space:nowrap}
+.addrow{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,.8fr) auto auto;gap:10px;align-items:center;padding:10px 2px;border-top:1px solid var(--line);font-size:14px}
+.addrow:first-child{border-top:0}
+.ans{display:grid;gap:8px}
+.ans button{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:12px;align-items:center;border:1px solid var(--line);background:transparent;border-radius:14px;padding:14px 16px;text-align:left;transition:border-color .2s,box-shadow .2s,background .2s}
+.ans button:hover{background:var(--soft)}
+.ans button[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink);background:var(--glass-strong)}
+.ans .k{width:28px;height:28px;border-radius:8px;border:1px solid var(--line);display:grid;place-items:center;font:600 12px var(--mono);color:var(--mute)}
+.ans button[aria-pressed="true"] .k{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+.ans .o{display:flex;flex-direction:column;gap:5px;min-width:0}
+.ans .line{font:800 19px/1.25 var(--display);letter-spacing:-.02em}
+.min{display:flex;flex-direction:column;gap:2px}
+.min .li{padding:8px 0}
+.post{display:flex;flex-direction:column;gap:10px;padding:14px 16px;border-radius:16px;background:var(--glass-strong);border:1px solid var(--line)}
+.toprt{display:flex;align-items:center;gap:12px}
 </style>
 </head>
 <body>
@@ -145,87 +174,80 @@ const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const wait=ms=>new Promise(r=>setTimeout(r,RM?Math.min(ms,40):ms));
 const EASE='cubic-bezier(.2,.8,.2,1)',POP='cubic-bezier(.34,1.56,.64,1)',POPS='cubic-bezier(.34,1.45,.64,1)',EXIT='cubic-bezier(.6,0,.3,1)';
 
-/* tiles and line icons, exactly as the console draws them */
 const P={frame:'<path d="M0 0H100V100H0Z M27 27V73H73V27Z" fill-rule="evenodd" fill="C"/>',quarter:'<path d="M0 100 L0 0 A100 100 0 0 1 100 100 Z" fill="C"/>',diamond:'<path d="M50 0L100 50L50 100L0 50Z M50 28L72 50L50 72L28 50Z" fill-rule="evenodd" fill="C"/>',half:'<path d="M0 100 A50 50 0 0 1 100 100 Z" fill="C"/><rect width="100" height="22" fill="C"/>',pin:'<path d="M0 0 L50 0 L50 50 Z M100 0 L100 50 L50 50 Z M100 100 L50 100 L50 50 Z M0 100 L0 50 L50 50 Z" fill="C"/>',petal:'<path d="M50 50 Q50 2 98 2 Q98 50 50 50 Z M50 50 Q98 50 98 98 Q50 98 50 50 Z M50 50 Q50 98 2 98 Q2 50 50 50 Z M50 50 Q2 50 2 2 Q50 2 50 50 Z" fill="C"/>'};
 const COL={frame:'var(--coral)',quarter:'var(--green)',diamond:'var(--orange)',half:'var(--yellow)',pin:'var(--blue)',petal:'var(--purple)'};
 function tile(k,s=14,outline){let b=P[k];b=outline?b.replace(/fill="C"/g,`style="fill:none;stroke:${outline};stroke-width:9"`).replace(/fill-rule="evenodd" /g,''):b.replace(/fill="C"/g,`style="fill:${COL[k]}"`);return `<svg width="${s}" height="${s}" viewBox="-5 -5 110 110" aria-hidden="true" style="flex:none;display:block">${b}</svg>`}
-const IC={x:'<path d="M6 6l12 12M18 6L6 18"/>',check:'<path d="M5 12l5 5 9-10"/>',doc:'<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/>',link:'<path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1"/>',up:'<path d="M12 19V5M5 12l7-7 7 7"/>',lock:'<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/>',back:'<path d="M19 12H5M11 6l-6 6 6 6"/>',chev:'<path d="M9 6l6 6-6 6"/>',send:'<path d="M5 12h14M13 6l6 6-6 6"/>'};
+const IC={x:'<path d="M6 6l12 12M18 6L6 18"/>',check:'<path d="M5 12l5 5 9-10"/>',doc:'<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/>',link:'<path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1"/>',up:'<path d="M12 19V5M5 12l7-7 7 7"/>',lock:'<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/>',chev:'<path d="M9 6l6 6-6 6"/>',send:'<path d="M5 12h14M13 6l6 6-6 6"/>',plus:'<path d="M12 5v14M5 12h14"/>',chat:'<path d="M4 5h16v11H9l-5 4z"/>'};
 const ic=(k,s=16)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;display:block">${IC[k]}</svg>`;
 $('#bg').innerHTML=(innerWidth<700?[['quarter','left:-120px;top:-120px;width:420px;height:420px'],['petal','left:180px;top:140px;width:300px;height:300px'],['half','left:120px;top:520px;width:380px;height:380px']]:[['quarter','left:-260px;top:-360px;width:900px;height:900px'],['petal','left:45vw;top:-260px;width:640px;height:640px'],['half','left:48vw;top:58vh;width:820px;height:820px']]).map(([k,st])=>`<svg viewBox="-5 -5 110 110" style="${st}">${P[k].replace(/fill="C"/g,'style="fill:var(--tone)"')}</svg>`).join('');
 
 /* ---------------- demo data (GCash) ---------------- */
-const SOURCES=[{n:'gcash.com',d:'Website · 24 pages',web:1},{n:'GCash Brand Guidelines 2026.pdf',d:'Brand book · 48 pages'},{n:'Marketing compliance memo.pdf',d:'Compliance · 6 pages',memo:1},{n:'GCash Heroes deck.pdf',d:'A past brief · 12 slides'},{n:'Old campaign scan.pdf',d:'Scanned · 3 pages',bad:1}];
-const CATS=['Finance and e-wallets','Food and drink','Telco','Beauty','Retail','Apps and games','Other'];
-const DRAFT=[
- {id:'K1',g:'Facts',t:'Free to download and sign up.',sh:'Free to join',src:'gcash.com/register'},
- {id:'V1',g:'Voice',t:'Taglish, short and warm.',sh:'Taglish, short, warm',src:'Brand book, p.22'},
- {id:'R-03',g:'Rules',t:'Never promise approval, loan amounts or dates.',src:'Compliance memo, p.2',memo:1},
- {id:'K3',g:'Facts',t:'Sign-up needs one valid ID and takes about 5 minutes.',sh:'One ID, 5 minutes',src:'gcash.com/help'},
- {id:'K2',g:'Facts',t:'Verification is usually done the same day.',sh:'Same-day check',src:'gcash.com/help',low:1},
- {id:'R-04',g:'Rules',t:'Never compare fees with other wallets.',src:'Brand book, p.31'},
- {id:'V2',g:'Voice',t:'Say “po” when the other person does.',sh:'“Po” when they use it',src:'Brand book, p.23'},
- {id:'K4',g:'Facts',t:'Send money to any Philippine bank.',sh:'Any bank',src:'gcash.com/send'},
- {id:'K5',g:'Facts',t:'Pay bills to over 1,000 billers in the app.',sh:'1,000+ billers',src:'gcash.com/bills'},
- {id:'R-09',g:'Rules',t:'Never lead with loans or credit.',src:'Compliance memo, p.3',memo:1},
- {id:'K6',g:'Facts',t:'Save in GSave with no minimum balance.',sh:'GSave, no minimum',src:'Brand book, p.14'},
- {id:'V3',g:'Voice',t:'No hard sell. Show the app doing the work.',sh:'No hard sell',src:'Brand book, p.24'},
- {id:'K7',g:'Facts',t:'Most customers are 18 to 35, many unbanked.',sh:'18 to 35',src:'Brand book, p.8'},
- {id:'R-10',g:'Rules',t:'One campaign per post.',src:'Compliance memo, p.4',memo:1},
- {id:'K8',g:'Facts',t:'Many send money home to family in the provinces.',sh:'Sends money home',src:'Brand book, p.9',low:1},
-];
-const CONFLICT={t:'Welcome credit: the website says ₱50, the Heroes deck says ₱100.',src:'gcash.com vs Heroes deck',options:[['₱50','gcash.com, promos page'],['₱100','GCash Heroes deck, slide 6'],['Neither','The offer has ended']]};
-const GAPS=[{id:'G1',q:'Can I use GCash abroad?'},{id:'G2',q:'Is there a fee to cash out to a bank?'}];
+const WEB=[{n:'gcash.com',d:'24 pages',web:1},{n:'Play Store · GCash',d:'listing and 200 reviews',web:1},{n:'facebook.com/gcashofficial',d:'30 recent posts',web:1},{n:'News',d:'6 articles, last 90 days',web:1},{n:'instagram.com/gcashofficial',d:'needs a login',web:1,bad:1}];
+const EXTRA=[{n:'GCash Brand Book 2026.pdf',d:'42 pages · your file',use:'Voice, do and don’t',file:1},{n:'Fees and limits.xlsx',d:'3 sheets · your file',use:'Fees and limits',file:1,fees:1}];
+const READ=[
+ {id:'K1',t:'Free to join',tr:'src',src:'gcash.com'},
+ {id:'K2',t:'Send to any PH bank',tr:'src',src:'gcash.com'},
+ {id:'K3',t:'1,000+ billers',tr:'src',src:'gcash.com/bills'},
+ {id:'K4',t:'GSave, no minimum',tr:'src',src:'gcash.com/gsave'},
+ {id:'K5',t:'Cash in at 7-Eleven',tr:'src',src:'gcash.com/cashin'},
+ {id:'K8',t:'Many send money home',tr:'guess',src:'Play Store reviews'},
+ {id:'S1',t:'Verification takes about a day',tr:'src',src:'gcash.com/help',sens:'dates'},
+ {id:'S2',t:'One valid ID to sign up',tr:'src',src:'gcash.com/help',sens:'eligibility'}];
+const FEE={id:'S3',t:'Bank transfer fee, from your fee table',tr:'src',src:'Fees and limits.xlsx',sens:'money'};
+const BOOK={id:'K9',t:'No hard sell; show the app doing the work',tr:'src',src:'Brand Book 2026.pdf, p.24'};
+const WHO=[{v:'First-time users, 18 to 35',tr:'guess',src:'Play Store reviews'},{v:'Students and first-jobbers',tr:'guess',src:'facebook.com comments'},{v:'Families sending money home',tr:'guess',src:'Play Store reviews'}];
+const VOICES=[{v:'Taglish, warm, short',line:'Libre lang mag-join, mga 5 minuto. Padala agad kay Nanay.',tr:'src',src:'facebook.com/gcashofficial'},{v:'Clear English',line:'Join free in about 5 minutes and send money the same day.',tr:'src',src:'gcash.com'},{v:'Playful',line:'5 minuto lang, libre pa. Ano pang hinihintay mo?',tr:'guess',src:'A guess from TikTok'}];
+const MONEY=[{v:'₱50',d:'Welcome credit for new verified users',tr:'src',src:'gcash.com/promos'},{v:'₱100',d:'Welcome credit for new verified users',tr:'guess',src:'A news article, July'},{v:'Don’t mention it yet',d:'I stay quiet. It goes to To check.',tr:'',src:''}];
+const RULES0=[{id:'R-03',t:'Never promise approval, loan amounts or dates',src:'Common for finance brands',on:true},{id:'R-04',t:'Never compare fees with other wallets',src:'Common for finance brands',on:true},{id:'R-09',t:'Don’t lead with loans or credit',src:'gcash.com/gcredit terms',on:true},{id:'R-10',t:'One campaign per post',src:'Common for finance brands',on:false}];
 const OKPO=[['R-01','Turn on the paid partnership label'],['R-02','Say it’s paid, in words or with the label'],['R-11','Use your own tracked link'],['R-14','No minors on camera']];
-const GROUPS=['Facts','Voice','Rules'];
-const STEPS=['Sources','Read','Check facts','Rules','Test and publish'];
-const STEP_OF=[0,0,0,1,2,2,2,2,3,4,4,4],FIRST=[0,3,4,8,9],PAGE=5;
+const STEPS=['Sources','Read','Check','Rules','Test and publish'];
+const STEP_OF=[0,1,2,2,2,3,4,4],LEVELS=['Just met','Learning','Knows you','Knows you well'];
+const TR={conf:['ok','Confirmed'],src:['info','Sourced'],guess:['n','Guess']};
 
-const fresh=()=>({mode:'setup',step:0,max:0,name:'GCash',cat:'Finance and e-wallets',files:[],iv:{who:'',offer:'',never:''},
- cards:[],read:'no',fpage:0,credit:null,gaps:GAPS.map(g=>({...g})),rules:[],editing:null,as:'inf',chat:[],busy:false,published:false,sheet:false});
-let S=fresh(),lastKey='',lastSay='',seen=new Set(),timers=[];
+const fresh=()=>({step:0,site:'gcash.com',added:[],links:[],read:'no',srcDone:0,facts:[],who:null,whoOther:'',voice:null,money:null,rules:RULES0.map(r=>({...r})),published:false,checked:new Set(),sheet:false});
+let S=fresh(),lastKey='',seen=new Set(),timers=[];
 const later=(fn,ms)=>{const t=setTimeout(fn,RM?0:ms);timers.push(t);return t};
-const memo=()=>S.files.some(f=>f.memo);
-const facts=()=>S.cards.filter(c=>c.g==='Facts');
-const voice=()=>S.cards.filter(c=>c.g==='Voice');
-const ok=g=>S.cards.filter(c=>c.st==='ok'&&(!g||c.g===g));
-const drafts=()=>facts().filter(c=>c.st==='draft');
+const trust=t=>t?`<span class="chip up trust ${TR[t][0]}">${TR[t][1]}</span>`:'';
+const srcTag=(s,file)=>s?`<span class="src">${ic(file||/\.(pdf|xlsx|docx|pptx)/.test(s)?'doc':'link',12)}${esc(s)}</span>`:'';
 const rulesOn=()=>S.rules.filter(r=>r.on);
-const card=id=>S.cards.find(c=>c.id===id);
-const isTeam=()=>true;
+const sensOpen=()=>S.facts.filter(f=>f.sens&&f.tr!=='conf');
+const toCheck=()=>[...sensOpen(),...S.facts.filter(f=>f.tr==='guess'),...(S.money==='Don’t mention it yet'?[{id:'S4',t:'Welcome credit amount',sens:'money',tr:'',src:'You chose: don’t mention it yet'}]:[]),...(S.published?[{id:'Q1',t:'Can I use GCash abroad?',ask:1,tr:'',src:'Coach, test chat'}]:[])].filter(f=>!S.checked.has(f.id));
+const minimum=()=>[['Who you want more of',!!(S.who||S.whoOther)],['Voice',!!S.voice],['At least 1 rule',(S.step>=5||S.published)&&rulesOn().length>0],['Every sensitive conflict answered',!!S.money]];
+const minDone=()=>minimum().filter(m=>m[1]).length;
 
-/* ---------------- shared pieces ---------------- */
 function toast(html){const t=document.createElement('div');t.className='toast glass strong';t.setAttribute('role','status');t.innerHTML=html;$('#layer').appendChild(t);
  if(!RM)t.animate([{opacity:0,transform:'translate(-50%,16px)'},{opacity:1,transform:'translateX(-50%)'}],{duration:350,easing:EASE});
  setTimeout(()=>{if(RM){t.remove();return}t.animate([{opacity:1},{opacity:0,transform:'translate(-50%,12px)'}],{duration:220}).finished.then(()=>t.remove())},3200)}
-const bm=(sz=28)=>S.name.trim()?`<span class="gdot" style="width:${sz}px;height:${sz}px">${esc(S.name.trim()[0].toUpperCase())}</span>`:`<span class="gdot empty" style="width:${sz}px;height:${sz}px">+</span>`;
 function bump(el){if(el&&!RM)el.animate([{transform:'scale(1)'},{transform:'scale(1.15)'},{transform:'scale(1)'}],{duration:260,easing:POP})}
-function say(text){return `<div class="say" id="say"><span class="label">OkPo</span><p>${text}</p></div>`}
+const say=text=>`<div class="say" id="say"><span class="label">OkPo</span><p>${text}</p></div>`;
 const head=(eyebrow,title)=>`<div class="hd"><span class="label" id="eyebrow">${tile('petal',14)}${eyebrow}</span><h1 id="h1">${title}</h1></div>`;
 function navRow({back=true,primary='Continue',disabled=false,skip='',id='next'}={}){
  return `<div class="nav">${back?`<button type="button" class="ghost" data-act="back">Back</button>`:''}<span class="grow"></span>${skip?`<button type="button" class="link" data-act="skip">${skip}</button>`:''}<button type="button" class="btn" id="${id}" data-act="next" ${disabled?'disabled':''}>${primary}</button></div>`}
-function chipFor(c){return c.st==='ok'?'<span class="chip ok up">Checked</span>':c.st==='draft'?'<span class="chip n up">Draft · not used</span>':c.low?'<span class="chip warn up">A guess · check me</span>':'<span class="chip n up">Drafted</span>'}
-function kc(c,mode){
- return `<div class="kc glass${c.st==='ok'?'':' strong'}" data-kc="${c.id}"><div class="row"><span class="label grow">${esc(c.g==='Voice'?'Voice':c.id)}</span><span data-chip="${c.id}">${chipFor(c)}</span></div>
- ${S.editing===c.id?`<textarea class="txt" data-txt="${c.id}" rows="3">${esc(c.t)}</textarea>`:`<p>${esc(c.t)}</p>`}
- <span class="src">${ic('doc',12)}${esc(c.src)}</span>
- ${mode==='read'?'':`<div class="row" style="gap:6px"><span class="grow"></span>${S.editing===c.id?`<button class="btn sm" type="button" data-save="${c.id}">Save</button>`:`<button class="ghost" type="button" data-edit="${c.id}">Edit</button><button class="ghost" type="button" data-drop="${c.id}" aria-label="Drop this card">${ic('x',13)}</button>`}</div>`}</div>`}
+
+/* ---------------- the meter: how well I know the brand ---------------- */
+function meter(){
+ const lvl=S.published?2:1,pre=!S.published&&S.step===6&&minDone()===4;
+ const right=S.published?'Next: Knows you':pre?'Publish to reach Learning':`${minDone()} of 4 to publish`;
+ return `<div class="lvl" role="meter" aria-label="How well OkPo knows the brand" aria-valuemin="1" aria-valuemax="4" aria-valuenow="${lvl}" aria-valuetext="${LEVELS[lvl-1]}">
+  <div class="row small" style="justify-content:space-between"><span><b style="color:var(--ink);font-weight:600">${LEVELS[lvl-1]}</b> · ${lvl} of 4</span><span style="${pre?'color:var(--l-purple)':''}">${right}</span></div>
+  <div class="segs">${[0,1,2,3].map(i=>`<i class="${i<lvl?'on':pre&&i===lvl?'next':''}"></i>`).join('')}</div></div>`}
 
 /* ---------------- Brand context panel ---------------- */
 function panel(){
- const f=ok('Facts'),v=ok('Voice'),r=rulesOn(),live=S.published,dr=drafts().length;
- const row=(id,txt,cls)=>`<div class="prow" data-p="${id}"><span class="rid ${cls||''}">${esc(id)}</span><span>${esc(txt)}</span></div>`;
- return `<div class="row"><span class="label grow" style="display:inline-flex;gap:8px;align-items:center">${tile('petal',14)}${esc(S.name||'New brand')} · v1</span><span class="chip up ${live?'ok':'n'}">${live?'● Live':'Draft'}</span></div>
- <h2>Brand context</h2>
- <span class="small">${live?'The coach, daily briefs and Ask AI use this now.':'The coach, daily briefs and Ask AI will use this. Only checked items go in.'}</span>
- <div class="sec"><div class="row"><span class="label grow">Facts</span><span class="cnt num">${f.length}</span></div>${f.map(c=>row(c.id,c.sh||c.t,'k')).join('')||'<span class="small">Facts you check land here.</span>'}${dr?`<span class="small">${dr} more saved as drafts, not used yet.</span>`:''}</div>
- <div class="sec"><div class="row"><span class="label grow">Voice</span><span class="cnt num">${v.length}</span></div>${v.map(c=>row('Voice',c.sh,'k')).join('')||'<span class="small">How the brand sounds lands here.</span>'}</div>
- <div class="sec"><div class="row"><span class="label grow">Rules</span><span class="cnt num">${r.length?r.length+' + 4':'0'}</span></div>${r.map(x=>row(x.id,x.t)).join('')}${r.length?'<span class="small">Plus OkPo’s 4, the same for every brand.</span>':'<span class="small">What stops a post lands here.</span>'}</div>
- <div class="sec"><div class="row">${tile('quarter',14,'var(--mute)')}<span class="label grow">Campaign brief</span></div><span class="small">Written with each campaign, on top of all this.</span></div>`}
+ const live=S.published,f=S.facts,tc=toCheck().length,v=S.voice,r=rulesOn();
+ const row=(id,txt,t)=>`<div class="prow" data-p="${id}"><span class="rid k">${esc(id)}</span><span class="grow" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(txt)}</span>${trust(t)}</div>`;
+ return `<div class="row"><span class="label grow" style="display:inline-flex;gap:8px;align-items:center">${tile('petal',14)}GCash · v1</span><span class="chip up ${live?'ok':'n'}">${live?'● Live':'Draft'}</span></div>
+ <h2>Brand context</h2>${meter()}
+ ${tc&&S.read==='done'?`<div class="mini" style="background:color-mix(in srgb,var(--yellow) 38%,transparent);color:var(--l-yellow);align-items:center"><b class="disp" style="font-size:22px">${tc}</b><span class="grow" style="line-height:1.35"><b>To check</b><br>Anyone at GCash or OkPo can check these.</span></div>`:''}
+ <div class="sec"><div class="row"><span class="label grow">Facts</span><span class="cnt num">${f.length}</span></div>${f.slice(-7).map(x=>row(x.id,x.t,x.tr)).join('')||'<span class="small">Facts land here as I read.</span>'}${f.length>7?`<span class="small">+${f.length-7} more</span>`:''}</div>
+ <div class="sec"><div class="row"><span class="label grow">Voice</span><span class="cnt num">${v?1:0}</span></div>${v?row('Voice',v,'conf'):'<span class="small">Picked on a card.</span>'}</div>
+ <div class="sec"><div class="row"><span class="label grow">Rules</span><span class="cnt num">${S.step>=5||live?r.length+' + 4':'0'}</span></div>${S.step>=5||live?r.map(x=>`<div class="prow" data-p="${x.id}"><span class="rid">${x.id}</span><span>${esc(x.t)}</span></div>`).join('')+'<span class="small">Plus OkPo’s 4, the same for every brand.</span>':'<span class="small">Picked on a card.</span>'}</div>
+ <div class="sec"><div class="row">${tile('quarter',14,'var(--mute)')}<span class="label grow">Campaign brief</span></div><span class="small">Written with each campaign.</span></div>`}
 function paintPanel(){
  $$('[data-panel]').forEach(p=>p.innerHTML=panel());
  const bar=$('#ctxbar');if(bar)bar.innerHTML=barText();
  $$('[data-p]').forEach(el=>{const k=el.dataset.p+'|'+el.textContent;if(!seen.has(k)){seen.add(k);if(!RM&&lastKey)el.firstElementChild.animate([{transform:'scale(.6)',opacity:0},{transform:'none',opacity:1}],{duration:300,easing:POP})}})}
-const barText=()=>`${tile('petal',16)}<span class="grow"><b>Brand context</b> · ${ok('Facts').length} facts · ${rulesOn().length} rules</span>${ic('chev',14)}`;
+const barText=()=>`${tile('petal',16)}<span class="grow"><b>Brand context</b> · ${S.published?'Learning':'Just met'} · ${S.facts.length} facts</span>${ic('chev',14)}`;
 function openSheet(){const l=$('#layer');l.insertAdjacentHTML('beforeend',`<div class="scrim" data-act="sheetclose"></div><div class="sheet glass strong" role="dialog" aria-modal="true" aria-label="Brand context"><div class="grab"></div><div class="row" style="justify-content:flex-end"><button class="ghost" type="button" data-act="sheetclose" aria-label="Close">${ic('x',14)}</button></div><div class="ctx" data-panel>${panel()}</div></div>`);
  const sh=$('.sheet',l);if(!RM){sh.animate([{transform:'translateY(100%)'},{transform:'none'}],{duration:340,easing:EASE});$('.scrim',l).animate([{opacity:0},{opacity:1}],{duration:240})}sh.querySelector('button').focus()}
 function closeSheet(){const l=$('#layer'),sh=$('.sheet',l),sc=$('.scrim',l);if(!sh)return;if(RM){sh.remove();sc.remove();return}
@@ -233,161 +255,111 @@ function closeSheet(){const l=$('#layer'),sh=$('.sheet',l),sc=$('.scrim',l);if(!
 
 /* ---------------- top bar ---------------- */
 function topbar(){
- const cur=STEP_OF[S.step],pub=S.published;
- const steps=STEPS.map((s,i)=>{const done=pub||i<cur,on=!pub&&i===cur;return `<button type="button" class="step ${on?'on':done?'done':''}" data-jump="${i}" ${done&&!pub&&S.read!=='run'?'':'disabled'} ${on?'aria-current="step"':''}><b>${done?ic('check',13):i+1}</b><span>${s}</span></button>${i<4?`<span class="sline"><i style="width:${done?100:0}%"></i></span>`:''}`}).join('');
+ const cur=STEP_OF[S.step],pub=S.published,named=S.step>0;
+ const steps=STEPS.map((s,i)=>{const done=pub||i<cur,on=!pub&&i===cur;return `<span class="step ${on?'on':done?'done':''}" ${on?'aria-current="step"':''}><b>${done?ic('check',13):i+1}</b><span>${s}</span></span>${i<4?`<span class="sline"><i style="width:${done?100:0}%"></i></span>`:''}`}).join('');
  return `<header class="top glass strong"><span class="wm" style="font-size:24px" role="img" aria-label="OkPo"><span>O</span><span>k</span><span>P</span><span>o</span></span>
- <button type="button" class="brandsw" id="brandBtn" data-act="brand">${bm()}<span class="grow bsw-t"><b style="display:block;font-weight:600">${esc(S.name.trim()||'New brand')}</b><span class="small">${pub?'Brand context v1':'Setting up'}</span></span></button>
+ <button type="button" class="brandsw" id="brandBtn" data-act="brand">${named?'<span class="gdot">G</span>':'<span class="gdot empty">+</span>'}<span class="grow bsw-t"><b style="display:block;font-weight:600">${named?'GCash':'New brand'}</b><span class="small">${pub?'Brand context v1':named?'Setting up':'New brand'}</span></span></button>
  <nav class="stepper" aria-label="Setup steps">${steps}</nav><span class="stepmini">${pub?'Live':`${cur+1} of 5 · ${STEPS[cur]}`}</span>
- ${pub||S.mode==='exited'?'':'<button type="button" class="link" data-act="exit" style="white-space:nowrap">Save and exit</button>'}</header>`}
+ </header>`}
 
 /* ---------------- screens ---------------- */
+function answerCard({items,key,group,other=true,skip=true}){
+ return `<div class="ans" role="group" aria-label="${esc(group)}">${items.map((o,i)=>`<button type="button" data-pick="${key}" data-v="${esc(o.v)}" aria-pressed="${S[key]===o.v}"><span class="k">${i+1}</span><span class="o">${o.line?`<span class="small">${esc(o.v)}</span><span class="line">${esc(o.line)}</span>`:`<b style="font-weight:600;font-size:15px">${esc(o.v)}</b>${o.d?`<span class="small">${esc(o.d)}</span>`:''}`}${srcTag(o.src)}</span>${trust(o.tr)}</button>`).join('')}</div>
+ ${other?`<form class="composer glass strong" data-form="other-${key}"><input id="other-${key}" placeholder="Something else" aria-label="Something else" autocomplete="off" value="${esc(key==='who'?S.whoOther:'')}"><button class="btn sm" type="submit">Use this</button></form>`:''}
+ <span class="small">Press 1 to ${items.length} to answer.${skip?' Or skip for now; it goes to To check.':''}</span>`}
+
 function screen(){
  const st=S.step;
- if(st===0)return [head('New brand context','Which brand are we setting up?')+say('Hi, I’m OkPo. I’ll read what you already have and draft the brand context. You check it, and nothing goes live until you publish. It takes about 10 minutes.')+
-  `<div class="card glass strong"><label class="field"><span class="label">Brand name</span><input class="txt" id="fName" value="${esc(S.name)}" autocomplete="off" placeholder="e.g. GCash"></label><label class="field"><span class="label">Category</span><select class="txt" id="fCat">${CATS.map(c=>`<option ${c===S.cat?'selected':''}>${c}</option>`).join('')}</select></label></div>`+
-  navRow({back:false,primary:'Start',disabled:!S.name.trim()})];
- if(st===1){const n=S.files.length;
-  return [head('Sources','What can I read?')+say(n?`${n===1?'One source':n+' sources'} so far. A compliance memo helps me find what must never be said.`:'Your website and brand book are enough to start. A compliance memo helps me find what must never be said.')+
-  `<button type="button" class="drop-z" data-act="addfile">${ic('up',18)}<span><b>Drop files here, or paste a link</b></span><span class="small">PDF, slides, docs or a web address. Click to add a sample.</span></button>
-  ${n?`<div class="card glass" id="files">${S.files.map((f,i)=>`<div class="li" data-f="${i}"><span>${ic(f.web?'link':'doc',15)}</span><span class="grow"><b style="font-weight:500">${esc(f.n)}</b><br><span class="small">${esc(f.d)}</span></span><button class="ghost" type="button" data-rm="${i}" aria-label="Remove ${esc(f.n)}">${ic('x',13)}</button></div>`).join('')}</div>`:''}`+
-  navRow({disabled:!n})]}
- if(st===2)return [head('Sources · optional','Anything no document says?')+say('Answer what you can. I treat these like a source, and each line still gets checked. Skip any of them.')+
-  `<div class="card glass strong">${[['who','Who are the customers?','Young workers, 18 to 35…'],['offer','What should people do?','Download GCash and finish sign-up…'],['never','What must the AI never say?','No approval promises…']].map(([k,l,ph])=>`<label class="field"><span class="label">${l}</span><input class="txt" data-iv="${k}" value="${esc(S.iv[k])}" placeholder="${ph}" autocomplete="off"></label>`).join('')}</div>`+
-  navRow({primary:`Read ${S.files.length+(S.iv.who||S.iv.offer||S.iv.never?1:0)} sources`,skip:'Skip'})];
- if(st===3){const run=S.read==='run',srcs=[...S.files.map(f=>f),...(S.iv.who||S.iv.offer||S.iv.never?[{n:'Your answers'}]:[])];
-  return [head('Read',run?'Reading your sources':'Here’s what I drafted')+say(run?'I’m drafting cards as I read. Every card says where it came from, and nothing is used until you check it.':readDoneLine())+
-  `<div class="card glass strong"><div class="row"><span class="label grow">Reading</span><span class="disp num" style="font-size:30px" id="count">${S.cards.length}</span><span class="small">cards</span></div>
-   ${srcs.map((f,i)=>`<div class="row" style="gap:8px"><span>${ic(f.web?'link':'doc',14)}</span><span class="grow" style="font-size:13px">${esc(f.n)}</span><span data-scan="${i}">${run?`<span class="scan" style="animation-delay:${i*300}ms"></span>`:f.bad?'<span class="chip warn up">Couldn’t read</span>':`<span style="color:var(--l-green)">${ic('check',14)}</span>`}</span></div>`).join('')}
-   <span class="small row" id="status" style="gap:6px">${run?'<span class="dots" style="padding:0"><i></i><i></i><i></i></span><span>Reading…</span>':''}</span></div>
-  <div class="cols">${GROUPS.map(g=>{const l=S.cards.filter(c=>c.g===g);return `<div class="col" data-col="${g}"><div class="row"><span class="label grow">${g}</span><span class="cnt num" data-gc="${g}">${l.length}</span></div>${l.map(c=>kc(c,'read')).join('')}</div>`}).join('')}</div>
-  <div class="card glass" id="extras" ${S.read==='done'?'':'hidden'}><span class="label">Needs you</span><div class="mini glass strong">${tile('frame',14)}<span>${esc(CONFLICT.t)}</span></div>${S.gaps.map(g=>`<div class="mini glass">${tile('petal',14,'var(--mute)')}<span>Not in your sources: ${esc(g.q)}</span></div>`).join('')}</div>`+
-  navRow({primary:'Check the facts',disabled:run})]}
- if(st===4){const fs=facts(),pages=Math.ceil(fs.length/PAGE),p=Math.min(S.fpage,pages-1),list=fs.slice(p*PAGE,p*PAGE+PAGE),last=p===pages-1,left=list.filter(c=>c.st!=='ok').length;
-  return [head(`Check facts · ${p*PAGE+1} to ${p*PAGE+list.length} of ${fs.length}`,'Is this right?')+say(p===0?'Here’s what I think is true. Fix anything that’s off. I only ever say what you keep.':'A few more, then we’re done with facts.')+
-  `<div style="display:flex;flex-direction:column;gap:10px" id="flist">${list.map(c=>kc(c)).join('')}</div>`+
-  navRow({primary:left?`Keep ${left===1?'this one':left===5?'these 5':'these '+left}`:'Continue',skip:last?'':'Check the rest later'})]}
- if(st===5)return [head('Check facts · one question','Your sources disagree. Which is right?')+say('Your website and the Heroes deck give different welcome credits. I won’t guess with money.')+
-  `<div class="opts" role="group" aria-label="Welcome credit">${CONFLICT.options.map(([v,d])=>`<button type="button" data-credit="${v}" aria-pressed="${S.credit===v}"><b class="disp" style="font-size:24px">${v}</b><span class="small">${d}</span></button>`).join('')}</div>`+
-  navRow({disabled:!S.credit})];
- if(st===6){const vs=voice(),allOk=vs.every(c=>c.st==='ok');
-  return [head('Check facts · voice','Does this sound right?')+say(`I learned the voice from your brand book. Here’s a plain line, then the same line the way I’d say it.`)+
-  `<div class="card glass strong"><div class="kv2"><span>Plain</span><span>Sign up for GCash today and enjoy fast, secure transfers!</span><span>In this voice</span><b class="disp" style="font-size:20px;line-height:1.2">Libre lang mag-join, mga 5 minuto. Padala agad kay Nanay.</b></div></div>
-  <div style="display:flex;flex-direction:column;gap:10px" id="vlist">${vs.map(c=>kc(c)).join('')}</div>`+
-  navRow({primary:allOk?'Continue':'Keep the voice'})]}
- if(st===7)return [head('Check facts · optional','Can you answer these?')+say(S.gaps.length?'Earners will likely ask these, and nothing you gave me answers them. Skip any you don’t know. I’ll keep them for Learn.':'That’s all of them. Each answer is now a checked fact.')+
-  `<div style="display:flex;flex-direction:column;gap:10px">${S.gaps.map(g=>`<form class="card glass strong" data-gap="${g.id}" style="gap:10px"><div class="row">${tile('petal',16,'var(--mute)')}<b class="grow">${esc(g.q)}</b></div><div class="row"><input class="txt" placeholder="Answer in one sentence" aria-label="Answer: ${esc(g.q)}" autocomplete="off"><button class="ghost" type="submit" style="white-space:nowrap">Add as a fact</button></div></form>`).join('')}</div>`+
-  navRow({primary:'Continue',skip:S.gaps.length?'Skip these':''})];
- if(st===8){const on=rulesOn().length;
-  return [head('Rules','What should stop a post?')+say(memo()?'I found these in your compliance memo and brand book. Tick the ones that are never OK. Each one stops a post from counting.':'I didn’t get a compliance document, so these are common for finance brands. Tick the ones that apply.')+
+ if(st===0){const n=S.added.length+S.links.length;
+  return [head('New brand context','What’s the brand’s website?')+say('Hi, I’m OkPo. Give me a website and I’ll do the reading: your site, app store pages, public socials and the news. Got files? They help with what websites don’t say: fees, rules, what you’ve tried. About 3 minutes.')+
+  `<div class="card glass strong"><label class="field"><span class="label">Website or brand name</span><input class="txt" id="fSite" value="${esc(S.site)}" autocomplete="off" placeholder="e.g. gcash.com" style="height:52px;font-size:18px;font-weight:600"></label>
+  <div class="sec" style="gap:10px"><div class="row" style="align-items:baseline"><span class="label">Add more</span><span class="small">Optional. Skip it and I’ll read the website alone.</span></div>
+  <button type="button" class="drop-z" data-act="addfile" style="flex-direction:row;justify-content:flex-start;text-align:left;gap:14px;padding:16px"><span style="width:40px;height:40px;border-radius:12px;background:color-mix(in srgb,var(--purple) 24%,transparent);color:var(--l-purple);display:grid;place-items:center;flex:none">${ic('up',18)}</span><span class="grow"><b style="color:var(--ink)">Drop files or browse</b><br><span class="small">Brand book, decks, FAQs, price lists. Click to add a sample.</span></span></button>
+  <form class="composer glass" data-form="link" style="border:1px solid var(--line)"><span style="color:var(--mute)">${ic('link',16)}</span><input id="linkIn" placeholder="Paste a link: Drive, Notion, a social page, a landing page" aria-label="Paste a link" autocomplete="off"><button class="ghost" type="submit" style="display:inline-flex;gap:6px;align-items:center">${ic('plus',14)}Add</button></form>
+  ${n?`<div id="adds">${[...S.added.map((f,i)=>({...f,k:'f'+i})),...S.links.map((l,i)=>({...l,k:'l'+i}))].map(x=>`<div class="addrow" data-add="${x.k}"><span style="color:var(--mute)">${ic(x.file?'doc':'link',15)}</span><span><b style="font-weight:500">${esc(x.n)}</b><br><span class="small">${esc(x.d)}</span></span><span class="small" style="color:var(--body)">${esc(x.use)}</span>${x.priv?'<span class="chip warn up">Needs sharing</span>':'<span class="chip ok up">Added</span>'}<button class="ghost" type="button" data-rm="${x.k}" aria-label="Remove ${esc(x.n)}" style="padding:6px">${ic('x',13)}</button></div>`).join('')}</div>`:''}
+  ${S.links.some(l=>l.priv)?'<span class="small" style="color:var(--l-yellow)">That page is private. Share it with OkPo, or I’ll skip it.</span>':''}</div></div>
+  <span class="small">Public pages only, plus what you add. Nothing goes live until you publish.</span>`+
+  navRow({back:false,primary:'Read it',disabled:!S.site.trim()})]}
+ if(st===1){const run=S.read==='run',srcs=[...S.added.map(f=>({...f})),...S.links.filter(l=>!l.priv),...WEB];
+  return [head('Read',run?`Reading ${esc(S.site)}`:'Here’s what I found')+say(run?'Each fact says where it came from. Sourced means I found it on your own pages or files. Guess means I inferred it; I won’t say a guess until you confirm it.':readDone())+
+  `<div class="cols" style="grid-template-columns:minmax(0,1fr) minmax(0,1.15fr)">
+   <div class="card glass strong"><div class="row"><span class="label grow">Sources</span><span class="disp num" style="font-size:28px" id="scount">${S.srcDone}</span><span class="small">read</span></div>
+   <div>${srcs.map((f,i)=>`<div class="srow"><span style="color:var(--mute)">${ic(f.file?'doc':'link',14)}</span><b style="font-weight:500" class="grow">${esc(f.n)}</b><span class="small">${esc(f.d)}</span><span data-scan="${i}">${i<S.srcDone||!run?(f.bad?'<span class="chip warn up">Couldn’t read</span>':`<span style="color:var(--l-green)">${ic('check',14)}</span>`):'<span class="scan"></span>'}</span></div>`).join('')}</div></div>
+   <div class="card glass"><span class="label">What I think GCash is</span><div id="flist">${S.facts.map(factRow).join('')||'<span class="small" id="fempty">Facts land here as I read.</span>'}</div></div></div>`+
+  navRow({primary:'Continue',disabled:run})]}
+ if(st===2)return [head('Check · 1 of 3','Who do you want more of?')+say('I read your reviews and posts. Pick the group you want OkPo to bring in. You can change it later.')+answerCard({items:WHO,key:'who',group:'Who you want more of'})+navRow({disabled:!(S.who||S.whoOther),skip:'Skip for now'})];
+ if(st===3)return [head('Check · 2 of 3','Which one sounds like you?')+say('Same line, three ways. Hear it, don’t describe it.')+answerCard({items:VOICES,key:'voice',group:'Voice',skip:false})+navRow({disabled:!S.voice})];
+ if(st===4)return [head('Check · 3 of 3','Your sources disagree on money.')+say('Your website says a ₱50 welcome credit. A news article says ₱100. I won’t guess with money, so this one needs an answer to publish. “Don’t mention it yet” counts.')+answerCard({items:MONEY,key:'money',group:'Welcome credit',other:false,skip:false})+navRow({disabled:!S.money})];
+ if(st===5){const on=rulesOn().length;
+  return [head('Rules','What should stop a post?')+say('I ticked the ones finance brands almost always need. Untick any that don’t fit. Each one stops a post from counting.')+
   `<div style="display:flex;flex-direction:column;gap:8px" role="group" aria-label="Rules">${S.rules.map((r,i)=>`<button type="button" class="rrow" role="checkbox" aria-checked="${r.on}" data-rule="${i}"><span class="cbx">${ic('check',13)}</span><span class="grow"><b style="display:block;font-weight:500">${esc(r.t)}</b><span class="src" style="margin-top:4px">${ic('doc',12)}${esc(r.src)}</span></span><span class="rid">${r.id}</span><span class="chip fix up">Fail</span></button>`).join('')}</div>
   <form class="composer glass strong" data-form="rule"><input id="ruleIn" placeholder="Add a rule, e.g. Never show another wallet’s app" aria-label="Add a rule" autocomplete="off"><button class="btn sm" type="submit">Add</button></form>
-  <div class="card glass"><div class="row"><span class="label grow">Set by OkPo · the same for every brand</span></div>${OKPO.map(([id,t])=>`<div class="li"><span style="color:var(--mute)">${ic('lock',15)}</span><span class="rid">${id}</span><span class="grow">${esc(t)}</span></div>`).join('')}</div>
-  <span class="small">You can soften a rule to Needs a fix later, in the console.</span>`+
+  <div class="card glass"><span class="label">Set by OkPo · the same for every brand</span>${OKPO.map(([id,t])=>`<div class="li"><span style="color:var(--mute)">${ic('lock',15)}</span><span class="rid">${id}</span><span class="grow">${esc(t)}</span></div>`).join('')}</div>`+
   navRow({disabled:!on,primary:on?`Use ${on} rule${on===1?'':'s'}`:'Tick at least one'})]}
- if(st===9){const msgs=S.chat.filter(m=>m.as===S.as),qs=S.as==='inf'?['Pwede ko bang sabihin na sure approved sila?','Magkano mag-join?','Mas mura ba kayo sa ibang wallet?']:['Magkano mag-join? Ano kailangan?','May welcome credit ba?','Pwede ba sa abroad?'];
-  return [head('Test and publish','Try it before it goes live.')+say('Ask what an earner or a follower would ask. Each answer names the fact or rule it used, and it lights up in Brand context.')+
-  `<div class="card glass"><div class="row" style="flex-wrap:wrap"><span class="label grow">Ask it something</span><div class="seg" role="group" aria-label="Who is asking"><button type="button" data-as="inf" aria-pressed="${S.as==='inf'}">As an earner</button><button type="button" data-as="fol" aria-pressed="${S.as==='fol'}">As a follower</button></div></div>
-  <div class="chat" id="chat">${msgs.length?msgs.map(bubble).join(''):`<span class="small">${S.as==='inf'?'The coach, in the earner app.':'Ask AI, on an earner’s OkPo page.'} It only answers from checked facts and rules.</span>`}</div>
-  <div class="row" style="flex-wrap:wrap;gap:6px">${qs.map(q=>`<button class="pill" type="button" data-q="${esc(q)}" ${S.busy?'disabled':''}>${esc(q)}</button>`).join('')}</div>
-  <form class="composer glass strong" data-form="ask"><input id="askIn" placeholder="Type a question" aria-label="Test question" autocomplete="off"><button class="btn sm" type="submit" ${S.busy?'disabled':''}>Send</button></form></div>`+
-  navRow({primary:'Review and publish'})]}
- if(st===10){const dr=drafts().length,cr=S.credit;
-  return [head('Test and publish · review','Ready to go live?')+say('This is what I’ll say and check for every campaign. You can change any of it later, and each publish is a new version.')+
-  `<div class="card glass strong"><div class="kv2">
-   <span>Facts</span><span><b>${ok('Facts').length} checked</b><br><span class="small">${dr?dr+' more saved as drafts. I won’t use them until someone checks them. ':''}Welcome credit: ${cr==='Neither'?'none right now':cr}.</span></span>
-   <span>Voice</span><span><b>${ok('Voice').map(c=>c.sh).join(', ')||'Not set'}</b></span>
-   <span>Rules</span><span><b>${rulesOn().length} from the brand, 4 from OkPo</b><br><span class="small">Each one stops a post from counting.</span></span>
-   <span>Tested</span><span><b>${S.chat.filter(m=>!m.me&&!m.typing).length} answers</b><br><span class="small">${S.chat.some(m=>m.handoff)?'Questions it couldn’t answer go to Learn.':'Every answer came from a checked fact or rule.'}</span></span>
-   <span>For Learn</span><span><b>${S.gaps.length+S.chat.filter(m=>m.handoff).length}</b><br><span class="small">Questions nothing answers yet.</span></span></div></div>`+
-  navRow({primary:'Approve and publish v1',id:'publish'})]}
- if(st===11)return [head('Brand context · v1','It’s live.')+say('I know the brand now. One layer is left, and it comes with each campaign: a brief that says what earners talk about.')+
-  `<div class="card glass strong" id="live"><div class="row">${bm(40)}<span class="grow"><b class="disp" style="font-size:24px;display:block">${esc(S.name)}</b><span class="small">${esc(S.cat)} · brand context v1 · published just now</span></span><span class="chip ok up">● Live</span></div>
-   <div class="li">${tile('petal',18)}<span class="grow"><b>Facts and voice</b><br><span class="small">${ok('Facts').length} facts, ${ok('Voice').length} voice notes${drafts().length?' · '+drafts().length+' drafts to check':''}</span></span><span class="chip ok up">Live</span></div>
-   <div class="li"><span style="color:var(--l-coral)">${ic('lock',18)}</span><span class="grow"><b>Rules</b><br><span class="small">${rulesOn().length} from the brand, 4 from OkPo</span></span><span class="chip ok up">Live</span></div>
-   <div class="li">${tile('quarter',18,'var(--mute)')}<span class="grow"><b>Campaign brief</b><br><span class="small">Written when you start a campaign</span></span><span class="chip n up">Next</span></div></div>
-  <div class="nav"><a class="ghost" href="console.html" style="text-decoration:none">Open the console</a><span class="grow"></span><a class="btn" href="console.html#new-campaign" style="text-decoration:none">Start the first campaign</a></div>`];
+ if(st===6){const vline=(VOICES.find(v=>v.v===S.voice)||VOICES[0]).line,all=minDone()===4,cr=S.money&&S.money!=='Don’t mention it yet'?S.money:null;
+  return [head('Test and publish','Here’s what I’ll write.')+say('A sample post for tomorrow’s brief, and how I handle a question I can’t answer yet. Publish when the minimum is in.')+
+  `<div class="cols" style="grid-template-columns:minmax(0,1fr) minmax(0,1fr)">
+   <div class="post"><span class="label">Sample post · tomorrow’s brief</span><b class="disp" style="font-size:19px;line-height:1.25">${esc(vline)}${cr?` May ${esc(cr)} welcome credit pa.`:''}</b><div class="row" style="flex-wrap:wrap;gap:6px"><span class="rid k">K1</span><span class="rid k">Voice</span>${cr?'<span class="rid k">K10</span>':''}<span class="rid">R-03</span></div><span class="small">Every line names the fact or rule it used.</span></div>
+   <div class="post"><span class="label">The coach · an earner asks</span><div class="bub me" style="align-self:flex-start;background:var(--soft)">Magkano ang cash out fee papuntang bank?</div><div class="bub ai">${tile('petal',20)}<div><span>Hindi ko pa po sigurado, kaya hindi ako manghuhula. Ipapasa ko ito sa GCash team.</span><div style="margin-top:6px"><span class="chip warn up">Handed off · To check</span></div></div></div></div></div>
+  <div class="card glass strong"><div class="row"><span class="label grow">Minimum to publish</span><span class="cnt num">${minDone()} of 4</span></div><div class="min">${minimum().map(([l,ok])=>`<div class="li"><span style="color:${ok?'var(--l-green)':'var(--mute)'}">${ic(ok?'check':'x',15)}</span><span class="grow">${l}</span>${ok?'':'<button class="ghost" type="button" data-fix="'+l+'">Answer</button>'}</div>`).join('')}</div>
+  <span class="small">${toCheck().length} things go to To check. I won’t say them until someone confirms them.</span></div>`+
+  navRow({primary:'Publish v1',id:'publish',disabled:!all})]}
+ if(st===7){const tc=toCheck();
+  return [head('Brand context · v1','It’s live.')+say('I know enough to write daily briefs in your voice. The rest is in To check; anyone at GCash or OkPo can confirm it, and each one goes live in the next brief.')+
+  `<div class="card glass strong"><div class="row"><span class="label grow">To check</span><span class="cnt warn num">${tc.length}</span></div>
+  ${tc.length?tc.map(f=>`<div class="li" data-tc="${f.id}"><span class="grow"><b style="font-weight:500">${esc(f.t)}</b><br><span class="small">${f.ask?'Asked by an earner':f.sens?'Sensitive · '+f.sens:'Audience'} · ${esc(f.src)}</span></span>${f.tr?trust(f.tr):'<span class="chip n up">Missing</span>'}<button class="ghost" type="button" data-confirm="${f.id}">${f.tr?'Confirm':'Answer'}</button></div>`).join(''):'<span class="small">Nothing left. Everything I say is confirmed or sourced.</span>'}</div>
+  <div class="nav"><span class="grow"></span><a class="btn" href="console.html" style="text-decoration:none">Open the console</a></div>`]}
 }
-function readDoneLine(){const f=facts().length,v=voice().length,r=S.cards.filter(c=>c.g==='Rules').length,bad=S.files.find(x=>x.bad);
- return `Done. I drafted ${f} facts, ${v} voice notes and ${r} rules. One thing disagrees and ${S.gaps.length} questions aren’t answered anywhere.${bad?` I couldn’t read ${esc(bad.n)}; it looks like a scanned image.`:''}`}
-function bubble(m){
- if(m.me)return `<div class="bub me">${esc(m.t)}</div>`;
- if(m.typing)return `<div class="bub ai">${tile('petal',22)}<span class="dots" aria-label="Thinking"><i></i><i></i><i></i></span></div>`;
- return `<div class="bub ai">${tile('petal',22)}<div><span>${esc(m.t)}</span><div class="row" style="flex-wrap:wrap;gap:6px;margin-top:6px">${m.handoff?'<span class="chip warn up">Handed off · kept for Learn</span>':''}${m.used.map(u=>`<span class="rid ${/^K|Voice/.test(u)?'k':''}">${esc(u)}</span>`).join('')}</div></div></div>`}
-
-function exited(){const where=STEPS[STEP_OF[S.step]];
- return [head('Saved','You can pick this up any time.')+say(`We stopped at ${where}. Everything you checked is kept, and nothing is live yet.`),'<div class="nav"><span class="grow"></span><button type="button" class="btn" data-act="resume">Continue setup</button></div>'];}
+function factRow(f){return `<div class="fact" data-f="${f.id}"><span><b>${esc(f.t)}</b>${f.sens?` <span class="small">· sensitive</span>`:''}<br>${srcTag(f.src)}</span>${trust(f.tr)}</div>`}
+function readDone(){const g=S.facts.filter(f=>f.tr==='guess').length,s=S.facts.filter(f=>f.sens).length,bad=WEB.find(w=>w.bad);
+ return `Done. ${S.facts.length} facts: ${g} guess${g===1?'':'es'} and ${s} sensitive ones I won’t say until confirmed. I couldn’t read ${esc(bad.n)}; it ${esc(bad.d)}. Three quick questions next.`}
 
 /* ---------------- render ---------------- */
 function render(focusId){
- const key=S.mode+':'+S.step,changed=key!==lastKey;
- const [inner,nav]=S.mode==='exited'?exited():screen();
- const wide=S.step===3&&S.mode==='setup';
+ const key='s'+S.step,changed=key!==lastKey;
+ const [inner,nav]=screen();
+ const wide=S.step===1||S.step===6;
  $('#app').innerHTML=topbar()+`<div class="body"><main class="main${wide?' wide':''}" id="main"><button type="button" class="ctxbar glass" id="ctxbar" data-act="sheet">${barText()}</button>${inner}${nav||''}</main><aside class="ctx glass" data-panel aria-label="Brand context"></aside></div>`;
  paintPanel();
- const sayEl=$('#say'),sayTxt=sayEl?sayEl.textContent:'';
  if(changed&&lastKey){window.scrollTo(0,0);if(!RM)$('#main').animate([{opacity:0},{opacity:1}],{duration:260,easing:EASE})}
- else if(sayEl&&sayTxt!==lastSay&&!RM)sayEl.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:320,easing:EASE});
- lastKey=key;lastSay=sayTxt;
- const ch=$('#chat');if(ch)ch.scrollTop=ch.scrollHeight;
- if(focusId){const el=document.getElementById(focusId);if(el){el.focus({preventScroll:true});if(el.setSelectionRange&&el.value!=null)el.setSelectionRange(el.value.length,el.value.length)}}
+ lastKey=key;
+ if(focusId){const el=document.getElementById(focusId);if(el)el.focus({preventScroll:true})}
 }
-function go(step){timers.forEach(clearTimeout);timers=[];S.step=step;S.max=Math.max(S.max,step);S.editing=null;closeSheet();
- if(step===3&&S.read!=='done'){startRead();return}
- if(step===8&&!S.rules.length)buildRules();
- render()}
-function buildRules(){S.rules=S.cards.filter(c=>c.g==='Rules').map(c=>({id:c.id,t:c.t,src:c.memo&&!memo()?'Common for finance brands':c.src,on:false}))}
+function go(step){timers.forEach(clearTimeout);timers=[];S.step=step;closeSheet();if(step===1&&S.read!=='done'){startRead();return}render()}
 
-/* Read: each card pops up from below into the bottom of its column. The count ticks up. No re-render at the end. */
-function startRead(){S.cards=[];S.read='run';render();
- const items=DRAFT.filter(c=>!(c.memo&&!memo())||c.g==='Rules').map(c=>({...c,src:c.memo&&!memo()?'Common for finance brands':c.src,low:c.low||(c.memo&&!memo()),st:'need'}));
- let i=0;const status=t=>{const s=$('#status span:last-child');if(s&&s.textContent!==t)s.textContent=t};
- const tick=()=>{if(S.step!==3||S.read!=='run')return;if(i>=items.length){finishRead();return}
-  status(i<3?'Reading…':'Drafting cards…');const c=items[i++];S.cards.push(c);
-  const col=$(`[data-col="${c.g}"]`);if(col){col.insertAdjacentHTML('beforeend',kc(c,'read'));const el=col.lastElementChild;if(!RM)el.animate([{opacity:0,transform:'translateY(14px) scale(.96)'},{opacity:1,transform:'none'}],{duration:420,easing:POPS});
-   const gc=$(`[data-gc="${c.g}"]`);if(gc)gc.textContent=S.cards.filter(x=>x.g===c.g).length}
-  const cnt=$('#count');if(cnt){cnt.textContent=S.cards.length;bump(cnt)}
-  later(tick,i<2?700:260)};
- later(tick,900)}
-function finishRead(){S.read='done';
- $$('[data-scan]').forEach(el=>{const f=S.files[+el.dataset.scan];el.innerHTML=f&&f.bad?'<span class="chip warn up">Couldn’t read</span>':`<span style="color:var(--l-green)">${ic('check',14)}</span>`;if(!RM)el.firstElementChild.animate([{transform:'scale(.6)',opacity:0},{transform:'none',opacity:1}],{duration:300,easing:POP})});
- const st=$('#status');if(st)st.innerHTML='';
- const h=$('#h1');if(h)h.textContent='Here’s what I drafted';
- const sy=$('#say p');if(sy){sy.innerHTML=readDoneLine();lastSay=$('#say').textContent;if(!RM)$('#say').animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:320,easing:EASE})}
- const ex=$('#extras');if(ex){ex.hidden=false;if(!RM)ex.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:320,easing:EASE})}
- const b=$('#next');if(b)b.disabled=false}
+/* Read: sources tick one by one, facts land with their trust level */
+function startRead(){S.facts=[];S.srcDone=0;S.read='run';render();
+ const srcs=[...S.added,...S.links.filter(l=>!l.priv),...WEB];
+ const items=[...READ];if(S.added.some(f=>f.fees))items.splice(2,0,{...FEE});if(S.added.some(f=>f.file&&!f.fees))items.splice(1,0,{...BOOK});
+ let i=0,s=0;
+ const tickSrc=()=>{if(S.step!==1||S.read!=='run'||s>=srcs.length)return;const el=$(`[data-scan="${s}"]`),f=srcs[s];s++;S.srcDone=s;
+  if(el){el.innerHTML=f.bad?'<span class="chip warn up">Couldn’t read</span>':`<span style="color:var(--l-green)">${ic('check',14)}</span>`;if(!RM)el.firstElementChild.animate([{transform:'scale(.6)',opacity:0},{transform:'none',opacity:1}],{duration:300,easing:POP})}
+  const c=$('#scount');if(c){c.textContent=s;bump(c)}later(tickSrc,520)};
+ const tickFact=()=>{if(S.step!==1||S.read!=='run')return;if(i>=items.length){later(finishRead,Math.max(0,(srcs.length-s)*520+200));return}
+  const f=items[i++];S.facts.push(f);const l=$('#flist');$('#fempty')?.remove();
+  if(l){l.insertAdjacentHTML('beforeend',factRow(f));const el=l.lastElementChild;if(!RM)el.animate([{opacity:0,transform:'translateY(14px) scale(.96)'},{opacity:1,transform:'none'}],{duration:420,easing:POPS})}
+  paintPanel();later(tickFact,i<2?800:420)};
+ later(tickSrc,500);later(tickFact,900)}
+function finishRead(){if(S.step!==1)return;S.read='done';S.srcDone=[...S.added,...S.links.filter(l=>!l.priv),...WEB].length;
+ const h=$('#h1');if(h)h.textContent='Here’s what I found';
+ const sy=$('#say p');if(sy){sy.innerHTML=readDone();if(!RM)$('#say').animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:320,easing:EASE})}
+ const b=$('#next');if(b)b.disabled=false;paintPanel()}
 
-/* Check: ticked in place with the console's flash ring. Cards never leave the screen. */
-async function keepPage(){
- const fs=facts(),pages=Math.ceil(fs.length/PAGE),p=Math.min(S.fpage,pages-1),list=fs.slice(p*PAGE,p*PAGE+PAGE).filter(c=>c.st!=='ok');
- const btn=$('#next');if(btn)btn.disabled=true;
- list.forEach((c,i)=>later(()=>{c.st='ok';const el=$(`[data-kc="${c.id}"]`);if(el){el.classList.remove('strong');const chip=$(`[data-chip="${c.id}"]`,el);if(chip)chip.innerHTML=chipFor(c);el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash')}paintPanel()},i*60));
- await wait(list.length*60+700);
- if(p<pages-1){S.fpage=p+1;swapList()}else go(5)}
-function swapList(){const m=$('#flist');const done=()=>{const [inner,nav]=screen();const tmp=document.createElement('div');tmp.innerHTML=inner+nav;
-  m.replaceWith($('#flist',tmp));$('#eyebrow').innerHTML=$('#eyebrow',tmp).innerHTML;$('.nav').replaceWith($('.nav',tmp));const s=$('#say');s.replaceWith($('#say',tmp));
-  const nl=$('#flist');lastSay=$('#say').textContent;if(!RM){nl.animate([{opacity:0},{opacity:1}],{duration:260,easing:EASE});$('#say').animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:320,easing:EASE})}};
- if(RM||!m){done();return}m.animate([{opacity:1},{opacity:0}],{duration:160,easing:EASE}).finished.then(done)}
+/* picking an answer card confirms it into Brand context */
+function pick(key,v){
+ if(key==='who'){S.who=v;S.whoOther='';S.facts=S.facts.filter(f=>f.id!=='K6');S.facts.push({id:'K6',t:v,tr:'conf',src:'You picked it'})}
+ if(key==='voice'){S.voice=v}
+ if(key==='money'){S.money=v;S.facts=S.facts.filter(f=>f.id!=='K10');if(v!=='Don’t mention it yet')S.facts.push({id:'K10',t:v+' welcome credit',tr:'conf',src:'You settled it',sens:'money'})}
+ $$(`[data-pick="${key}"]`).forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.v===v)));
+ const n=$('#next');if(n)n.disabled=false;paintPanel();
+ later(()=>{if(S.step===2&&key==='who')go(3);else if(S.step===3&&key==='voice')go(4);else if(S.step===4&&key==='money')go(5)},RM?0:420)}
 
-/* Test: demo answers that cite what they used */
-function answer(q,as){const s=q.toLowerCase(),inf=as==='inf',rule=id=>rulesOn().some(r=>r.id===id),fact=id=>card(id)&&card(id).st==='ok';
- if(/sure|approv|guarantee/.test(s)&&rule('R-03'))return{t:inf?'Hindi po, bawal yan. Sabihin mo na lang: libre mag-join, mga 5 minuto lang.':'Hindi ko po masasabi yan. Libre mag-join, at makikita mo sa app kung ano ang para sa’yo.',used:['R-03','K1','Voice'].filter(u=>u!=='K1'||fact('K1'))};
- if(/mas mura|cheaper|ibang wallet|maya/.test(s)&&rule('R-04'))return{t:inf?'Hindi tayo nagko-compare sa ibang wallets. Ipakita mo na lang kung gaano kadali magpadala.':'Hindi ko po masasabi yan. Pero puwede magpadala sa kahit anong bangko sa GCash.',used:['R-04',...(fact('K4')?['K4']:[])]};
- if(/loan|gcredit|utang/.test(s)&&rule('R-09'))return{t:'Iwas muna tayo sa loans. Mag-lead tayo sa pagpapadala o pagbabayad ng bills.',used:['R-09']};
- if(/credit|welcome|promo/.test(s)&&fact('K9'))return{t:S.credit==='Neither'?'Wala na pong welcome credit ngayon. Libre pa rin mag-join.':`Opo, ${S.credit} para sa bagong verified users.`,used:['K9','Voice']};
- const g=ok('Facts').find(c=>c.from&&s.split(/\W+/).filter(w=>w.length>3).some(w=>c.from.toLowerCase().includes(w)));if(g)return{t:g.t,used:[g.id,'Voice']};
- if(/abroad|ibang bansa/.test(s))return{t:'Wala pa po akong sagot dito, kaya hindi ako manghuhula. Ipapasa ko ito sa team.',used:[],handoff:true};
- if(/magkano|bayad|fee|libre|free|join|kailangan|id\b/.test(s)&&fact('K1'))return{t:`Libre po ang pag-join.${fact('K3')?' Isang valid ID lang, mga 5 minuto.':''}`,used:['K1',...(fact('K3')?['K3']:[]),'Voice']};
- if(/padala|send|bank|nanay/.test(s)&&fact('K4'))return{t:'Puwede pong magpadala sa kahit anong bangko sa Pilipinas, diretso sa app.',used:['K4','Voice']};
- return{t:'Wala pa po akong sagot dito, kaya hindi ako manghuhula. Ipapasa ko ito sa team.',used:[],handoff:true}}
-async function ask(q){if(S.busy)return;const as=S.as;S.chat.push({me:1,t:q,as});const ty={typing:1,as,used:[]};S.chat.push(ty);S.busy=true;render('askIn');
- await wait(1000);const a=answer(q,as);S.chat.splice(S.chat.indexOf(ty),1,{t:a.t,used:a.used,handoff:!!a.handoff,as});S.busy=false;render('askIn');
- a.used.forEach((u,i)=>later(()=>{$$(`[data-p="${u}"]`).forEach(el=>{el.classList.remove('lit');void el.offsetWidth;el.classList.add('lit')})},i*90))}
-
-/* Publish: the console's moment. A petal pops at the button and flies to the brand switcher. */
+/* Publish: the console's moment, then the meter fills to Learning */
 function publish(){const btn=$('#publish'),target=$('#brandBtn');
- const done=()=>{S.published=true;go(11);const c=$('#live');if(c&&!RM)c.animate([{transform:'scale(.94)',opacity:0},{transform:'scale(1.02)',opacity:1,offset:.7},{transform:'none'}],{duration:520,easing:POPS});
+ const done=()=>{S.published=true;go(7);
   const bb=$('#brandBtn');if(bb&&!RM)bb.animate([{transform:'scale(1)'},{transform:'scale(1.06)'},{transform:'scale(1)'}],{duration:420});
-  toast(`${tile('petal',16)}<span><b>${esc(S.name)} brand context v1 is live.</b> The coach, daily briefs and every OkPo page use it now.</span>`)};
+  const seg=$$('.ctx .lvl .segs i')[1];if(seg&&!RM)seg.animate([{transform:'scaleX(.2)',transformOrigin:'left'},{transform:'scaleX(1)',transformOrigin:'left'}],{duration:600,easing:EASE});
+  toast(`${tile('petal',16)}<span><b>GCash brand context v1 is live.</b> I’m at Learning. The coach, daily briefs and every OkPo page use it now.</span>`)};
  if(RM||!btn||!target){done();return}btn.disabled=true;
  const r=btn.getBoundingClientRect(),t=target.getBoundingClientRect(),g=document.createElement('div');g.innerHTML=tile('petal',46);
  g.style.cssText=`position:fixed;left:${r.left+r.width/2-23}px;top:${r.top+r.height/2-23}px;z-index:90;pointer-events:none`;document.body.appendChild(g);
@@ -395,54 +367,34 @@ function publish(){const btn=$('#publish'),target=$('#brandBtn');
  g.animate([{transform:'scale(.2) rotate(0)',opacity:0},{transform:'scale(1.5) rotate(45deg)',opacity:1,offset:.35},{transform:'scale(1.5) rotate(45deg)',offset:.55},{transform:`translate(${dx}px,${dy}px) scale(.4) rotate(90deg)`,opacity:.9}],{duration:1300,easing:EXIT}).finished.then(()=>{g.remove();done()})}
 
 /* ---------------- events ---------------- */
-document.addEventListener('click',async e=>{const b=e.target.closest('button,[data-act]');if(!b||b.closest('.proto'))return;const d=b.dataset;
+document.addEventListener('click',e=>{const b=e.target.closest('button,[data-act]');if(!b||b.closest('.proto'))return;const d=b.dataset;
  if(d.act==='sheet'){openSheet();return}
  if(d.act==='sheetclose'){closeSheet();return}
  if(d.act==='brand'){toast(S.published?'Switch brands from the console.':'Brands switch in the console once this one is live.');return}
- if(d.act==='exit'){S.mode='exited';render();return}
- if(d.act==='resume'){S.mode='setup';render();return}
- if(d.jump!==undefined){go(FIRST[+d.jump]);return}
- if(d.act==='next'){const st=S.step;
-  if(st===4){keepPage();return}
-  if(st===5){const txt=S.credit==='Neither'?'There’s no welcome credit right now.':`${S.credit} welcome credit for new verified users.`;const ex=card('K9');if(ex){ex.t=txt;ex.sh=S.credit==='Neither'?'No welcome credit':S.credit+' welcome credit'}else S.cards.push({id:'K9',g:'Facts',t:txt,sh:S.credit==='Neither'?'No welcome credit':S.credit+' welcome credit',src:'You settled: '+CONFLICT.src,st:'ok'});go(6);return}
-  if(st===6){const vs=voice().filter(c=>c.st!=='ok');if(!vs.length){go(7);return}b.disabled=true;vs.forEach((c,i)=>later(()=>{c.st='ok';const el=$(`[data-kc="${c.id}"]`);if(el){el.classList.remove('strong');$(`[data-chip="${c.id}"]`,el).innerHTML=chipFor(c);el.classList.add('flash')}paintPanel()},i*60));await wait(vs.length*60+700);go(7);return}
-  if(st===10){publish();return}
-  go(st+1);return}
- if(d.act==='back'){if(S.step===4&&S.fpage>0){S.fpage--;render();return}go(Math.max(0,S.step===4?3:S.step-1));return}
- if(d.act==='skip'){
-  if(S.step===2){S.iv={who:'',offer:'',never:''};go(3);return}
-  if(S.step===4){const fs=facts(),from=Math.min(S.fpage,Math.ceil(fs.length/PAGE)-1)*PAGE;fs.slice(from).forEach(c=>{if(c.st!=='ok')c.st='draft'});toast(`<b>${drafts().length} facts saved as drafts.</b> I won’t use them until someone checks them.`);go(5);return}
-  if(S.step===7){go(8);return}return}
- if(d.act==='addfile'){const f=SOURCES.find(a=>!S.files.some(x=>x.n===a.n));if(!f){toast('All the sample files are added.');return}S.files.push(f);render();const row=$(`[data-f="${S.files.length-1}"]`);if(row&&!RM)row.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:320,easing:EASE});return}
- if(d.rm!==undefined){S.files.splice(+d.rm,1);render();return}
- if(d.edit){S.editing=d.edit;render('');const ta=$(`[data-txt="${d.edit}"]`);if(ta){ta.focus();ta.setSelectionRange(ta.value.length,ta.value.length)}return}
- if(d.save){const c=card(d.save),ta=$(`[data-txt="${d.save}"]`);if(c&&ta&&ta.value.trim()){c.t=ta.value.trim();c.sh=c.t.length>28?c.t.slice(0,26)+'…':c.t;c.src=c.src.includes('edited')?c.src:c.src+' · edited by you';c.st='ok';c.low=false}S.editing=null;render();const el=$(`[data-kc="${d.save}"]`);if(el)el.classList.add('flash');return}
- if(d.drop){const el=$(`[data-kc="${d.drop}"]`);const gone=()=>{S.cards=S.cards.filter(c=>c.id!==d.drop);if(!facts().slice(S.fpage*PAGE).length&&S.fpage>0)S.fpage--;render()};if(el&&!RM)el.animate([{opacity:1},{opacity:0,transform:'scale(.96)'}],{duration:200}).finished.then(gone);else gone();return}
- if(d.credit){S.credit=d.credit;$$('[data-credit]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.credit===d.credit)));$('#next').disabled=false;return}
+ if(d.act==='next'){if(S.step===6){publish();return}go(S.step+1);return}
+ if(d.act==='back'){go(Math.max(0,S.step-1));return}
+ if(d.act==='skip'){if(S.step===2){S.who=null;go(3)}return}
+ if(d.act==='addfile'){const f=EXTRA.find(a=>!S.added.some(x=>x.n===a.n));if(!f){toast('All the sample files are added.');return}S.added.push(f);S.read='no';render();const rows=$$('[data-add]');const row=rows[S.added.length-1];if(row&&!RM)row.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:320,easing:EASE});return}
+ if(d.rm){const k=d.rm,i=+k.slice(1);(k[0]==='f'?S.added:S.links).splice(i,1);S.read='no';render();return}
+ if(d.pick){pick(d.pick,d.v);return}
  if(d.rule!==undefined){const r=S.rules[+d.rule];r.on=!r.on;b.setAttribute('aria-checked',String(r.on));paintPanel();const n=rulesOn().length,nx=$('#next');nx.disabled=!n;nx.textContent=n?`Use ${n} rule${n===1?'':'s'}`:'Tick at least one';return}
- if(d.as){S.as=d.as;render();return}
- if(d.q){ask(d.q);return}
+ if(d.fix){go(d.fix.startsWith('Who')?2:d.fix==='Voice'?3:d.fix.startsWith('At least')?5:4);return}
+ if(d.confirm){const id=d.confirm,f=S.facts.find(x=>x.id===id);if(f){f.tr='conf'}S.checked.add(id);const row=$(`[data-tc="${id}"]`);const fin=()=>{render();toast(`${tile('petal',16)}<span><b>Confirmed.</b> It goes live in the next brief.</span>`)};if(row&&!RM)row.animate([{opacity:1},{opacity:0,transform:'translateX(8px)'}],{duration:220}).finished.then(fin);else fin();return}
 });
-document.addEventListener('input',e=>{const t=e.target;
- if(t.id==='fName'){S.name=t.value;$('#next').disabled=!t.value.trim();const bb=$('#brandBtn');if(bb){bb.querySelector('.gdot').outerHTML=bm();bb.querySelector('b').textContent=t.value.trim()||'New brand'}}
- if(t.dataset.iv){S.iv[t.dataset.iv]=t.value;$('#next').textContent=`Read ${S.files.length+(S.iv.who||S.iv.offer||S.iv.never?1:0)} sources`}});
-document.addEventListener('change',e=>{if(e.target.id==='fCat')S.cat=e.target.value});
-document.addEventListener('submit',e=>{e.preventDefault();const f=e.target;
- if(f.dataset.form==='rule'){const i=$('#ruleIn'),v=i.value.trim();if(!v){i.focus();return}const n=Math.max(15,...S.rules.map(r=>+r.id.slice(2)+1));S.rules.push({id:'R-'+n,t:v,src:'Added by you',on:true});render('ruleIn');
-  const el=$(`[data-rule="${S.rules.length-1}"]`);if(el&&!RM)el.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:320,easing:EASE});return}
- if(f.dataset.form==='ask'){const i=$('#askIn'),v=i.value.trim();if(!v){i.focus();return}ask(v);return}
- if(f.dataset.gap){const g=S.gaps.find(x=>x.id===f.dataset.gap),v=f.querySelector('input').value.trim();if(!g||!v){f.querySelector('input').focus();return}
-  const id='K'+(10+GAPS.indexOf(GAPS.find(x=>x.id===g.id)));S.cards.push({id,g:'Facts',t:v,sh:v.length>28?v.slice(0,26)+'…':v,src:'Your answer to: '+g.q,from:g.q,st:'ok'});S.gaps=S.gaps.filter(x=>x!==g);
-  const go2=()=>{render();toast(`${tile('petal',16)}<span><b>Added as a checked fact.</b> ${id} is in Brand context now.</span>`)};
-  if(RM)go2();else f.animate([{opacity:1},{opacity:0,transform:'translateY(-6px)'}],{duration:220,easing:EASE}).finished.then(go2)}});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet()});
+document.addEventListener('input',e=>{const t=e.target;if(t.id==='fSite'){S.site=t.value;S.read='no';$('#next').disabled=!t.value.trim()}});
+document.addEventListener('submit',e=>{e.preventDefault();const f=e.target,k=f.dataset.form;
+ if(k==='link'){const i=$('#linkIn'),v=i.value.trim();if(!v){i.focus();return}const priv=/notion|docs\.google|drive\.google/i.test(v);S.links.push({n:v.replace(/^https?:\/\//,''),d:'link'+(priv?' · private page':''),use:/tiktok|instagram|facebook|youtube/i.test(v)?'How you sound':'Read for facts',priv});S.read='no';render('linkIn');return}
+ if(k==='rule'){const i=$('#ruleIn'),v=i.value.trim();if(!v){i.focus();return}const n=Math.max(15,...S.rules.map(r=>+r.id.slice(2)+1));S.rules.push({id:'R-'+n,t:v,src:'Added by you',on:true});render('ruleIn');return}
+ if(k==='other-who'){const v=$('#other-who').value.trim();if(!v)return;S.whoOther=v;pick('who',v);return}
+ if(k==='other-voice'){const v=$('#other-voice').value.trim();if(!v)return;pick('voice',v);return}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeSheet();return}
+ if(/^[1-4]$/.test(e.key)&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){const key={2:'who',3:'voice',4:'money'}[S.step];if(!key)return;const btns=$$(`[data-pick="${key}"]`),b=btns[+e.key-1];if(b){b.focus();pick(key,b.dataset.v)}}});
 
 /* prototype controls */
 const theme=()=>document.documentElement.getAttribute('data-theme')==='dark';
 $('#pTheme').onclick=()=>{document.documentElement.setAttribute('data-theme',theme()?'light':'dark');$('#pTheme').textContent=theme()?'Light':'Dark'};
-$('#pRestart').onclick=()=>{timers.forEach(clearTimeout);timers=[];S=fresh();lastKey='';lastSay='';seen=new Set();closeSheet();render()};
-$('#pSkip').onclick=()=>{timers.forEach(clearTimeout);timers=[];if(!S.files.length)S.files=SOURCES.slice(0,4);S.cards=DRAFT.map(c=>({...c,st:'ok'}));S.read='done';S.credit=S.credit||'₱50';
- if(!card('K9'))S.cards.push({id:'K9',g:'Facts',t:'₱50 welcome credit for new verified users.',sh:'₱50 welcome credit',src:'You settled: '+CONFLICT.src,st:'ok'});buildRules();S.rules.forEach(r=>r.on=true);S.mode='setup';go(9)};
+$('#pRestart').onclick=()=>{timers.forEach(clearTimeout);timers=[];S=fresh();lastKey='';seen=new Set();closeSheet();render()};
+$('#pSkip').onclick=()=>{timers.forEach(clearTimeout);timers=[];S.facts=[...READ];S.read='done';S.srcDone=WEB.length;pick('who',WHO[0].v);S.voice=VOICES[0].v;pick('money','₱50');timers.forEach(clearTimeout);timers=[];go(6)};
 document.documentElement.setAttribute('data-theme',document.documentElement.getAttribute('data-theme')||'light');
 render();
 })();

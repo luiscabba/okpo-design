@@ -369,7 +369,7 @@ Brand context is one thing with one name everywhere: the checked facts, the voic
 | Rules | `R-01` | What stops a post. OkPo's four (`R-01`, `R-02`, `R-11`, `R-14`) are the same for every brand and locked. |
 | Campaign brief | | Talking points, goal and ending. Lives in Campaigns, written after a campaign is created, sits on top, can add or tighten, never loosen. Never part of setup. |
 
-### Fast onboarding (decisions settled 2 Oct, `prototypes/onboard.html`, mockups on the canvas page "Fast brand onboarding")
+### Fast onboarding (decisions settled 2 Oct, `prototypes/setup.html`, mockups on the canvas page "Fast brand onboarding")
 
 The first visit is a fast path through the same five steps. Completeness is not the goal; the brand or OkPo finishes the rest later.
 
@@ -404,16 +404,15 @@ An expectation setter: what the AI can do with what it has been given. It replac
 
 ### Brand setup (Locked 2 Oct, `prototypes/setup.html`)
 
-Setup **is** the console's new-brand flow, run full screen. Same five steps, same components, same motion; only the layout changes.
+Setup **is** the fast path above. The 12-screen detailed setup was retired on 2 Oct (it stays in git history).
 
-- Top bar (strong glass): wordmark, brand switcher, the console's `.stepper` (Sources, Read, Check facts, Rules, Test and publish), "Save and exit". Under 900px the stepper becomes "2 of 5 · Read".
-- One question per screen, in this order: brand name · sources · three quick questions (optional) · read · facts in pages of five · the conflict picker · voice · questions nothing answered (optional) · rules · test · "Ready to go live?" · live.
-- **Brand context panel** on the right (regular glass, sticky). Title "Brand context". The brand's name appears only in its eyebrow ("GCash · v1"), with a Draft or Live chip. Sections: Facts, Voice, Rules, then Campaign brief as the last line, empty. Only checked items enter it. On a phone it is a strong-glass bar ("Brand context · 9 facts · 4 rules") that opens a sheet.
-- Read: the console's read engine. Each card rises 14px at .96 into the bottom of its column (Facts, Voice, Rules) with `--pop-soft` over 420ms; the count ticks up; scans turn into checks in place. No re-render at the end.
-- Check: "Keep these 5" ticks each card in place with the green flash ring (0.7s, 60ms stagger), and its chip pops into the panel. Cards never leave the screen. Then only the list fades (160ms out, 260ms in); the heading stays. "Check the rest later" saves the rest as drafts the AI does not use.
-- Test: the console's test chat. Every answer names the fact or rule it used, and that row flashes in the panel.
-- Publish: the console's moment. A petal pops at the button and flies to the brand switcher over 1.3s, the switcher pulses, the live card pops, and the toast reads "**GCash brand context v1 is live.** The coach, daily briefs and every OkPo page use it now."
-- Live ends on the campaign brief as the next layer, with "Start the first campaign", which opens the console's new campaign.
+- Top bar (strong glass): wordmark, brand switcher, the `.stepper` (Sources, Read, Check, Rules, Test and publish). Under 900px it becomes "2 of 5 · Read".
+- Screens: website (plus optional files and links) · read · who card · voice card · money conflict · rules (pre-ticked) · test and publish · live with To check.
+- **Brand context panel** on the right (regular glass, sticky): eyebrow "GCash · v1" with Draft or Live, the level meter, the To check count, then Facts (each with its trust chip), Voice, Rules, Campaign brief. On a phone it is a strong-glass bar that opens a sheet.
+- Read: sources tick off one by one; facts rise 14px at .96 into the list with `--pop-soft` over 420ms; the count bumps.
+- Answer cards: picking one confirms it into the panel and moves on after 420ms. Number keys answer.
+- Publish: the petal flies to the brand switcher over 1.3s, the meter fills to Learning, and the toast reads "**GCash brand context v1 is live.** I'm at Learning. The coach, daily briefs and every OkPo page use it now."
+- Live ends on the To check list and "Open the console".
 
 ---
 
