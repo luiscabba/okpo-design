@@ -26,6 +26,7 @@ Review time goes to flow and usability, not to these:
 | Motion | The five curves, the durations, the takeover, the banner, the console moments | §9 |
 | Vocabulary | Fact, Voice, Rule, Talking point, Brand context | §10 |
 | Brand setup | The console's new-brand flow, full screen, one question per screen | §10 |
+| Fast onboarding | Trust levels, minimum to publish, answer cards, To check list | §10 |
 | Voice | Chrome in second person, OkPo's guide in first person, the AI in third person | §11 |
 | Copy | Names from data, button and toast shapes, money format, no em dashes | §11 |
 
@@ -367,6 +368,22 @@ Brand context is one thing with one name everywhere: the checked facts, the voic
 | Voice | `Voice` | How the brand sounds. |
 | Rules | `R-01` | What stops a post. OkPo's four (`R-01`, `R-02`, `R-11`, `R-14`) are the same for every brand and locked. |
 | Campaign brief | | Talking points, goal and ending. Lives in Campaigns, written after a campaign is created, sits on top, can add or tighten, never loosen. Never part of setup. |
+
+### Fast onboarding (decisions settled 2 Oct, mockups on the canvas page "Fast brand onboarding")
+
+The first visit is a fast path through the same five steps. Completeness is not the goal; the brand or OkPo finishes the rest later.
+
+- **One input:** a website or brand name. OkPo reads public web only: the brand's site, app store pages, public socials, news. Sources it can't read show "Couldn't read".
+- **Read shows the work:** sources land one by one; facts enter Brand context as they are found.
+- **Three trust levels on every fact** (Locked):
+  - **Confirmed** (brand picked it on a card or checked it): the AI says it freely.
+  - **Sourced** (found word for word on the brand's own page): the AI may say it, close to the source, and names the source.
+  - **Guess** (inferred): the AI never says it until confirmed.
+- **Sensitive facts are never spoken at Sourced, only Confirmed.** List (Open, to revisit): money, eligibility, dates and deadlines, legal, health and safety.
+- **Answer cards:** a question, 2 to 4 options OkPo derived, "Something else" to type, "Skip for now". Each option carries its source and trust chip. Number keys answer; one click moves on.
+- **Sensitive conflicts must be answered to publish.** "Don't mention it yet" counts as an answer; the AI stays quiet and the item goes to To check.
+- **Minimum to publish v1** (Locked): who they want more of, voice, at least 1 rule, every sensitive conflict answered.
+- **To check:** one shared list inside Brand context of skipped, Guess and unconfirmed sensitive items. The brand and OkPo both have full access; whoever gets there first confirms it.
 
 ### Brand setup (Locked 2 Oct, `prototypes/setup.html`)
 
