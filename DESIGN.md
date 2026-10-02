@@ -54,7 +54,7 @@ First client: GCash. Campaign names are plain client names ("GCash Heroes", "GCa
 
 | | Marketing site (okpo.com landing) | Product (console, earner app, earner page, Lobby) |
 |---|---|---|
-| Edges | Hand-drawn, 1.6 to 2.2px wobble, no CSS radius | Crisp, CSS radius |
+| Edges | Art hand-drawn, 1.6 to 2.2px wobble; controls crisp with CSS radius | Crisp, CSS radius |
 | Hand-drawn shapes | In the art (the tile wall, section tiles). Never on a control: buttons and fields are crisp in both registers. | **Only** inside reward moments (takeovers, the sign-up banner). Never on a control. |
 | Main button | Yellow glaze, crisp: 14px corners, ink text, hover 8% darker, press .97 (Locked 2 Oct, direction A) | **Ink** (`--btn`) |
 | Surface | Cream and bisque, solid cards | Liquid glass over the tone-on-tone backdrop |
