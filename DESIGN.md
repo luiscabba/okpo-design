@@ -14,7 +14,7 @@ Review time goes to flow and usability, not to these:
 
 | Area | What is locked | Where |
 |---|---|---|
-| Registers | Marketing site is hand-drawn; product is crisp glass with an ink main button | §2 |
+| Registers | Marketing art is hand-drawn, marketing controls are crisp yellow; product is crisp glass with an ink main button | §2 |
 | Tokens | Glazes, label shades, neutrals, status tints, type, glass, radius, light first | §3 |
 | Wordmark | OkPo, four glazes, 20px minimum, all four letters or none | §4 |
 | Backdrop | Three crisp tone tiles, fixed placement, never moves | §5 |
@@ -55,9 +55,11 @@ First client: GCash. Campaign names are plain client names ("GCash Heroes", "GCa
 | | Marketing site (okpo.com landing) | Product (console, earner app, earner page, Lobby) |
 |---|---|---|
 | Edges | Hand-drawn, 1.6 to 2.2px wobble, no CSS radius | Crisp, CSS radius |
-| Hand-drawn shapes | Wherever tiles appear | **Only** inside reward moments (takeovers, the sign-up banner). Never on a control. |
-| Main button | Yellow glaze, drawn edge | **Ink** (`--btn`) |
+| Hand-drawn shapes | In the art (the tile wall, section tiles). Never on a control: buttons and fields are crisp in both registers. | **Only** inside reward moments (takeovers, the sign-up banner). Never on a control. |
+| Main button | Yellow glaze, crisp: 14px corners, ink text, hover 8% darker, press .97 (Locked 2 Oct, direction A) | **Ink** (`--btn`) |
 | Surface | Cream and bisque, solid cards | Liquid glass over the tone-on-tone backdrop |
+
+Marketing hero claim (Locked 2 Oct, direction A): "I need more ___" is one field, `#fff` (dark `#1b1b1b`), 1px `#d9d0bb` (dark `#3a3a3a`) edge, 18px corners, the yellow button inside it. Focus turns the edge ink with a soft blue ring. Sent empty: coral edge and "Tell us what you need more of." The other site buttons still use the drawn edge until Luis decides on them.
 
 Never mix registers on one screen. **Open, Luis to review:** the Lobby lives on okpo.com but is built in the product register. Keep it that way until he decides.
 
