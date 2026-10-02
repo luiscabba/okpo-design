@@ -369,7 +369,7 @@ Brand context is one thing with one name everywhere: the checked facts, the voic
 | Rules | `R-01` | What stops a post. OkPo's four (`R-01`, `R-02`, `R-11`, `R-14`) are the same for every brand and locked. |
 | Campaign brief | | Talking points, goal and ending. Lives in Campaigns, written after a campaign is created, sits on top, can add or tighten, never loosen. Never part of setup. |
 
-### Fast onboarding (decisions settled 2 Oct, mockups on the canvas page "Fast brand onboarding")
+### Fast onboarding (decisions settled 2 Oct, `prototypes/onboard.html`, mockups on the canvas page "Fast brand onboarding")
 
 The first visit is a fast path through the same five steps. Completeness is not the goal; the brand or OkPo finishes the rest later.
 
@@ -398,7 +398,8 @@ An expectation setter: what the AI can do with what it has been given. It replac
 - **Never an accuracy %.** The level says what OkPo can and can't do.
 - **Moves only on what the brand adds,** never on time spent or days live.
 - **Can drop a level** when a promo ends or a fact passes 30 days without a re-check. Those facts are **paused until someone re-confirms them**; everything else keeps working.
-- **Meter:** 4 segments in `#7950f2`; the current level name in ink with "n of 4". After a drop, the lost segment stays as an outline and the label reads "from Knows you".
+- **Meter:** 4 segments in `var(--l-purple)`; the current level name in ink with "n of 4". After a drop, the lost segment stays as an outline and the label reads "from Knows you".
+- **Fresh facts** sits beside the meter: facts re-checked within 30 days out of all facts, as a count and a thin bar (stale part in yellow), with how many fall due in the next 7 days. It is a real count, so it can be a number; the level never is.
 - **Console home on load** follows one pattern: the level and meter, one OkPo line on what that means today, each thing holding it back as a row with its own action, and one closing line: "Clear both and I'm at Knows you."
 
 ### Brand setup (Locked 2 Oct, `prototypes/setup.html`)

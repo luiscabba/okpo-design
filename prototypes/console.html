@@ -1,4 +1,20 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
+/* how well I know the brand (console home, on load) */
+.kn{padding:20px 22px;gap:14px}
+.kn .top2{display:flex;align-items:flex-end;gap:24px;flex-wrap:wrap}
+.kn .lvname{font:800 36px/1 var(--display);letter-spacing:-.03em}
+.lvl{display:flex;flex-direction:column;gap:8px;flex:1;min-width:260px}
+.lvl .segs{display:flex;gap:6px}.lvl .segs i{display:block;flex:1;height:12px;border-radius:99px;background:var(--soft);transition:background .5s var(--ease)}
+.lvl .segs i.on{background:var(--l-purple)}
+.lvl .names{display:flex;gap:6px}.lvl .names span{flex:1;font-size:12px;color:var(--mute)}.lvl .names span.cur{color:var(--ink);font-weight:600}
+.kn .say2{padding:12px 14px;border-radius:14px;background:var(--soft);color:var(--body);font-size:14.5px;line-height:1.5}
+.kn .hold{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--line)}
+.kn .hold:first-child{border-top:0}
+.kn .way{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:14px;background:color-mix(in srgb,var(--purple) 16%,transparent);font-size:13.5px;color:var(--body)}
+.fresh{display:flex;flex-direction:column;gap:6px;min-width:220px}
+.fresh .bar{display:flex;height:6px;border-radius:99px;overflow:hidden;background:var(--soft)}
+@media (max-width:700px){.kn .lvname{font-size:28px}.kn .hold{flex-wrap:wrap}}
+</style></head><body>
 
 <title>OkPo Brand Console</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -10,7 +26,7 @@
   --glass-a:rgba(255,255,255,.66); --glass-b:rgba(255,255,255,.44); --glass-edge:rgba(255,255,255,.95); --glass-shadow:0 16px 36px rgba(18,18,18,.10);
   --glass-strong:rgba(255,255,255,.82); --soft:rgba(18,18,18,.06); --scrim:rgba(18,18,18,.28);
   --coral:#ff8787; --yellow:#ffd43b; --orange:#ffa94d; --green:#69db7c; --blue:#74c0fc; --purple:#b197fc;
-  --l-green:#237a36; --l-coral:#c92a2a; --warn-bg:rgba(255,212,59,.38); --warn-ink:#6b4e00;
+  --l-green:#237a36;--l-purple:#6741d9; --l-coral:#c92a2a; --warn-bg:rgba(255,212,59,.38); --warn-ink:#6b4e00;
   --s-okpo:#e8590c; --s-gcash:#1c7ed6;
   --btn:#121212; --on-btn:#f6f1e4;
   --display:'Bricolage Grotesque',ui-sans-serif,system-ui,sans-serif;
@@ -23,13 +39,13 @@
   --ground:#0f0f0f; --tone:#1c1b19; --ink:#ececec; --body:#b9bcc0; --mute:#8f949a; --line:rgba(255,255,255,.12);
   --glass-a:rgba(40,40,40,.7); --glass-b:rgba(18,18,18,.6); --glass-edge:rgba(255,255,255,.18); --glass-shadow:0 16px 36px rgba(0,0,0,.5);
   --glass-strong:rgba(32,32,32,.88); --soft:rgba(255,255,255,.07); --scrim:rgba(0,0,0,.55);
-  --l-green:#69db7c; --l-coral:#ff8787; --warn-bg:rgba(255,212,59,.2); --warn-ink:#ffd43b;
+  --l-green:#69db7c;--l-purple:#b197fc; --l-coral:#ff8787; --warn-bg:rgba(255,212,59,.2); --warn-ink:#ffd43b;
   --s-okpo:#ff8a3d; --s-gcash:#4dabf7; --btn:#ececec; --on-btn:#121212; color-scheme:dark}}
 :root[data-theme="dark"]{
   --ground:#0f0f0f; --tone:#1c1b19; --ink:#ececec; --body:#b9bcc0; --mute:#8f949a; --line:rgba(255,255,255,.12);
   --glass-a:rgba(40,40,40,.7); --glass-b:rgba(18,18,18,.6); --glass-edge:rgba(255,255,255,.18); --glass-shadow:0 16px 36px rgba(0,0,0,.5);
   --glass-strong:rgba(32,32,32,.88); --soft:rgba(255,255,255,.07); --scrim:rgba(0,0,0,.55);
-  --l-green:#69db7c; --l-coral:#ff8787; --warn-bg:rgba(255,212,59,.2); --warn-ink:#ffd43b;
+  --l-green:#69db7c;--l-purple:#b197fc; --l-coral:#ff8787; --warn-bg:rgba(255,212,59,.2); --warn-ink:#ffd43b;
   --s-okpo:#ff8a3d; --s-gcash:#4dabf7; --btn:#ececec; --on-btn:#121212; color-scheme:dark}
 *{box-sizing:border-box}
 html,body{height:100%}
@@ -445,13 +461,24 @@ function vCamp(c){const s=campStats(c),ang=A(c),tot=ang.reduce((a,b)=>a+b.p,0)||
 
 /* ================= VIEWS ================= */
 const VIEWS={};const AFTER={};
+
+const LEVELS=['Just met','Learning','Knows you','Knows you well'];
+function knowCard(){const need=S.know.map((k,i)=>({k,i})).filter(x=>x.k.st==='need'),exp=S.know.filter(k=>k.st==='exp'),tot=S.know.length,lvl=need.length?2:3;
+ const line=lvl===2?`I write daily briefs in your voice. ${need.length} fact${need.length>1?'s':''} still need${need.length>1?'':'s'} a yes, so when earners ask about ${need.length>1?'those':'it'}, I pass it to your team instead of guessing.`:'Everything I say is checked. I answer fees and eligibility on my own now.';
+ return `<section class="card glass strong kn" aria-labelledby="knT"><div class="top2"><div><span class="label" id="knT">How well I know the brand</span><div class="row" style="align-items:baseline;margin-top:8px"><span class="lvname">${LEVELS[lvl-1]}</span><span class="mono small">${lvl} OF 4</span></div></div>
+  <div class="lvl" role="meter" aria-label="How well OkPo knows the brand" aria-valuemin="1" aria-valuemax="4" aria-valuenow="${lvl}" aria-valuetext="${LEVELS[lvl-1]}"><div class="segs">${[0,1,2,3].map(i=>`<i class="${i<lvl?'on':''}"></i>`).join('')}</div><div class="names">${LEVELS.map((n,i)=>`<span class="${i===lvl-1?'cur':''}">${n}</span>`).join('')}</div></div>
+  <div class="fresh" role="meter" aria-label="Fresh facts" aria-valuemin="0" aria-valuemax="${tot}" aria-valuenow="${tot}"><div class="row" style="align-items:baseline"><span class="label grow">Fresh facts</span><b class="disp num" style="font-size:18px">${tot}</b><span class="small">of ${tot}</span></div><div class="bar"><i style="width:100%;background:var(--ink)"></i></div><span class="small">None over 30 days${exp.length?` · ${exp.length} ends ${esc((exp[0].n.match(/\d+ \w{3}/)||[''])[0])}`:''}</span></div></div>
+  <div class="say2"><span class="label" style="display:block;margin-bottom:4px">OkPo</span>${line}</div>
+  ${need.length?`<div>${need.slice(0,3).map(({k,i})=>`<div class="hold"><span class="grow"><b style="font-weight:500">${esc(k.t)}</b><br><span class="src">${ic('doc',12)}${esc(k.src)}</span></span><span class="chip warn">To check</span><button class="ghost" type="button" data-check="${i}">Looks right</button></div>`).join('')}${need.length>3?`<div class="hold"><span class="grow small">${need.length-3} more in Facts</span><button class="ghost" type="button" data-nav="context" data-ctxgo="know">See all</button></div>`:''}</div>
+  <div class="way">${ic('arrow',14)}<span>Check ${need.length===1?'this one':need.length===2?'both':'these '+need.length} and I’m at <b style="color:var(--ink);font-weight:600">Knows you</b>.</span></div>`:`<div class="way">${ic('arrow',14)}<span><b style="color:var(--ink);font-weight:600">Knows you well</b> comes from a finished campaign with results fed back.</span></div>`}
+ </section>`}
 VIEWS.overview=()=>{const c=S.c,fix=S.posts.filter(p=>p.s==='fix').length,need=S.know.filter(k=>k.st==='need').length,picks=S.rec.cands.filter(x=>x.pick).length,days=Math.round(c.pool/((c.poolTotal-c.pool)/12));
   const L=[62,70,68,81,88,84,97,104,99,112,108,121,118,126],G=[59,66,64,77,82,79,90,97,93,104,100,112,109,102],mx=140;
-  return head('GCash Heroes · overview','Good afternoon',`Day 12 of 30 · ${fmt(c.activated)} activated of ${fmt(c.goal)} · you pay only for sign-ups GCash confirms`,`<div class="row"><button class="ghost" type="button" data-nav="campaigns" data-cv="heroes">Talking points</button><button class="btn y" type="button" data-act="topup">Top up pool</button></div>`)+
+  return head('GCash Heroes · overview','Good afternoon',`Day 12 of 30 · ${fmt(c.activated)} activated of ${fmt(c.goal)} · you pay only for sign-ups GCash confirms`,`<div class="row"><button class="ghost" type="button" data-nav="campaigns" data-cv="heroes">Talking points</button><button class="btn y" type="button" data-act="topup">Top up pool</button></div>`)+knowCard()+
   `<div class="card glass" style="flex-direction:row;flex-wrap:wrap;gap:10px;padding:12px"><span class="label" style="align-self:center;padding:0 6px">Needs you</span>
    ${fix?`<button class="need" type="button" data-nav="posts" data-pf="fix">${tile('diamond',16,'var(--l-coral)')}<span class="grow"><b>${fix} post${fix>1?'s':''}</b> need${fix>1?'':'s'} a fix</span><span class="small">Review →</span></button>`:''}
    ${picks?`<button class="need" type="button" data-nav="recruiting">${tile('half',16)}<span class="grow"><b>${picks} creators</b> ready to approve</span><span class="small">Shortlist →</span></button>`:''}
-   ${need?`<button class="need" type="button" data-nav="context" data-ctxgo="know">${tile('petal',16)}<span class="grow"><b>${need} cards</b> need a check</span><span class="small">Know →</span></button>`:''}
+   
    ${S.pend&&S.pend.length?`<button class="need" type="button" data-act="seepend">${tile('petal',16)}<span class="grow"><b>${S.pend.length} change${S.pend.length>1?'s':''}</b> ready to publish</span><span class="small">See →</span></button>`:''}
    ${S.status&&S.status.wave2==='wait'&&!team()?`<button class="need" type="button" data-nav="campaigns">${stChip('wait')}<span class="grow"><b>Wave 2</b> needs your approval</span><span class="small">Review →</span></button>`:''}
    ${S.sugg.length?`<button class="need" type="button" data-nav="context" data-ctxgo="learn">${tile('petal',16,'var(--mute)')}<span class="grow"><b>${S.sugg.length} suggestions</b> from the AI</span><span class="small">Learn →</span></button>`:''}

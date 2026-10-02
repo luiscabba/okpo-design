@@ -30,6 +30,11 @@
    "source": "/setup",
    "destination": "/prototypes/setup.html",
    "permanent": false
+  },
+  {
+   "source": "/onboard",
+   "destination": "/prototypes/onboard.html",
+   "permanent": false
   }
  ]
 }
