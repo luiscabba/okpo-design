@@ -31,7 +31,7 @@
   --ease:cubic-bezier(.2,.8,.2,1); --pop:cubic-bezier(.34,1.56,.64,1); --exit:cubic-bezier(.6,0,.3,1);
   color-scheme:light;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+@media (prefers-color-scheme:dark){:root[data-theme="system-dark"]{
   --ground:#0f0f0f; --tone:#1c1b19; --ink:#ececec; --body:#b9bcc0; --mute:#8f949a;
   --line:rgba(255,255,255,.12); --soft:rgba(255,255,255,.07); --scrim:rgba(0,0,0,.5);
   --btn:#ececec; --on-btn:#121212;
@@ -58,7 +58,7 @@
 .chip{display:inline-flex;align-items:center;gap:6px;padding:4px 9px;border-radius:var(--r-chip);font:600 10.5px/1 var(--mono);letter-spacing:.08em;white-space:nowrap}
 .chip.ok{background:rgba(105,219,124,.24);color:var(--l-green)}
 .chip.fix{background:rgba(255,135,135,.22);color:var(--l-coral)}
-.chip.wait{background:var(--soft);color:var(--body)}
+.chip.n{background:var(--soft);color:var(--body)}
 .chip.go{background:var(--btn);color:var(--on-btn);font:600 13px/1 var(--text);letter-spacing:0;padding:7px 13px}
 .rid{display:inline-block;font:600 10px/1 var(--mono);letter-spacing:.04em;padding:3px 6px;border-radius:var(--r-id);background:var(--soft);color:var(--body);white-space:nowrap}
 .rid.tp{background:rgba(255,212,59,.28);color:var(--l-yellow)}
@@ -205,7 +205,7 @@ border-radius: 20px;</pre><p class="small">Strong glass swaps the gradient for <
 </section>
 
 <section id="moments">
-  <div class="sh"><span class="chip wait status">Takeovers open, mapping settled</span><h2>Each moment owns a shape and a colour</h2><p class="sub">The big moment teaches the shape. The tab icon brings it back every day. Wins the earner makes happen take over the screen; things other people do arrive as a top banner.</p></div>
+  <div class="sh"><span class="chip n status">Takeovers open, mapping settled</span><h2>Each moment owns a shape and a colour</h2><p class="sub">The big moment teaches the shape. The tab icon brings it back every day. Wins the earner makes happen take over the screen; things other people do arrive as a top banner.</p></div>
   <div class="card glass tbl"><table>
     <thead><tr><th>Moment</th><th>Shape</th><th>Tab</th><th>Size</th><th>Shade</th></tr></thead>
     <tbody>
@@ -235,7 +235,7 @@ border-radius: 20px;</pre><p class="small">Strong glass swaps the gradient for <
 </section>
 
 <section id="quality">
-  <div class="sh"><span class="chip wait status">Bands settled · split open</span><h2>Quality bands</h2><p class="sub">Pass or fail decides pay. Quality sits beside it and never changes pay. The brand sees the number and its four parts; the earner sees a band and two tips.</p></div>
+  <div class="sh"><span class="chip n status">Bands settled · split open</span><h2>Quality bands</h2><p class="sub">Pass or fail decides pay. Quality sits beside it and never changes pay. The brand sees the number and its four parts; the earner sees a band and two tips.</p></div>
   <div class="grid g3">
     <div class="card glass"><span class="label">Bands</span><div class="row"><span class="band strong">Strong</span><span class="small">80 to 100</span></div><div class="row"><span class="band good">Good</span><span class="small">60 to 79</span></div><div class="row"><span class="band work">Needs work</span><span class="small">below 60, still paid</span></div><p class="small">Never coral. Coral means fix this, and a low band is not a failure.</p></div>
     <div class="card glass"><span class="label">Earner · a post, opened</span>
@@ -253,7 +253,7 @@ border-radius: 20px;</pre><p class="small">Strong glass swaps the gradient for <
   <div class="sh"><h2>Components</h2></div>
   <div class="grid g2">
     <div class="card glass"><span class="label">Buttons</span><div class="row"><button class="btn" type="button">Submit for check</button><button class="ghost" type="button">↑ First</button></div></div>
-    <div class="card glass"><span class="label">Status chips</span><div class="row"><span class="chip go">Start</span><span class="chip ok">+₱40</span><span class="chip fix">Needs a fix</span><span class="chip wait">Checking</span></div></div>
+    <div class="card glass"><span class="label">Status chips</span><div class="row"><span class="chip go">Start</span><span class="chip ok">+₱40</span><span class="chip fix">Needs a fix</span><span class="chip n">Checking</span></div></div>
     <div class="card glass"><span class="label">Rule IDs</span><div class="row"><span class="rid">R-01</span><span class="rid">R-13 · R-01</span><span class="rid tp">Talking point</span><span class="rid">K2</span></div></div>
     <div class="card glass"><span class="label">Wordmark</span><div class="row"><span class="wordmark" style="font-size:36px" role="img" aria-label="OkPo"><span>O</span><span>k</span><span>P</span><span>o</span></span><span class="small">O coral, k yellow, P green, o blue. Minimum 20px.</span></div></div>
   </div>
@@ -281,7 +281,7 @@ border-radius: 20px;</pre><p class="small">Strong glass swaps the gradient for <
 <script>
 (function(){
 const b=document.getElementById('themeBtn');
-const cur=()=>document.documentElement.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+const cur=()=>document.documentElement.getAttribute('data-theme')||('light');
 const paint=()=>{b.textContent=cur()==='dark'?'Light':'Dark'};
 b.addEventListener('click',()=>{document.documentElement.setAttribute('data-theme',cur()==='dark'?'light':'dark');paint()});paint();
 })();

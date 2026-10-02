@@ -1,230 +1,380 @@
 # OkPo design system, for AI coders
 
-Read this before you write any OkPo UI. It is the short, binding version of the OkPo product system canvas and the brand book. If a screen you are asked to build breaks a rule here, follow this file and say so in your summary.
+Read this before you write any OkPo UI. It describes the system **as the working prototypes build it** (`prototypes/console.html`, `earner.html`, `lobby.html`, `connected.html`), audited on 2 Oct 2026. If this file and a prototype disagree, this file wins, and the prototype is due a fix. If a screen you are asked to build breaks a rule here, follow this file and say so in your summary.
 
-Status words used below:
+Status words:
 
 - **Settled**: build it this way.
 - **Open**: build the current default, keep it easy to change, and do not invent a new answer.
 
+The golden rule for new screens: **reuse a pattern that already exists in a prototype before inventing one.** No new icons, badges, marks or shortened wordmarks. Visuals come from the six tiles, the line-icon set in §6, and the full wordmark.
+
 ---
 
-## 1. What OkPo is (so the UI makes sense)
+## 1. What OkPo is
 
 OkPo trains AI to train a brand's influencers. Three surfaces share one state:
 
-| Surface | Who | Job |
-|---|---|---|
-| **Brand console** | Brand marketing manager, OkPo team | Set brand context (rules, facts, talking points), run campaigns, read posts, leads and pool |
-| **Earner app** | Influencers ("earners", e.g. Ana) | Daily brief, missions, coach, posts, wallet, their OkPo page |
-| **Earner page** | A follower of the earner | `okpo.com/<handle>`: sign up for the campaign, ask the earner's AI |
+| Surface | Who | Job | Prototype |
+|---|---|---|---|
+| **Brand console** | Brand marketing manager, OkPo team | Brand context, campaigns, recruiting, posts, leads, pool | `console.html` |
+| **Earner app** | Influencers ("earners", e.g. Ana) | Today's brief, missions, coach, posts, wallet, my page | `earner.html` (left phone) |
+| **Earner page** | A follower of the earner | `okpo.com/<handle>`: sign up, ask the earner's AI | `earner.html` (right phone) |
+| **Lobby** | Visitors and signed-in earners on okpo.com | Campaigns to join, posts that passed, Earn with OkPo | `lobby.html` |
 
-First client: GCash. Campaign names are plain client names ("GCash Heroes", "GCash Ipon Challenge") with no mark of their own. Copy is Taglish; use "po" when the other person uses it.
+First client: GCash. Campaign names are plain client names ("GCash Heroes", "GCash Ipon Challenge").
 
 ---
 
-## 2. Two registers: site vs product (Settled)
+## 2. Registers (Settled, one Open)
 
-| | Marketing site (okpo.com landing) | Product (console, earner app, earner page) |
+| | Marketing site (okpo.com landing) | Product (console, earner app, earner page, Lobby) |
 |---|---|---|
-| Edges | Hand-drawn: buttons, cards, photo cuts wobble 1.6 to 2.2px. No CSS border radius. | Crisp. CSS radius allowed (cards 20px, buttons 12 to 14px, chips 99px). |
-| Sloppy shapes | Everywhere tiles appear | **Only** inside reward moments (takeovers, banners). Never on a control. |
-| Main button | Yellow glaze, drawn edge | **Ink** (`--btn`), crisp |
-| Surface | Cream and bisque grounds, solid cards | Clear liquid glass over a tone-on-tone tile backdrop |
+| Edges | Hand-drawn, 1.6 to 2.2px wobble, no CSS radius | Crisp, CSS radius |
+| Hand-drawn shapes | Wherever tiles appear | **Only** inside reward moments (takeovers, the sign-up banner). Never on a control. |
+| Main button | Yellow glaze, drawn edge | **Ink** (`--btn`) |
+| Surface | Cream and bisque, solid cards | Liquid glass over the tone-on-tone backdrop |
 
-Never mix the two registers on one screen.
+Never mix registers on one screen. **Open:** the Lobby lives on okpo.com but is built in the product register. Keep it that way until decided.
 
 ---
 
 ## 3. Tokens
 
-Copy `tokens.css` from this repo. Values:
+`tokens.css` is the source. Every prototype should load it instead of redeclaring `:root` (today each one redeclares, with small drift; §12 lists it).
 
-### Colour: the six glazes (Settled)
+### Glazes (Settled)
 
-| Token | Hex | Tile it belongs to | Label shade on light |
+| Token | Hex | Tile | Label shade on light |
 |---|---|---|---|
-| `--coral` | `#FF8787` | Square in square (frame) | `--l-coral` `#C92A2A` |
-| `--yellow` | `#FFD43B` | Half disc and bar | `--l-yellow` `#9C6500` |
-| `--orange` | `#FFA94D` | Cut diamond | `#C2410C` |
-| `--green` | `#69DB7C` | Quarter disc | `--l-green` `#237A36` |
-| `--blue` | `#74C0FC` | Pinwheel | `#1971C2` |
-| `--purple` | `#B197FC` | Four petals | `--l-purple` `#6741D9` |
+| `--coral` | `#FF8787` | Frame (square in square) | `--l-coral #C92A2A` |
+| `--yellow` | `#FFD43B` | Half disc and bar | `--l-yellow #9C6500` |
+| `--orange` | `#FFA94D` | Cut diamond | `--l-orange #C2410C` |
+| `--green` | `#69DB7C` | Quarter disc | `--l-green #237A36` |
+| `--blue` | `#74C0FC` | Pinwheel | `--l-blue #1971C2` |
+| `--purple` | `#B197FC` | Four petals | `--l-purple #6741D9` |
 
-Rules:
-
-1. On a light ground a glaze is graphic only: tiles, fills, bars. It never carries text or a thin line. Coloured text on light uses the label shade.
-2. On dark, glazes can be text and lines.
+1. On light, a glaze is graphic only: tiles, fills, bars, tints. Never text, never a thin line or ring. Coloured text and rings on light use the label shade.
+2. On dark, label shades switch to the glazes.
 3. A full glaze block takes ink text.
 4. The wordmark is the only place glazes colour letters on light.
 
-### Product neutrals (Settled)
+### Neutrals (Settled)
 
 | Token | Light | Dark |
 |---|---|---|
 | `--ground` | `#F6F1E4` | `#0F0F0F` |
-| `--tone` (backdrop tiles) | `#EBE2CC` | `#1C1B19` |
+| `--tone` | `#EBE2CC` | `#1C1B19` |
 | `--ink` | `#121212` | `#ECECEC` |
 | `--body` | `#4A4640` | `#B9BCC0` |
 | `--mute` | `#6A655C` | `#8F949A` |
 | `--line` | `rgba(18,18,18,.12)` | `rgba(255,255,255,.12)` |
 | `--soft` | `rgba(18,18,18,.06)` | `rgba(255,255,255,.07)` |
+| `--scrim` | `rgba(18,18,18,.28)` | `rgba(0,0,0,.55)` |
 | `--btn` / `--on-btn` | `#121212` / `#F6F1E4` | `#ECECEC` / `#121212` |
 
-Site neutrals: cream `#FFFDF6`, bisque `#F3EFE6`, rule `#E2DCCD`, panel dark `#1B1B1B`, rule dark `#2E2E2E`, paper `#E3E3E3`.
+### Status tints (Settled)
+
+| Meaning | Background | Text |
+|---|---|---|
+| ok, live, passed, confirmed, Strong | `rgba(105,219,124,.24)` | `--l-green` |
+| fix, fail, didn't count | `rgba(255,135,135,.22)` | `--l-coral` |
+| waiting, in review, check me, changed, Needs work | `--warn-bg rgba(255,212,59,.38)` (dark `.2`) | `--warn-ink #6B4E00` (dark `#FFD43B`) |
+| paused, invite, campaign scope | `rgba(116,192,252,.24)` | `--l-blue` |
+| neutral, draft, note, Good | `--soft` | `--body` |
+
+**"Needs a fix" is coral everywhere** (posts, rules, missions). Yellow means "waiting or needs a look", never "fix".
 
 ### Type (Settled)
 
 | Role | Face | Size |
 |---|---|---|
-| Display, numbers, screen titles | Bricolage Grotesque 800, `-0.03em` | 26 to 30px titles, 44 to 112px reward numbers |
-| Reading, nav, buttons | IBM Plex Sans 400/500/600 | 14 to 16px |
-| Labels, IDs, receipts | IBM Plex Mono 600, uppercase, `0.12em` | 10.5 to 13px |
+| Display: titles, numbers | Bricolage Grotesque **800 only**, `-0.03em` | Console h1 32px (26px under 560px). Phone headline `.big` 30px. Money 46 to 54px. Reward numbers 44 to 112px. |
+| Reading, nav, buttons | IBM Plex Sans 400/500/600 | Body 14px/1.45 in apps, 15px/1.55 on the Lobby |
+| Labels, IDs, receipts | IBM Plex Mono 600, uppercase, `0.12em` | 10.5px |
+| Small text | Plex Sans | 12.5px, `--mute` |
 
-All three are free Google Fonts. Never use Inter, Roboto or Arial. Nothing lighter than 800 for display.
+Never Inter, Roboto or Arial. Do not load Bricolage 700.
 
-### Theme (Settled 1 Oct)
-
-Light first. The product opens light whatever the phone's setting; dark is a choice in settings. Build both, default to light.
-
-### Motion (Settled unless marked)
-
-- Pop: `cubic-bezier(.34,1.56,.64,1)`. Ease: `cubic-bezier(.2,.8,.2,1)`. Exits: `cubic-bezier(.6,0,.3,1)`.
-- Numbers count up over 0.8 to 0.9s, easing out.
-- Screen push 320ms; fade 260ms.
-- `prefers-reduced-motion`: everything still or a short fade, same hold times.
-
----
-
-## 4. The wordmark (Settled)
-
-`OkPo`: capital O and P, Bricolage Grotesque 800, `-0.035em`. Letters O coral, k yellow, P green, o blue, in that order on light and dark. Minimum 20px; below that write OkPo in the text face. Never build letters from tiles, never add an underline, plate or squiggle. In the nav: wordmark only, no four-tile mark.
-
----
-
-## 5. Backdrop and surfaces (Settled)
-
-- Every product screen sits on the tone-on-tone backdrop: three tiles a shade off the ground (`--tone`), crisp, no blur. On a phone: quarter off the top left, petal on the right, half rising from the bottom.
-- Never put a glaze colour behind a screen.
-- Clear glass for content cards; strong glass (`--glass-strong`) for anything that floats: tab bar, sheets, banners, toasts.
+### Glass (Settled, values from the built prototypes)
 
 ```css
-.glass{background:linear-gradient(160deg,var(--glass-a),var(--glass-b));
-  backdrop-filter:blur(14px) saturate(1.6);border:1px solid var(--glass-edge);
-  box-shadow:inset 0 1px 0 var(--glass-edge),var(--glass-shadow);border-radius:20px}
+--glass-a: rgba(255,255,255,.66);  --glass-b: rgba(255,255,255,.44);
+--glass-edge: rgba(255,255,255,.95); --glass-strong: rgba(255,255,255,.82);
+--glass-shadow: 0 16px 36px rgba(18,18,18,.10);
+/* dark */
+--glass-a: rgba(40,40,40,.7); --glass-b: rgba(18,18,18,.6);
+--glass-edge: rgba(255,255,255,.18); --glass-strong: rgba(32,32,32,.88);
+--glass-shadow: 0 16px 36px rgba(0,0,0,.5);
+.glass{background:linear-gradient(160deg,var(--glass-a),var(--glass-b));backdrop-filter:blur(14px) saturate(1.5);border:1px solid var(--glass-edge);box-shadow:inset 0 1px 0 var(--glass-edge),var(--glass-shadow);border-radius:20px}
 .glass.strong{background:var(--glass-strong)}
 ```
 
----
+Strong glass is for things that float (tab bar, sheets, drawers, modals, toasts, the topbar and sidebar) **and** for the one hero card in a group that must read first (Earned today, Ready to claim, the sign-up card, the main table).
 
-## 6. Each moment owns a shape and a colour
+### Radius (Settled)
 
-| Moment | Shape | Colour | Lives in tab | Size | Shade |
-|---|---|---|---|---|---|
-| Post passed | Cut diamond | Orange | Posts | Takeover | Pale |
-| Money landed | Quarter disc | Green | Wallet | Takeover | Pale |
-| Streak ticked | Square in square | Coral | Today | Takeover | Deep |
-| Payday | Four quarters | Green | Wallet | Takeover | Deep |
-| Follower signed up | Half disc | Yellow | My page | Top banner | Pale |
-| Coach | Petals | Purple | Coach | Never a reward | |
+| Token | Value | Use |
+|---|---|---|
+| `--r-card` | 20px | glass cards |
+| `--r-btn` | 14px | buttons |
+| `--r-field` | 12px | inputs, ghost buttons, option cards |
+| `--r-row` | 14px | list cards, drag rows |
+| `--r-sheet` | 28px top | phone sheets |
+| `--r-drawer` | 22px left | console drawer |
+| `--r-tabbar` | 26px | phone tab bar |
+| `--r-id` | 6px | rule IDs, tags |
+| `--r-pill` | 99px | chips, pills, bands |
 
-- Money is always green.
-- Wins the earner makes happen take over the screen. Things other people do (a follower signs up) arrive as a top banner and never interrupt.
-- Takeover path: wash opens from the thing that earned it, shape pops with overshoot, text rises, hold about 1.5s (tap skips), shape flies to its tab, the tab icon lands.
-- Tab icons: outline in `--mute` when idle, filled glaze when active.
-- Brand console (Settled 1 Oct, option B): each section wears its tile, the same as the earner app. Posts orange diamond, Leads blue pinwheel, Brand context purple petals, Talking points green quarter, Recruiting yellow half, Pool green quarter. Status colours keep their meaning everywhere.
-- The console never takes over the screen. One pulse per section per minute, then a counter. No sound.
-- Dark mode (Settled 1 Oct): the wash becomes a dark ground tinted toward the moment's colour (orange `#1D150C`, green `#0F1A12`, coral `#1D1010`, yellow `#1D1A0C`), the shape keeps its glaze and glows, text goes `#ECECEC`. Pale moments show the shape at 62% opacity.
-- Settled 30 Sep: claim now costs 2% (Friday free), a weekly bonus for 5 passed posts, a streak with one automatic rest day a week.
-- **Open**: the takeover system as a whole.
+### Theme (Settled 1 Oct)
+
+Light first. **The OS dark setting is ignored**; dark applies only when the person picks it (`data-theme="dark"`). Build both.
 
 ---
 
-## 7. Brand context v2: rules, facts, talking points (Settled 1 Oct)
+## 4. Wordmark (Settled)
 
-These words are product vocabulary. Use them exactly.
+`OkPo`: Bricolage 800, `-0.035em`, letters coral, yellow, green, blue. Minimum 20px; below that write OkPo in the text face. All four letters or none: never two letters, never a badge, avatar or app icon made from it, never built from tiles.
 
-| Thing | What it answers | ID | Where it shows |
-|---|---|---|---|
-| **Rule** | What must a post never do? | `R-01`, `R-02` ... | Mission Do and Don't, fixes, verdicts, coach answers |
-| **Fact** | What may the AI claim? | `K1`, `K2` ... | Coach and Ask AI "used" chips |
-| **Talking point** | What is this post about? | `TALKING POINT 01` | Console order list, mission detail, post rows |
+---
 
-- Never write "angle" in UI copy. It is "talking point".
-- Talking points live inside each campaign's brief only. Their order (and share) steers the mix; they never override a rule or a fact.
-- Rule severities: **Fail** (post doesn't count), **Needs a fix** (fix and resubmit), **Note** (lowers quality only).
-- Every Do and Don't line on a mission carries its rule ID as a mono chip. Lines that come from the talking point carry a yellow "Talking point" chip instead.
-- Every fix names its rule: "Needs a fix · R-01".
-- Paid-post disclosure on the earner's OkPo page (Settled 1 Oct): the quiet chip "Paid partnership with GCash" under the earner's name, matching the platform's own wording. On the post itself, rules R-01 and R-02 apply.
-- Rule changes go to the brand for approval before they are live. Money changes need a second tap ("Send to GCash", "Approve and publish").
+## 5. Backdrop (Settled)
 
-```html
-<li><span>Say it’s free to join.</span><span class="rid">R-06</span></li>
-<li><span>Name one goal you’re saving for.</span><span class="rid tp">Talking point</span></li>
+Three crisp `--tone` tiles behind every product screen, no blur, never a glaze behind a screen.
+
+- Desktop (console, Lobby): quarter top left (`-260px,-360px`, 900px), petal top right (`45vw,-260px`, 640px), half bottom right (`48vw,58vh`, 820px).
+- Phone: quarter `-120,-120` 420px, petal `180,140` 300px, half `120,520` 380px.
+- The backdrop does not move.
+
+---
+
+## 6. Iconography (Settled)
+
+1. **Tiles.** Six shapes, `viewBox="-5 -5 110 110"`. Filled with their glaze, or outlined `fill:none;stroke:<colour>;stroke-width:9`.
+   - Nav and tab icons: outline in `--mute` when idle (14 to 21px), filled glaze when active (15 to 22px).
+2. **Line icons** for controls only: 24×24, `stroke-width:1.8`, round caps and joins, `currentColor`. Set: `x, check, back, arrow, chev, bell, send, copy, link, mic, up, play, lock, shield, grip, doc, spark`. Add to this set only by drawing in the same style.
+3. **Text glyphs** allowed as icons: `↑ ↓` (reorder, with aria-labels), `→` (link text), `·` (separator).
+4. **Avatars:** `.av` circle with 1 or 2 initials on `--soft`. Brand monogram `.bm` rounded square (radius 12) with initials.
+5. Nothing else. No invented badges or marks.
+
+### Section tiles (Settled)
+
+Each console section and each earner tab wears one tile.
+
+| Where | Tile | Glaze |
+|---|---|---|
+| Console Overview, earner Today, the streak | frame | coral |
+| Campaigns, Pool and billing, Wallet, money | quarter | green |
+| Recruiting, earner My page, follower sign-up | half | yellow |
+| Posts, missions, post passed | diamond | orange |
+| Leads, invites | pin | blue |
+| Brand context, Coach, Ask AI, publish | petal | purple |
+| Talking points and the brief | quarter | green |
+
+**Open:** frame and coral for Overview and Today. Strictly the coral rule allows only fix, fail, the streak and the O. See §12.
+
+---
+
+## 7. Layout
+
+### Console (Settled)
+
+```css
+.app{display:grid;grid-template-columns:244px minmax(0,1fr);gap:16px;padding:16px}
+.side{position:sticky;top:16px}          /* glass strong: wordmark 24px, brand switcher, nav, role box */
+.topbar{padding:8px 10px 8px 16px}       /* glass strong: live chip, brand, day line, theme, reset */
+.view{display:flex;flex-direction:column;gap:14px}
 ```
 
----
+- Rhythm: 14px between blocks, 12px inside cards, 10px between rows.
+- Breakpoints: 1100, 860 (sidebar becomes a top scroller), 700 (one column), 560.
+- **Screen header** is `head(eyebrow, title, sub, right)`:
+  - eyebrow `.label` led by the section tile, written `Section · scope`
+  - h1 32px Bricolage
+  - one or two sentence `.sub`
+  - actions on the right
 
-### Three layers and guided setup (Proposed 1 Oct, prototype at /setup)
+### Phone (Settled)
 
-- **Who we are** (brand level): facts (`K`) and the voice. The only claims the AI may make, and how it sounds.
-- **Guardrails** (brand level, shown in the UI as "Guardrails", IDs stay `R-xx`): only things that stop a post. OkPo's four are locked. Lines that are really a fact, the voice or a brief item do not belong here.
-- **Campaign brief** (per campaign, lives only in Campaigns): talking points, how a post ends, tags, campaign facts. It sits on top and can add or tighten, never loosen. A brief-related fix cites `Brief · Ends on`, not a rule ID.
-- Guardrails get no tile or icon of their own. Who we are uses the Brand context petal; the brief uses the talking-points quarter.
-- **Setup is a separate mode**: full screen, no sidebar, one question per screen, one ink button, "Skip for now" on optional steps, "Save and exit" on every screen. Facts are checked in pages of five; anything skipped stays a draft the AI does not use. Publishing goes through a "Ready to go live?" summary and "Approve and publish".
-- **The configured console is organized**: Brand context tabs are Overview, Who we are, Guardrails, Test, Learn. Leftover setup tasks sit in a dismissible "Finish setting up" card. Day-one screens show empty states, never invented activity.
+- Phone 390×800, radius 44.
+- Screen padding `22px 18px 110px`, gap 14px.
+- Floating tab bar: strong glass, 64px tall, radius 26px, 12px from the edges, five tabs (Today, Coach, Posts, Wallet, My page). It slides away on pushed screens.
+- Pushed screens open with a back icon button and a breadcrumb `.small`.
+- **Open:** Coach, Posts, Wallet and My page use a 17px Plex title while Today uses `.big`. Recommended: `.big` 26px on every tab.
 
-## 8. Quality score (Settled 1 Oct, parts open)
+### Lobby (Settled)
 
-- Pass or fail decides pay. Quality sits beside it and **never changes pay**.
-- Score 0 to 100 from four parts: Brief fit 35, Clear and true 25, Craft 20, Style notes 20. **Open**: the split, until production data.
-- Bands: **Strong** 80 to 100, **Good** 60 to 79, **Needs work** below 60.
-- Brand console shows the number and its four parts. The earner sees **the band and two tips, never the number**.
-- Band colours: Strong green tint, Good neutral, Needs work yellow tint. Never coral: coral means "fix this", and a low band is not a failure.
-- Each tip names its rule ID or "Talking point".
-- Disputes are reviewed by the OkPo team.
-
-```js
-const qBand = n => n >= 80 ? 'Strong' : n >= 60 ? 'Good' : 'Needs work';
-```
+`.wrap` max 1180px, gap 56px. Site nav glass strong, current link underlined in ink.
 
 ---
 
-## 9. Components (product)
+## 8. Components (Settled unless marked)
 
 | Component | Spec |
 |---|---|
-| Button | Ink fill, `--on-btn` text, 600 weight, radius 12 to 14px, press scales to .97 |
-| Ghost button | 1px `--line` border, transparent, radius 10px |
-| Chip | Mono 600 10.5px, `0.08em`, radius 99px. `ok` green tint, `fix` coral tint, `wait` soft, `go` ink |
-| Rule ID | Mono 600 10px, radius 6px, `--soft` ground. Talking point variant: yellow tint, `--l-yellow` text |
-| Band | Plex Sans 600 11.5px, dot plus word, radius 99px |
-| Mission row | Diamond icon (outline open, filled passed), title, one sub line ("Talking point: X · +₱40 when it passes"), chip on the right |
-| Tab bar | Strong glass, 64px, radius 26px, floats 12px from the edges, five tabs: Today, Coach, Posts, Wallet, My page |
-| Top banner | Strong glass, radius 22px, yellow sweep, shape pops, counter flips |
-| Sheet | Strong glass, radius 28px top, grab handle |
-| Daily cap | Three missions a day across all campaigns |
-
-Accessibility: real `<button>`, `<a>`, `<label>`; icon-only buttons get `aria-label`; text 4.5:1; status never by colour alone (always a word).
+| `.btn` | Ink, `--on-btn` text, 600, radius 14, padding `12px 16px`, press scale .97 over 120ms |
+| `.btn.sm` | Radius 12, padding `9px 14px`, for dense console rows |
+| `.ghost` | 1px `--line`, transparent, radius 10 to 12, 500 13 to 14px, hover `--soft` |
+| `.link` | Underlined text button, offset 3px |
+| `.iconbtn` | 40px circle, glass or `--soft`, line icon 16 to 18px, needs `aria-label` |
+| `.chip` | Mono 600 10.5px, `.08em`, radius 99, padding `4px 9px`, variants `ok fix warn n info`. Uppercase in the console. Amounts (`+₱40`) and names stay as written. |
+| `.chip.go` | Ink pill, Plex 600 13px: the "Start" on a mission row |
+| `.st` | Campaign status with a 7px dot: Draft, Waiting for GCash, Live, Paused, Ended |
+| `.cnt` | Mono 11px count badge in nav and tabs, neutral or warn |
+| `.seg` | Segmented control: soft track radius 12, pressed button strong glass |
+| `.pill` | Filter toggle, radius 99, pressed is an ink fill |
+| `.rid` | Rule ID, mono 600 10px, radius 6, `--soft`. `.rid.tp` "Talking point" in yellow tint. `.rid.k` fact ID in purple tint. |
+| `.band` | Quality band, Plex 600 11.5px, 7px dot + word: Strong (green), Good (neutral), Needs work (yellow). Never coral. |
+| `.li` | List row, padding 11px 0, top rule except the first |
+| `.mission` | Diamond 22px (filled passed, outline open, coral outline fix), title 600, one sub line, chip on the right |
+| `.tbl` | Mono uppercase headers, 13.5px cells, clickable rows hover `--soft` and open on Enter |
+| `.field` / `.txt` | 46px (phone) or 42px (console) input, radius 12, strong glass; `.bad` border `--l-coral` |
+| `.otp` | 44×54 mono 22px boxes |
+| `.opts` / `.plan` | Option cards, pressed is an ink border and inset ring |
+| `.cbx` / `.switch` | Checkbox radius 6, switch 40×23. Both pop on with `--pop`. |
+| `.drop-z` | Dashed 1.5px `--line`, radius 14, hover `--soft` |
+| `.stepper` | Strong glass row: 26px numbered circles (ink when current, green when done), `.sline` progress bars between steps |
+| `.outbar` | Publish bar: petal, "N changes ready for vX", ghost "See changes", the primary publish action |
+| `.need` | Overview "needs you" tile: tile, `N things verb`, `Review →` |
+| Toast | **Console:** bottom centre, strong glass, tile + bold lead + consequence, 3.2s. **Phone:** top inside the phone, strong glass, drops in, 2.6s. |
+| Drawer | Console right panel, `min(460px,100%)`, radius `22px 0 0 22px`, scrim |
+| Modal | Centred, `min(480px, 100% - 32px)`, scrim |
+| Sheet | Phone bottom sheet, radius 28 top, grab handle |
+| Chat | `.bub.me` soft, `.bub.ai` petal avatar + text, then `used` chips naming the fact or rule (`K1`, `R-03`) |
+| Typing | `.dots`, three 7px dots, 1s loop |
+| Empty state | One plain `.small` sentence that says what to do: "Nothing new. The AI checks again tomorrow." |
 
 ---
 
-## 10. Copy
+## 9. Moments and motion (Settled, from the built engines)
 
-- Taglish, short. "Libre mag-join. About 5 minutes on the GCash app."
-- No em dashes. Use a full stop or a comma.
-- Money as `₱40`, tabular numerals.
-- Placeholders for unknown values: `[₱X]`, never an invented number.
-- Name things by what the user does: "Claim to GCash", "Paste the link", "Submit for check".
+### Motion tokens
+
+| Token | Curve | Use |
+|---|---|---|
+| `--ease` | `cubic-bezier(.2,.8,.2,1)` | Everything that settles |
+| `--pop` | `cubic-bezier(.34,1.56,.64,1)` | Small things popping on: checks, tokens, switch knobs, counters |
+| `--pop-soft` | `cubic-bezier(.34,1.45,.64,1)` | Big shapes and cards arriving: takeover shapes, AI-read cards |
+| `--exit` | `cubic-bezier(.6,0,.3,1)` | Leaving: shapes flying to a tab, the wash closing |
+| `--arc` | `cubic-bezier(.5,0,.3,1)` | A clone flying along a curve: banner shape, recruit avatars |
+
+### Durations
+
+- Press 120ms.
+- Screen push 320ms: the new screen comes in from the right, the old one moves 28% left at .4 opacity.
+- Tab or view change: fade up 260ms in, 160ms out.
+- Rows, bubbles and cards arriving: rise 8 to 12px, 300 to 350ms.
+- Stagger 60 to 90ms.
+- Count-up 900ms, ease-out cubic.
+- Meters and bars grow 800ms.
+- Overlays: drawer 360ms, modal 280ms, sheet 340ms, close 220 to 260ms.
+
+### Earner reward takeover (Settled)
+
+The shape and its colour come from §6. The sequence:
+
+1. The wash opens as a circle from the thing that earned it, 460ms.
+2. The hand-drawn shape pops from the origin at scale .06, `--pop-soft`, 620ms.
+3. The text rises 14px, 320ms, staggered 90ms per line.
+4. Hold 1.5s (streak 1.7s, payday 1.9s). A tap skips.
+5. The shape flies to its tab with `--exit` over 560ms while the wash closes into the tab.
+6. The tab icon fills and lands (scale 1.5 at 40%, `--pop`).
+
+- Moments queue and never overlap: passed, then money, then streak.
+- Light wash is the full glaze, with the shape in its deep or pale shade.
+- Dark wash is a tinted dark ground (`#1D150C`, `#0F1A12`, `#1D1010`, `#1D1A0C`), with the shape in its glaze (62% on pale moments) and `#ECECEC` text.
+
+### Things other people do (Settled)
+
+These arrive as the **top banner** and never interrupt:
+
+1. Enters with `--pop-soft`.
+2. A yellow sweep runs across it.
+3. The shape pops.
+4. The counter flips.
+5. Hold 2.4s.
+6. The shape flies to its tab with `--arc`.
+
+**Open:** the banner is still hard-coded light; it needs a strong-glass and dark version.
+
+### Console (Settled)
+
+The console never takes over the screen. Its moments are local:
+
+- **Publish:** a petal pops at the button, then flies to the brand switcher over 1.3s with `--exit`. The live card pops and the switcher pulses.
+- **AI reading:** each drafted card arrives from 14px below at scale .96 with `--pop-soft`, 420ms.
+- **Checked:** the card flashes a green-tint ring over 0.7s. (Fix: today it uses the green glaze, which is a thin glaze line; use `--l-green`.)
+- **Approve:** avatars arc into the Joined column with `--arc`, 700ms.
+
+**Open:** "one pulse per section per minute, then a counter" is specced but not built.
+
+### Reduced motion
+
+Everything becomes a short fade with the **same hold times**. Demo delays stay the same length; only the movement goes.
 
 ---
 
-## 11. Do not
+## 10. Brand context, rules, facts, talking points
 
-- Put sloppy edges on product controls.
-- Use a glaze as a screen background.
+Vocabulary used in UI copy (Settled): **Fact** (`K1`), **Rule** (`R-01`), **Talking point**. Never "angle". Retire "Know", "Aim" and "Direction" from the console copy.
+
+- Rule severities: **Fail** (post doesn't count), **Needs a fix** (fix and resubmit), **Note** (lowers quality only).
+- Every Do and Don't line carries its rule ID chip, or a yellow "Talking point" chip.
+- Every fix names its rule: "Needs a fix · R-01".
+- The paid-post label on the earner page reads "Paid partnership with GCash".
+- Rule and money changes go to the brand for approval. The second tap reads "Send to GCash for approval", then "Approve and publish vN".
+
+### Three layers and guided setup (Proposed 1 Oct, not yet in the console)
+
+- **Who we are:** facts and voice, brand level.
+- **Guardrails:** only what stops a post. IDs stay `R-xx`. OkPo's four are locked.
+- **Campaign brief:** lives in Campaigns, sits on top, can add or tighten, never loosen.
+
+The console today still has tabs Facts, Rules, Learn, Test, and a five-step new-brand flow inside the console shell (Sources, Read, Check facts, Rules, Test and publish). **Setup work must start from that flow and its motion.** Proposed changes:
+
+- run setup full screen
+- one question per screen
+- facts checked in pages of five, with skipped facts saved as drafts
+- a "Ready to go live?" summary before publishing
+
+---
+
+## 11. Copy (Settled)
+
+- **Chrome is English**, short, second person. Taglish lives in data, AI answers, earner greetings and follower-facing lines. Use "po" when the other person uses it.
+- **Names come from data, never from templates.** A brand or person name appears where the screen is about that account: the brand switcher, eyebrow scope ("Brand context · GCash"), buttons that send to them ("Send to GCash"), the earner's own greeting. Flow headings and questions stay general ("Is this true about your brand?" not "Is this true about GCash?"), because the same flow serves every brand.
+- Titles: plain nouns ("Campaigns", "Pool and billing") or one clear claim ("Your numbers, next to ours").
+- Subtitles: one or two sentences that explain who decides or pays.
+- Buttons: verb first, naming the object or the recipient ("Send to GCash for approval", "Claim to GCash").
+- Toasts: a bold lead, then the consequence. "**v8 published.** Earners see it in tomorrow's 7:00 AM brief."
+- Money `₱40`, tabular numerals. Unknown values `[₱X]`. Example data flagged "Example numbers."
+- No em dashes. Middle dot `·` as the separator.
+
+---
+
+## 12. Known drift to fix in the prototypes
+
+1. Every prototype redeclares `:root` instead of loading `tokens.css`. The values drift: glass saturate, strong-glass alpha, dark edge.
+2. Focus rings use `var(--blue)`. Change to `2px solid var(--l-blue)`.
+3. Glaze rings on light: the console's green check flash, the yellow example ring and the coral verdict border. Change them to label shades or tints.
+4. "Needs a fix" is yellow in the console rules. Change to coral.
+5. Talking-point card on the earner mission uses the blue pin. Change to the green quarter.
+6. Quality band in the console is plain text, and connected uses chips. Change both to `.band`.
+7. The connected prototype's takeover is a text-only linear fade. Replace with the earner engine.
+8. Console copy still says Know, Aim and Direction.
+9. The follower page wordmark is 15px, under the 20px minimum. Write "OkPo" in the text face instead.
+10. Coral appears on the notification badge, the invite dot and non-streak frame tiles. **Open:** decide whether frame and coral is "Today and Overview" or only the streak.
+
+---
+
+## 13. Do not
+
+- Put hand-drawn edges on product controls.
+- Use a glaze as a screen background, a text colour on light, or a thin line on light.
+- Invent icons, badges or partial wordmarks.
+- Put a brand's name in a flow's headings.
 - Show the earner their quality number.
-- Write "angle".
-- Use coral for anything but a fix, a fail, the streak, or the wordmark's O.
+- Write "angle", "Know", "Aim" or "Direction".
 - Add a full-screen moment to the brand console.
-- Blur the backdrop tiles.
+- Blur or animate the backdrop tiles.
+- Use any easing other than the five motion tokens.
