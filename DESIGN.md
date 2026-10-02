@@ -384,6 +384,22 @@ The first visit is a fast path through the same five steps. Completeness is not 
 - **Sensitive conflicts must be answered to publish.** "Don't mention it yet" counts as an answer; the AI stays quiet and the item goes to To check.
 - **Minimum to publish v1** (Locked): who they want more of, voice, at least 1 rule, every sensitive conflict answered.
 - **To check:** one shared list inside Brand context of skipped, Guess and unconfirmed sensitive items. The brand and OkPo both have full access; whoever gets there first confirms it.
+- **Optional files and links** (Locked): under the website, "Add more" (marked optional) takes dropped files (brand book, decks, FAQs, price lists) and pasted links (Drive, Notion, socials, landing pages). Each added item says what OkPo will use it for. A private link shows "Needs sharing" and is skipped until shared. Facts from a file name the file as their source. Files read appear in Read beside the web sources.
+
+### How well I know the brand (Locked 2 Oct, canvas boards 9 to 11)
+
+An expectation setter: what the AI can do with what it has been given. It replaces the "% complete" bar in the Brand context panel.
+
+- **Four levels:** Just met, Learning, Knows you, Knows you well. Names are Open; the four-level shape is Locked.
+  - Just met: website read, not published. Drafts only. The panel counts the minimum: "0 of 4 to publish".
+  - Learning: the minimum to publish is in. Writes daily briefs; sensitive questions go to the brand's team.
+  - Knows you: To check cleared, none older than 7 days; fees and eligibility Confirmed; at least 1 file from the brand.
+  - Knows you well: a finished campaign with results fed back; earner questions answered within 2 days.
+- **Never an accuracy %.** The level says what OkPo can and can't do.
+- **Moves only on what the brand adds,** never on time spent or days live.
+- **Can drop a level** when a promo ends or a fact passes 30 days without a re-check. Those facts are **paused until someone re-confirms them**; everything else keeps working.
+- **Meter:** 4 segments in `#7950f2`; the current level name in ink with "n of 4". After a drop, the lost segment stays as an outline and the label reads "from Knows you".
+- **Console home on load** follows one pattern: the level and meter, one OkPo line on what that means today, each thing holding it back as a row with its own action, and one closing line: "Clear both and I'm at Knows you."
 
 ### Brand setup (Locked 2 Oct, `prototypes/setup.html`)
 
