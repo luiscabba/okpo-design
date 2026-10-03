@@ -278,6 +278,7 @@ lens:   <path d="M0 50 Q50 -16 100 50 Q50 116 0 50 Z"/>
 ```
 
 - Idle: outline in `--mute`, 20px. Active: filled, 22px, the label 600 ink.
+- The pin is the exception to outlines: its four triangles meet at the centre, so a stroke crosses itself. Wherever the pin would be outlined (idle tab, an open mission, a future streak day) it is a soft fill instead: the outline colour at 42% opacity.
 - The speech tile is also OkPo's Coach and AI mark wherever the AI speaks (chat, Ask AI). Always ink.
 
 ### Everything else is ink
@@ -602,17 +603,7 @@ Order of work: earner app, then the rest of the console, then Connected and the 
 3. Tile colour map `COL` still uses the old map (frame coral, half yellow, diamond orange, pin blue). Change to §6.
 4. "Brand context" in copy. Change to Playbook.
 
-**Earner (`earner.html`)**: keep every delight piece; remap only.
-
-5. Today headline "3 missions left today". Change to "Today's mission", one card, then "Always true for GCash".
-6. Tab symbols: Today frame, Coach petal, Posts diamond, My page half. Change to pin, speech tile, frame, lens.
-7. Takeovers: streak is the coral frame, post passed is the orange diamond. Change to the yellow pin and the green quarter.
-8. Talking-point tag is the blue pin or green quarter. Change to the yellow pin.
-9. Mission Do and Don't with rule ID chips. Change to Never, Careful, Always in plain words.
-10. Coach answers cite `K1`, `R-03`. Change to plain part names, IDs on tap.
-11. Tabs Coach, Posts, Wallet and My page still use the 17px Plex title. Change to `.big` 26px.
-12. The follower page wordmark is 15px, under the 20px minimum. Write "OkPo" in the text face instead.
-13. The "other people" banner is hard-coded light. Build its strong-glass and dark version.
+**Earner (`earner.html`)**: done 3 Oct. Tabs, takeovers, Today's mission, Always true, Never / Careful / Always, Coach citations, tab titles, follower wordmark and the dark banner all match.
 
 **Console (`console.html`)**
 
