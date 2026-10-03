@@ -119,9 +119,41 @@ td{padding:11px 14px 11px 0;border-bottom:1px solid var(--line);vertical-align:m
 .links a:hover{transform:translateY(-1px)}
 .donts li{display:flex;gap:10px}
 .theme{margin-left:auto}
-:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:8px}
+:focus-visible{outline:2px solid var(--l-blue);outline-offset:2px;border-radius:8px}
 @media (max-width:900px){.wrap{grid-template-columns:minmax(0,1fr)}nav.toc{display:none}.g6{grid-template-columns:repeat(3,minmax(0,1fr))}.g3{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:600px){.g2{grid-template-columns:minmax(0,1fr)}.g6{grid-template-columns:repeat(2,minmax(0,1fr))}.spec{grid-template-columns:minmax(0,1fr)}}
+.g5{grid-template-columns:repeat(5,minmax(0,1fr))}
+.pn{width:28px;height:28px;border-radius:9px;background:var(--btn);color:var(--on-btn);display:grid;place-items:center;font:800 14px/1 var(--display);flex:none}
+.ybtn{border:0;border-radius:14px;padding:12px 18px;background:var(--yellow);color:#121212;font:600 14px/1 var(--text);cursor:pointer}
+.chip.warn{background:rgba(255,212,59,.38);color:#6b4e00}
+:root[data-theme="dark"] .chip.warn{background:rgba(255,212,59,.2);color:#ffd43b}
+.rid.k{background:rgba(116,192,252,.2);color:var(--l-blue)}
+.al{display:flex;align-items:center;gap:9px;font-size:14px}.al i{width:7px;height:7px;border-radius:50%;flex:none}
+.tabbar{display:flex;justify-content:space-around;padding:10px 6px;border-radius:26px;background:var(--glass-strong);border:1px solid var(--glass-edge);box-shadow:var(--glass-shadow);margin-top:6px}
+.tabbar .tb{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;color:var(--mute)}.tabbar .tb.on{color:var(--ink);font-weight:600}
+.say{display:flex;flex-direction:column;gap:6px;padding:12px 14px;border-radius:14px;background:var(--soft)}
+.bookstage{position:relative;padding:26px 10px;isolation:isolate}
+.behind{position:absolute;inset:0;z-index:-1;overflow:hidden;border-radius:20px}.behind svg{position:absolute}
+.behind .b1{left:2%;bottom:-40px}.behind .b2{left:48%;top:-30px}.behind .b3{right:4%;bottom:-20px}
+.book{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);max-width:760px;margin:0 auto;min-height:250px}
+.liquid{position:relative;overflow:hidden;background:rgba(255,255,255,.52);-webkit-backdrop-filter:blur(22px) saturate(1.75);backdrop-filter:blur(22px) saturate(1.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(255,255,255,.35),inset 1px 0 0 rgba(255,255,255,.55),inset -1px 0 0 rgba(255,255,255,.25);border-radius:6px 22px 22px 6px;padding:22px 26px;display:flex;flex-direction:column;gap:10px}
+.liquid::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.58) 0%,rgba(255,255,255,.09) 36%,rgba(255,255,255,0) 58%,rgba(255,255,255,.2) 100%);opacity:.7;pointer-events:none}
+.liquid.cover{background:linear-gradient(160deg,rgba(13,110,253,.78),rgba(13,110,253,.58));color:#fff;border-radius:22px 6px 6px 22px;padding:26px}
+.liquid.cover::before{opacity:1}
+.liquid.cover::after{content:"";position:absolute;right:0;top:10px;bottom:10px;width:1px;background:rgba(255,255,255,.6)}
+:root[data-theme="dark"] .liquid:not(.cover){background:rgba(40,40,40,.6)}
+.bm2{position:relative;width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.95);color:#0d6efd;display:grid;place-items:center;font:800 20px/1 var(--display)}
+.ch{position:relative;display:grid;grid-template-columns:26px minmax(0,1fr);gap:8px;padding:8px 0;border-top:1px solid var(--line)}.ch b{display:block;font-size:14px}
+.part{gap:8px}
+.rk{display:flex;align-items:center;gap:10px;margin-top:6px}
+.rl{display:flex;flex-direction:column;gap:3px;padding:8px 0 8px 12px;border-left:2px solid var(--line)}
+.rl .more{display:flex;gap:8px;align-items:center;margin-top:4px}
+.cnav{display:flex;flex-direction:column;gap:2px;max-width:240px}
+.cnav>span{padding:10px 12px;border-radius:12px;font:500 15px/1.2 var(--text);display:flex;align-items:center;justify-content:space-between}
+.cnav>span.on{font-weight:600;background:rgba(18,18,18,.07)}:root[data-theme="dark"] .cnav>span.on{background:rgba(255,255,255,.08)}
+.cnt{font:600 11px/1 var(--mono);padding:3px 7px;border-radius:99px;background:rgba(255,212,59,.38);color:#6b4e00}
+@media (max-width:900px){.g5{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:600px){.g5{grid-template-columns:repeat(2,minmax(0,1fr))}.book{grid-template-columns:minmax(0,1fr)}.liquid,.liquid.cover{border-radius:20px}}
 </style>
 
 </head>
@@ -134,49 +166,48 @@ td{padding:11px 14px 11px 0;border-bottom:1px solid var(--line);vertical-align:m
 
 <div class="wrap">
 <nav class="toc" aria-label="Sections">
-  <a href="#registers">Two registers</a><a href="#colour">Colour</a><a href="#type">Type</a><a href="#surfaces">Backdrop and glass</a><a href="#moments">Moments</a><a href="#context">Rules and talking points</a><a href="#quality">Quality bands</a><a href="#components">Components</a><a href="#prototypes">Prototypes</a><a href="#coders">For AI coders</a>
+  <a href="#principles">Principles</a><a href="#registers">Two registers</a><a href="#colour">Five meanings</a><a href="#type">Type</a><a href="#surfaces">Backdrop and glass</a><a href="#playbook">The Playbook</a><a href="#tabs">Tab symbols</a><a href="#moments">Moments</a><a href="#quality">Quality bands</a><a href="#components">Components</a><a href="#prototypes">Prototypes</a><a href="#coders">For AI coders</a>
 </nav>
 <main>
 <header class="top">
-  <div class="row1"><span class="wordmark" style="font-size:40px" role="img" aria-label="OkPo"><span>O</span><span>k</span><span>P</span><span>o</span></span><span class="label">Product design system · v2 · 1 Oct 2026</span><button class="ghost theme" type="button" id="themeBtn">Dark</button></div>
-  <h1>Calm glass, loud rewards.</h1>
-  <p class="lede">How OkPo’s brand console, earner app and earner page are built. Controls stay crisp and quiet so the moments that pay an earner can take over the screen. Every specimen below is the real component, styled from <span class="mono">tokens.css</span>.</p>
+  <div class="row1"><span class="wordmark" style="font-size:40px" role="img" aria-label="OkPo"><span>O</span><span>k</span><span>P</span><span>o</span></span><span class="label">Product design system · v3 · 3 Oct 2026</span><button class="ghost theme" type="button" id="themeBtn">Dark</button></div>
+  <h1>Calm by default. Detail one level down.</h1>
+  <p class="lede">How OkPo’s brand console, earner app and earner page are built. Five shapes carry five meanings and everything else is ink, so the moments that pay an earner can still take over the screen. Every specimen below is the real component, styled from <span class="mono">tokens.css</span>.</p>
 </header>
 
+<section id="principles">
+  <div class="sh"><span class="chip ok status">Locked 3 Oct</span><h2>Nine principles</h2><p class="sub">They came from the Playbook redesign and now apply to every view.</p></div>
+  <div class="grid g3"><div class="card glass"><div class="row" style="flex-wrap:nowrap;align-items:flex-start"><span class="pn">1</span><b class="grow" style="font:800 18px/1.15 var(--display);letter-spacing:-.02em">Start with something they recognise</b></div><p class="small">The Playbook opens on the book from onboarding.</p></div><div class="card glass"><div class="row" style="flex-wrap:nowrap;align-items:flex-start"><span class="pn">2</span><b class="grow" style="font:800 18px/1.15 var(--display);letter-spacing:-.02em">One job per screen</b></div><p class="small">Today is the mission. Wallet is the money.</p></div><div class="card glass"><div class="row" style="flex-wrap:nowrap;align-items:flex-start"><span class="pn">3</span><b class="grow" style="font:800 18px/1.15 var(--display);letter-spacing:-.02em">Say it once</b></div><p class="small">Cards don’t repeat what the contents already say.</p></div><div class="card glass"><div class="row" style="flex-wrap:nowrap;align-items:flex-start"><span class="pn">4</span><b class="grow" style="font:800 18px/1.15 var(--display);letter-spacing:-.02em">Detail one level at a time</b></div><p class="small">Book, part, line, source. IDs and trust on tap.</p></div><div class="card glass"><div class="row" style="flex-wrap:nowrap;align-items:flex-start"><span class="pn">5</span><b class="grow" style="font:800 18px/1.15 var(--display);letter-spacing:-.02em">Quiet until something needs you</b></div><p class="small">“1 to check” only when due. No always-on strip.</p></div><div class="card glass"><div class="row" style="flex-wrap:nowrap;align-items:flex-start"><span class="pn">6</span><b class="grow" style="font:800 18px/1.15 var(--display);letter-spacing:-.02em">Few named groups, each with a shape</b></div><p class="small">Facts, Voice, Rules. Shape first, then word.</p></div><div class="card glass"><div class="row" style="flex-wrap:nowrap;align-items:flex-start"><span class="pn">7</span><b class="grow" style="font:800 18px/1.15 var(--display);letter-spacing:-.02em">Plain words</b></div><p class="small">“Today’s mission”, not “brief v7”.</p></div><div class="card glass"><div class="row" style="flex-wrap:nowrap;align-items:flex-start"><span class="pn">8</span><b class="grow" style="font:800 18px/1.15 var(--display);letter-spacing:-.02em">Fits one screen at rest</b></div><p class="small">If the first view scrolls, it’s doing two jobs.</p></div><div class="card glass"><div class="row" style="flex-wrap:nowrap;align-items:flex-start"><span class="pn">9</span><b class="grow" style="font:800 18px/1.15 var(--display);letter-spacing:-.02em">Show it working</b></div><p class="small">“See it in a post” beats a paragraph about a rule.</p></div></div>
+</section>
+
 <section id="registers">
-  <div class="sh"><span class="chip ok status">Settled</span><h2>Two registers</h2><p class="sub">The marketing site is drawn by a loose hand. The product is sleek. Never mix them on one screen.</p></div>
+  <div class="sh"><span class="chip ok status">Locked</span><h2>Two registers</h2><p class="sub">The marketing site is drawn by a loose hand. The product is sleek. Never mix them on one screen.</p></div>
   <div class="grid g2">
     <div class="card glass reg"><span class="label">Site · okpo.com</span>
-      <span class="drawn"><svg width="150" height="46" viewBox="0 0 150 46" aria-hidden="true"><path d="M2.0 1.7 L14.0 1.3 L25.6 2.5 L35.7 2.4 L44.3 1.6 L53.6 1.0 L64.5 1.5 L76.1 1.9 L84.7 3.0 L94.4 1.6 L103.8 2.7 L113.4 2.9 L124.2 1.2 L136.0 2.4 L145.2 1.3 L147.0 2.3 L148.6 12.5 L148.1 22.5 L148.3 34.0 L148.1 44.7 L138.7 43.4 L129.8 43.7 L119.3 44.3 L107.6 44.2 L96.5 44.1 L86.3 44.9 L77.1 43.4 L65.7 44.4 L55.4 44.9 L44.6 43.5 L33.8 43.2 L24.6 44.8 L15.8 43.1 L5.5 43.0 L1.5 43.7 L2.4 34.4 L1.0 23.4 L2.3 12.5 L1.0 3.3Z" fill="#ffd43b" stroke="#ffd43b" stroke-width="2" stroke-linejoin="round"/></svg><span>Book a call</span></span>
-      <p class="small">Yellow glaze, edges wobble 1.6 to 2.2px, no CSS radius anywhere.</p></div>
+      <div class="row"><button class="ybtn" type="button">Book a call</button></div>
+      <p class="small">Art is hand-drawn. Controls are crisp yellow: 14px corners, ink text.</p></div>
     <div class="card glass reg"><span class="label">Product · console, app, page</span>
       <div class="row"><button class="btn" type="button">Claim to GCash</button><button class="ghost" type="button">Not now</button></div>
-      <p class="small">Ink button, crisp 14px radius. Sloppy shapes appear only inside reward moments.</p></div>
+      <p class="small">Ink button, crisp 14px radius. Hand-drawn shapes appear only inside reward moments.</p></div>
   </div>
 </section>
 
 <section id="colour">
-  <div class="sh"><span class="chip ok status">Settled</span><h2>Six glazes, one job each</h2><p class="sub">On a light ground a glaze is graphic only. Coloured text uses its label shade, which passes 4.5 to 1.</p></div>
-  <div class="grid g6">
-    <div class="card glass"><div class="sw" style="background:var(--coral)"></div><b>Coral</b><span class="hex">#FF8787<br>label #C92A2A</span><span class="small">Fixes, streak</span></div>
-    <div class="card glass"><div class="sw" style="background:var(--yellow)"></div><b>Yellow</b><span class="hex">#FFD43B<br>label #9C6500</span><span class="small">Sign-ups, My page</span></div>
-    <div class="card glass"><div class="sw" style="background:var(--orange)"></div><b>Orange</b><span class="hex">#FFA94D<br>label #C2410C</span><span class="small">Posts, passed</span></div>
-    <div class="card glass"><div class="sw" style="background:var(--green)"></div><b>Green</b><span class="hex">#69DB7C<br>label #237A36</span><span class="small">Money, always</span></div>
-    <div class="card glass"><div class="sw" style="background:var(--blue)"></div><b>Blue</b><span class="hex">#74C0FC<br>label #1971C2</span><span class="small">Leads, focus</span></div>
-    <div class="card glass"><div class="sw" style="background:var(--purple)"></div><b>Purple</b><span class="hex">#B197FC<br>label #6741D9</span><span class="small">Coach, AI</span></div>
-  </div>
+  <div class="sh"><span class="chip ok status">Locked 3 Oct</span><h2>Five shapes, five meanings</h2><p class="sub">Colour and shape are reserved for the five things people need to tell apart at a glance. Everything else is ink, so a shape never means two things. On light a glaze is graphic only; coloured text uses its label shade.</p></div>
+  <div class="grid g5"><div class="card glass"><svg class="tile" viewBox="-5 -5 110 110" role="img" aria-label="Facts" style="width:52px;height:52px"><g fill="var(--blue)"><path d="M0 100 A50 50 0 0 1 100 100 Z"/><rect width="100" height="22"/></g></svg><b style="font:800 22px/1 var(--display);letter-spacing:-.03em">Facts</b><span class="small">What’s true about the brand</span><span class="hex">Blue · label #1971C2</span></div><div class="card glass"><svg class="tile" viewBox="-5 -5 110 110" role="img" aria-label="Voice" style="width:52px;height:52px"><g fill="var(--purple)"><path d="M50 50 Q50 2 98 2 Q98 50 50 50 Z M50 50 Q98 50 98 98 Q50 98 50 50 Z M50 50 Q50 98 2 98 Q2 50 50 50 Z M50 50 Q2 50 2 2 Q50 2 50 50 Z"/></g></svg><b style="font:800 22px/1 var(--display);letter-spacing:-.03em">Voice</b><span class="small">How the brand sounds</span><span class="hex">Purple · label #6741D9</span></div><div class="card glass"><svg class="tile" viewBox="-5 -5 110 110" role="img" aria-label="Rules" style="width:52px;height:52px"><g fill="var(--coral)"><path d="M50 0L100 50L50 100L0 50Z M50 28L72 50L50 72L28 50Z" fill-rule="evenodd"/></g></svg><b style="font:800 22px/1 var(--display);letter-spacing:-.03em">Rules</b><span class="small">Never, Careful, Always</span><span class="hex">Coral · label #C92A2A</span></div><div class="card glass"><svg class="tile" viewBox="-5 -5 110 110" role="img" aria-label="Missions" style="width:52px;height:52px"><g fill="var(--yellow)"><path d="M0 0 L50 0 L50 50 Z M100 0 L100 50 L50 50 Z M100 100 L50 100 L50 50 Z M0 100 L0 50 L50 50 Z"/></g></svg><b style="font:800 22px/1 var(--display);letter-spacing:-.03em">Missions</b><span class="small">Campaigns, today’s mission, talking points, streaks</span><span class="hex">Yellow · label #9C6500</span></div><div class="card glass"><svg class="tile" viewBox="-5 -5 110 110" role="img" aria-label="Money" style="width:52px;height:52px"><g fill="var(--green)"><path d="M0 100 L0 0 A100 100 0 0 1 100 100 Z"/></g></svg><b style="font:800 22px/1 var(--display);letter-spacing:-.03em">Money</b><span class="small">Pool, payouts, payday, a post that earned</span><span class="hex">Green · label #237A36</span></div></div>
   <div class="grid g3">
     <div class="card glass"><div class="sw" style="background:var(--ground);border:1px solid var(--line)"></div><b>Ground</b><span class="hex">#F6F1E4 · dark #0F0F0F</span></div>
-    <div class="card glass"><div class="sw" style="background:var(--tone)"></div><b>Tone</b><span class="hex">#EBE2CC · dark #1C1B19</span><span class="small">Backdrop tiles only</span></div>
-    <div class="card glass"><div class="sw" style="background:var(--ink)"></div><b>Ink</b><span class="hex">#121212 · dark #ECECEC</span><span class="small">Text and the main button</span></div>
+    <div class="card glass"><div class="sw" style="background:var(--tone)"></div><b>Tone</b><span class="hex">#EBE2CC · dark #1C1B19</span><span class="small">Backdrop tiles only, no meaning</span></div>
+    <div class="card glass"><div class="sw" style="background:var(--ink)"></div><b>Ink</b><span class="hex">#121212 · dark #ECECEC</span><span class="small">Text, the main button, and every icon that isn’t one of the five</span></div>
   </div>
+  <p class="small">Orange (#FFA94D) carries no meaning in the product any more. Coral also marks “needs a fix”; yellow also marks “waiting”.</p>
 </section>
 
 <section id="type">
-  <div class="sh"><span class="chip ok status">Settled</span><h2>Three faces</h2></div>
+  <div class="sh"><span class="chip ok status">Locked</span><h2>Three faces</h2></div>
   <div class="card glass">
     <div class="spec"><span class="label">Display 800</span><span style="font:800 84px/1 var(--display);letter-spacing:-.03em" class="num">+₱40</span>
-    <span class="label">Title 30</span><span style="font:800 30px/1.05 var(--display);letter-spacing:-.03em">3 missions left today</span>
+    <span class="label">Title 30</span><span style="font:800 30px/1.05 var(--display);letter-spacing:-.03em">Today’s mission</span>
     <span class="label">Sans 15</span><span>Show the Heroes sign-up in the real app, under 20 seconds.</span>
     <span class="label">Mono 10.5</span><span class="label" style="color:var(--ink)">Ready to claim · GCash Heroes</span></div>
     <p class="small">Bricolage Grotesque 800, IBM Plex Sans, IBM Plex Mono. All free Google Fonts. Taglish copy, “po” when the other person uses it.</p>
@@ -184,66 +215,89 @@ td{padding:11px 14px 11px 0;border-bottom:1px solid var(--line);vertical-align:m
 </section>
 
 <section id="surfaces">
-  <div class="sh"><span class="chip ok status">Settled</span><h2>Tone-on-tone backdrop, clear glass</h2><p class="sub">Three tiles a shade off the ground sit behind every screen: quarter top left, petals right, half rising from the bottom. Crisp, never blurred, never a glaze colour. Content sits on clear glass; anything that floats is strong glass.</p></div>
+  <div class="sh"><span class="chip ok status">Locked</span><h2>Tone-on-tone backdrop, clear glass</h2><p class="sub">Three tiles a shade off the ground sit behind every screen: quarter top left, petals right, half rising from the bottom. Crisp, never blurred, never a glaze colour. Content sits on clear glass; anything that floats is strong glass. Today fits the phone at rest.</p></div>
   <div class="row" style="align-items:flex-start;gap:24px">
     <div class="phone">
       <div class="pbg" aria-hidden="true"><svg viewBox="-5 -5 110 110" style="left:-110px;top:-110px;width:360px;height:360px"><path d="M0 100 L0 0 A100 100 0 0 1 100 100 Z"/></svg><svg viewBox="-5 -5 110 110" style="left:170px;top:130px;width:260px;height:260px"><path d="M50 50 Q50 2 98 2 Q98 50 50 50 Z M50 50 Q98 50 98 98 Q50 98 50 50 Z M50 50 Q50 98 2 98 Q2 50 50 50 Z M50 50 Q2 50 2 2 Q50 2 50 50 Z"/></svg><svg viewBox="-5 -5 110 110" style="left:100px;top:380px;width:330px;height:330px"><path d="M0 100 A50 50 0 0 1 100 100 Z"/><rect width="100" height="22"/></svg></div>
       <span class="sub">Magandang umaga, Ana</span>
-      <div style="font:800 28px/1.04 var(--display);letter-spacing:-.03em">2 missions left today</div>
-      <div class="card glass strong"><span class="label">Earned today</span><span class="num" style="font:800 42px/1 var(--display);letter-spacing:-.03em">₱40</span><span class="small"><b style="color:var(--ink)">₱1,280</b> this week</span></div>
-      <div class="card glass" style="padding:4px 16px;gap:0">
-        <div class="mission"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true"><path d="M50 0L100 50L50 100L0 50Z M50 28L72 50L50 72L28 50Z" fill-rule="evenodd" fill="var(--orange)"/></svg><span class="grow"><span class="mt" style="opacity:.55;text-decoration:line-through">Reel: free to join</span><span class="small">Passed · +₱40 · Strong</span></span><span class="chip ok">+₱40</span></div>
-        <div class="mission"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true"><path d="M50 0L100 50L50 100L0 50Z M50 28L72 50L50 72L28 50Z" fill="none" stroke="var(--mute)" stroke-width="9"/></svg><span class="grow"><span class="mt">Story with your sign-up link</span><span class="small">Talking point: Five-minute sign-up · +₱15</span></span><span class="chip go">Start</span></div>
-      </div>
+      <div style="font:800 28px/1.04 var(--display);letter-spacing:-.03em">Today’s mission</div>
+      <div class="card glass strong"><div class="row" style="flex-wrap:nowrap"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:24px;height:24px"><g fill="var(--yellow)"><path d="M0 0 L50 0 L50 50 Z M100 0 L100 50 L50 50 Z M100 100 L50 100 L50 50 Z M0 100 L0 50 L50 50 Z"/></g></svg><span class="grow"><span class="mt">Story with your sign-up link</span><span class="small">GCash Heroes · Five-minute sign-up · +₱15</span></span><span class="chip go">Start</span></div></div>
+      <div class="card glass"><span class="label">Always true for GCash</span>
+        <div class="al"><i style="background:var(--coral)"></i><span>Say it’s a paid partnership.</span></div>
+        <div class="al"><i style="background:var(--coral)"></i><span>Never promise approval or amounts.</span></div>
+        <div class="al"><i style="background:var(--purple)"></i><span>Warm Taglish, short lines.</span></div></div>
+      <div class="tabbar"><span class="tb on"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:22px;height:22px"><g fill="var(--yellow)"><path d="M0 0 L50 0 L50 50 Z M100 0 L100 50 L50 50 Z M100 100 L50 100 L50 50 Z M0 100 L0 50 L50 50 Z"/></g></svg><span>Today</span></span><span class="tb"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:20px;height:20px"><g fill="none" stroke="var(--mute)" stroke-width="9"><path d="M0 100 V30 Q0 0 30 0 H70 Q100 0 100 30 V70 Q100 100 70 100 Z"/></g></svg><span>Coach</span></span><span class="tb"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:20px;height:20px"><g fill="none" stroke="var(--mute)" stroke-width="9"><path d="M0 0H100V100H0Z M27 27V73H73V27Z" fill-rule="evenodd"/></g></svg><span>Posts</span></span><span class="tb"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:20px;height:20px"><g fill="none" stroke="var(--mute)" stroke-width="9"><path d="M0 100 L0 0 A100 100 0 0 1 100 100 Z"/></g></svg><span>Wallet</span></span><span class="tb"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:20px;height:20px"><g fill="none" stroke="var(--mute)" stroke-width="9"><path d="M0 50 Q50 -16 100 50 Q50 116 0 50 Z"/></g></svg><span>My page</span></span></div>
     </div>
     <div class="card glass" style="flex:1;min-width:260px;max-width:440px"><h3>Glass recipe</h3><pre class="mono small" style="margin:0;white-space:pre-wrap">background: linear-gradient(160deg, var(--glass-a), var(--glass-b));
-backdrop-filter: blur(14px) saturate(1.6);
+backdrop-filter: blur(14px) saturate(1.5);
 border: 1px solid var(--glass-edge);
 box-shadow: inset 0 1px 0 var(--glass-edge), var(--glass-shadow);
-border-radius: 20px;</pre><p class="small">Strong glass swaps the gradient for <span class="mono">--glass-strong</span>: tab bar, sheets, banners, toasts.</p></div>
+border-radius: 20px;</pre><p class="small">Strong glass swaps the gradient for <span class="mono">--glass-strong</span>: tab bar, sheets, banners, toasts.</p>
+      <h3 style="margin-top:8px">Liquid glass, the book only</h3><p class="small"><span class="mono">.liquid</span> and <span class="mono">.liquid.cover</span>: blur 22px, saturate 1.75, a sheen overlay, rim highlights, and crisp Facts, Voice and Rules tiles behind so the glass has something to bend. Used on the Playbook book and the “Your playbook is live” moment, nowhere else.</p></div>
+  </div>
+</section>
+
+<section id="playbook">
+  <div class="sh"><span class="chip ok status">Locked 3 Oct</span><h2>The Playbook</h2><p class="sub">Everything a brand’s AI works from, in three parts: Facts, Voice, Rules. The console opens on the same book the brand saw in onboarding, one line from OkPo, and three closed parts. Detail is one level down. Campaigns live in Campaigns: each is built on a Playbook edition and can add or tighten rules, never loosen them.</p></div>
+  <div class="card glass"><div class="row"><span class="label grow">Playbook · Edition 1 · live</span><button class="ghost" type="button">Try it</button></div>
+    <div class="say"><span class="label">OkPo</span><span>One thing to check in Voice. Everything else is current.</span></div>
+    <div class="bookstage">
+      <div class="behind" aria-hidden="true"><svg class="b1" viewBox="-5 -5 110 110" aria-hidden="true" style="width:170px;height:170px"><g fill="var(--blue)"><path d="M0 100 A50 50 0 0 1 100 100 Z"/><rect width="100" height="22"/></g></svg><svg class="b2" viewBox="-5 -5 110 110" aria-hidden="true" style="width:140px;height:140px"><g fill="var(--purple)"><path d="M50 50 Q50 2 98 2 Q98 50 50 50 Z M50 50 Q98 50 98 98 Q50 98 50 50 Z M50 50 Q50 98 2 98 Q2 50 50 50 Z M50 50 Q2 50 2 2 Q50 2 50 50 Z"/></g></svg><svg class="b3" viewBox="-5 -5 110 110" aria-hidden="true" style="width:110px;height:110px"><g fill="var(--coral)"><path d="M50 0L100 50L50 100L0 50Z M50 28L72 50L50 72L28 50Z" fill-rule="evenodd"/></g></svg></div>
+      <div class="book">
+        <div class="liquid cover"><div class="bm2">G</div><b style="font:800 30px/1 var(--display);letter-spacing:-.03em;position:relative">GCash</b><span style="position:relative;font-size:13.5px;opacity:.9">An e-wallet for sending, paying and saving, from your phone.</span><span style="position:relative;margin-top:auto;font:600 10px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;opacity:.85">Written by OkPo and GCash</span></div>
+        <div class="liquid pages"><span class="label" style="position:relative">Contents</span>
+          <div class="ch"><span class="mono small">01</span><span><b>What you sell</b><span class="small">Send money, pay bills, save, cash in</span></span></div>
+          <div class="ch"><span class="mono small">02</span><span><b>Who buys</b><span class="small">Sari-sari store owners, then first-time users</span></span></div>
+          <div class="ch"><span class="mono small">03</span><span><b>How you sound</b><span class="small">“Libre lang mag-join, mga 5 minuto.”</span></span></div>
+          <div class="ch"><span class="mono small">04</span><span><b>Rules</b><span class="small">No approval promises, no fee comparisons</span></span></div></div>
+      </div>
+    </div>
+    <div class="grid g3"><div class="card glass part"><div class="row"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:22px;height:22px"><g fill="var(--blue)"><path d="M0 100 A50 50 0 0 1 100 100 Z"/><rect width="100" height="22"/></g></svg><b style="font:800 20px/1 var(--display);letter-spacing:-.03em">Facts</b></div><p class="small" style="color:var(--body)">An e-wallet for sending, paying and saving. More first-time savers, please.</p><div class="row"><span class="label">14 FACTS</span></div></div><div class="card glass part"><div class="row"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:22px;height:22px"><g fill="var(--purple)"><path d="M50 50 Q50 2 98 2 Q98 50 50 50 Z M50 50 Q98 50 98 98 Q50 98 50 50 Z M50 50 Q50 98 2 98 Q2 50 50 50 Z M50 50 Q2 50 2 2 Q50 2 50 50 Z"/></g></svg><b style="font:800 20px/1 var(--display);letter-spacing:-.03em">Voice</b></div><p class="small" style="color:var(--body)">Warm Taglish, short lines. A friend who’s good with money, never preachy.</p><div class="row"><span class="label">3 TRAITS</span><span class="chip warn">1 to check</span></div></div><div class="card glass part"><div class="row"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:22px;height:22px"><g fill="var(--coral)"><path d="M50 0L100 50L50 100L0 50Z M50 28L72 50L50 72L28 50Z" fill-rule="evenodd"/></g></svg><b style="font:800 20px/1 var(--display);letter-spacing:-.03em">Rules</b></div><p class="small" style="color:var(--body)">No loan promises, no fee fights, credit never first. Always say it’s paid.</p><div class="row"><span class="label">6 RULES</span></div></div></div></div>
+  <div class="grid g2">
+    <div class="card glass"><div class="row"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:22px;height:22px"><g fill="var(--coral)"><path d="M50 0L100 50L50 100L0 50Z M50 28L72 50L50 72L28 50Z" fill-rule="evenodd"/></g></svg><b style="font:800 20px/1 var(--display);letter-spacing:-.03em">Rules</b><span class="small grow">opened, one level down</span><button class="ghost" type="button">See it in a post</button></div>
+      <div class="rk"><span class="chip fix">Never</span><span class="small">A post that does this comes back.</span></div>
+      <div class="rl"><b>Promise approval, loan amounts or dates</b><span class="small">✕ “Approved ka agad!”</span><span class="more"><span class="rid">R-03</span><span class="small">Compliance memo, p.2 · Confirmed</span></span></div>
+      <div class="rk"><span class="chip warn">Careful</span><span class="small">Allowed, with a condition.</span></div>
+      <div class="rl"><b>Loans and credit</b><span class="small">Only after the main message, never in the hook.</span></div>
+      <div class="rk"><span class="chip n">Always</span><span class="small">Every post, every campaign.</span></div>
+      <div class="rl"><b>Say it’s paid</b><span class="small">“Paid partnership with GCash”</span></div>
+      <p class="small">The grey line under the first rule is what a tap reveals: ID, source, trust. It is never shown upfront. Plus OkPo’s 4 rules for every brand.</p></div>
+    <div class="card glass"><span class="label">Trust, on every fact (shown on tap)</span>
+      <div class="rl"><b>Confirmed</b><span class="small">The brand picked or checked it. The AI says it freely.</span></div>
+      <div class="rl"><b>Sourced</b><span class="small">Word for word on the brand’s own page. Said close to the source, never if sensitive.</span></div>
+      <div class="rl"><b>Guess</b><span class="small">Inferred. Never said until confirmed.</span></div>
+      <span class="label" style="margin-top:6px">Freshness</span>
+      <p class="small">Each part has an owner and a “verified until” date. A fact not re-checked for 30 days pauses until someone re-confirms it; the part shows “1 to check” only then.</p>
+      <span class="label" style="margin-top:6px">Words</span>
+      <p class="small">Brand side: Playbook, Edition, brief. Earner side: Today’s mission, Always true for GCash. Retired: Brand context, Know, Aim, Direction, Guardrails.</p></div>
+  </div>
+</section>
+
+<section id="tabs">
+  <div class="sh"><span class="chip ok status">Locked 3 Oct</span><h2>Tab symbols and console nav</h2><p class="sub">Earner tabs use tile-family symbols: outlined in mute when idle, filled when active. Only Today and Wallet take a colour, because only they are one of the five meanings. The console nav is plain words with no icons; the active item gets a soft ink fill, never a colour.</p></div>
+  <div class="grid g2">
+    <div class="card glass tbl"><table style="min-width:0"><thead><tr><th>Tab</th><th>Idle</th><th>Active</th><th>Note</th></tr></thead><tbody><tr><td>Today</td><td><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:20px;height:20px"><g fill="none" stroke="var(--mute)" stroke-width="9"><path d="M0 0 L50 0 L50 50 Z M100 0 L100 50 L50 50 Z M100 100 L50 100 L50 50 Z M0 100 L0 50 L50 50 Z"/></g></svg></td><td><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:22px;height:22px"><g fill="var(--yellow)"><path d="M0 0 L50 0 L50 50 Z M100 0 L100 50 L50 50 Z M100 100 L50 100 L50 50 Z M0 100 L0 50 L50 50 Z"/></g></svg></td><td class="small">Missions: fills yellow</td></tr><tr><td>Coach</td><td><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:20px;height:20px"><g fill="none" stroke="var(--mute)" stroke-width="9"><path d="M0 100 V30 Q0 0 30 0 H70 Q100 0 100 30 V70 Q100 100 70 100 Z"/></g></svg></td><td><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:22px;height:22px"><g fill="var(--ink)"><path d="M0 100 V30 Q0 0 30 0 H70 Q100 0 100 30 V70 Q100 100 70 100 Z"/></g></svg></td><td class="small">Speech tile, ink. Also OkPo’s AI mark</td></tr><tr><td>Posts</td><td><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:20px;height:20px"><g fill="none" stroke="var(--mute)" stroke-width="9"><path d="M0 0H100V100H0Z M27 27V73H73V27Z" fill-rule="evenodd"/></g></svg></td><td><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:22px;height:22px"><g fill="var(--ink)"><path d="M0 0H100V100H0Z M27 27V73H73V27Z" fill-rule="evenodd"/></g></svg></td><td class="small">Frame, ink</td></tr><tr><td>Wallet</td><td><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:20px;height:20px"><g fill="none" stroke="var(--mute)" stroke-width="9"><path d="M0 100 L0 0 A100 100 0 0 1 100 100 Z"/></g></svg></td><td><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:22px;height:22px"><g fill="var(--green)"><path d="M0 100 L0 0 A100 100 0 0 1 100 100 Z"/></g></svg></td><td class="small">Money: fills green</td></tr><tr><td>My page</td><td><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:20px;height:20px"><g fill="none" stroke="var(--mute)" stroke-width="9"><path d="M0 50 Q50 -16 100 50 Q50 116 0 50 Z"/></g></svg></td><td><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:22px;height:22px"><g fill="var(--ink)"><path d="M0 50 Q50 -16 100 50 Q50 116 0 50 Z"/></g></svg></td><td class="small">Lens, ink</td></tr></tbody></table></div>
+    <div class="card glass"><span class="label">Console nav</span><div class="cnav"><span>Overview</span><span>Campaigns</span><span>Recruiting</span><span>Posts <span class="cnt">1</span></span><span>Leads</span><span class="on">Playbook</span><span>Pool and billing</span></div><p class="small">A count follows a word only when something is due.</p></div>
   </div>
 </section>
 
 <section id="moments">
-  <div class="sh"><span class="chip n status">Takeovers open, mapping settled</span><h2>Each moment owns a shape and a colour</h2><p class="sub">The big moment teaches the shape. The tab icon brings it back every day. Wins the earner makes happen take over the screen; things other people do arrive as a top banner.</p></div>
+  <div class="sh"><span class="chip ok status">Locked · remapped 3 Oct</span><h2>Rewards keep their delight, shapes follow the map</h2><p class="sub">Everything from the delight study stays: the wash, the hand-drawn shape, the count-up, the hold, the queue. Wins the earner makes happen take over the screen; things other people do arrive as a top banner. Only the shapes changed.</p></div>
   <div class="card glass tbl"><table>
-    <thead><tr><th>Moment</th><th>Shape</th><th>Tab</th><th>Size</th><th>Shade</th></tr></thead>
-    <tbody>
-    <tr><td>Post passed</td><td><svg class="tile" viewBox="-5 -5 110 110" aria-label="Cut diamond, orange"><path d="M50 0L100 50L50 100L0 50Z M50 28L72 50L50 72L28 50Z" fill-rule="evenodd" fill="var(--orange)"/></svg></td><td>Posts</td><td>Takeover</td><td>Pale</td></tr>
-    <tr><td>Money landed</td><td><svg class="tile" viewBox="-5 -5 110 110" aria-label="Quarter disc, green"><path d="M0 100 L0 0 A100 100 0 0 1 100 100 Z" fill="var(--green)"/></svg></td><td>Wallet</td><td>Takeover</td><td>Pale</td></tr>
-    <tr><td>Streak ticked</td><td><svg class="tile" viewBox="-5 -5 110 110" aria-label="Square in square, coral"><path d="M0 0H100V100H0Z M27 27V73H73V27Z" fill-rule="evenodd" fill="var(--coral)"/></svg></td><td>Today</td><td>Takeover</td><td>Deep</td></tr>
-    <tr><td>Payday</td><td><svg class="tile" viewBox="-5 -5 110 110" aria-label="Four quarters, green"><path d="M50 50 L50 0 A50 50 0 0 1 100 50Z M50 50 L100 50 A50 50 0 0 1 50 100Z M50 50 L50 100 A50 50 0 0 1 0 50Z M50 50 L0 50 A50 50 0 0 1 50 0Z" fill="var(--green)"/></svg></td><td>Wallet</td><td>Takeover</td><td>Deep</td></tr>
-    <tr><td>Follower signed up</td><td><svg class="tile" viewBox="-5 -5 110 110" aria-label="Half disc, yellow"><path d="M0 100 A50 50 0 0 1 100 100 Z" fill="var(--yellow)"/><rect width="100" height="22" fill="var(--yellow)"/></svg></td><td>My page</td><td>Top banner</td><td>Pale</td></tr>
-    <tr><td>Coach</td><td><svg class="tile" viewBox="-5 -5 110 110" aria-label="Petals, purple"><path d="M50 50 Q50 2 98 2 Q98 50 50 50 Z M50 50 Q98 50 98 98 Q50 98 50 50 Z M50 50 Q50 98 2 98 Q2 50 50 50 Z M50 50 Q2 50 2 2 Q50 2 50 50 Z" fill="var(--purple)"/></svg></td><td>Coach</td><td colspan="2">Never a reward</td></tr>
-    </tbody></table></div>
-  <p class="small">The brand console wears the same tiles per section (picked 1 Oct) but never takes over the screen: one pulse per section per minute, then a counter.</p>
-</section>
-
-<section id="context">
-  <div class="sh"><span class="chip ok status">Settled 1 Oct</span><h2>Rules, facts and talking points</h2><p class="sub">Rules say what a post must never do, and each has an ID. Facts are the only claims the AI may make. Talking points say what a post leads with; they live in each campaign’s brief, steer the mix, and never override a rule.</p></div>
-  <div class="grid g2">
-    <div class="card glass"><span class="label">Brand console · talking points, in order</span>
-      <div class="tp"><span class="mono small">01</span><b class="grow">Free to join</b><span class="small num">60%</span></div>
-      <div class="tp"><span class="mono small">02</span><b class="grow">Five-minute sign-up</b><span class="small num">25%</span></div>
-      <div class="tp"><span class="mono small">03</span><b class="grow">Send money home</b><span class="small num">15%</span></div>
-      <p class="small">Moving one to first is how the brand shifts the message without rewriting anything.</p></div>
-    <div class="card glass"><span class="label">Earner · mission detail</span>
-      <div class="tp" style="background:transparent"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true"><path d="M0 0 L50 0 L50 50 Z M100 0 L100 50 L50 50 Z M100 100 L50 100 L50 50 Z M0 100 L0 50 L50 50 Z" fill="var(--blue)"/></svg><span class="grow"><span class="label">Today’s talking point</span><b style="display:block;font-size:17px;margin-top:4px">Free to join</b></span></div>
-      <span class="label">Do</span><ul class="dd"><li><span>Show the Heroes sign-up in the real app.</span><span class="rid">R-05</span></li><li><span>Say it’s free to join.</span><span class="rid">R-06</span></li><li><span>Turn on Paid partnership.</span><span class="rid">R-01</span></li></ul>
-      <span class="label">Don’t</span><ul class="dd"><li><span>Promise approval, amounts or dates.</span><span class="rid">R-03</span></li><li><span>Compare fees with other wallets.</span><span class="rid">R-04</span></li></ul></div>
-  </div>
+    <thead><tr><th>Moment</th><th>Shape</th><th>Tab</th><th>Size</th><th>Shade</th></tr></thead><tbody><tr><td>Post passed</td><td><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:22px;height:22px"><g fill="var(--green)"><path d="M0 100 L0 0 A100 100 0 0 1 100 100 Z"/></g></svg></td><td>Wallet</td><td>Takeover</td><td>Pale</td></tr><tr><td>Money landed</td><td><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:22px;height:22px"><g fill="var(--green)"><path d="M0 100 L0 0 A100 100 0 0 1 100 100 Z"/></g></svg></td><td>Wallet</td><td>Takeover</td><td>Pale</td></tr><tr><td>Payday</td><td><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:22px;height:22px"><g fill="var(--green)"><path d="M0 100 L0 0 A100 100 0 0 1 100 100 Z"/></g></svg></td><td>Wallet</td><td>Takeover</td><td>Deep</td></tr><tr><td>Streak ticked</td><td><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:22px;height:22px"><g fill="var(--yellow)"><path d="M0 0 L50 0 L50 50 Z M100 0 L100 50 L50 50 Z M100 100 L50 100 L50 50 Z M0 100 L0 50 L50 50 Z"/></g></svg></td><td>Today</td><td>Takeover</td><td>Deep</td></tr><tr><td>Mission done</td><td><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:22px;height:22px"><g fill="var(--yellow)"><path d="M0 0 L50 0 L50 50 Z M100 0 L100 50 L50 50 Z M100 100 L50 100 L50 50 Z M0 100 L0 50 L50 50 Z"/></g></svg></td><td>Today</td><td>Takeover</td><td>Pale</td></tr><tr><td>Follower signed up</td><td><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:22px;height:22px"><g fill="var(--yellow)"><path d="M0 0 L50 0 L50 50 Z M100 0 L100 50 L50 50 Z M100 100 L50 100 L50 50 Z M0 100 L0 50 L50 50 Z"/></g></svg></td><td>My page</td><td>Top banner</td><td>Pale</td></tr><tr><td>Coach</td><td><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:22px;height:22px"><g fill="var(--ink)"><path d="M0 100 V30 Q0 0 30 0 H70 Q100 0 100 30 V70 Q100 100 70 100 Z"/></g></svg></td><td>Coach</td><td colspan="2">Never a reward</td></tr></tbody></table></div>
+  <p class="small">The brand console never takes over the screen. Publishing an edition settles the book in place and flips its edition chip. The one brand-side full screen is the onboarding live moment.</p>
 </section>
 
 <section id="quality">
-  <div class="sh"><span class="chip n status">Bands settled · split open</span><h2>Quality bands</h2><p class="sub">Pass or fail decides pay. Quality sits beside it and never changes pay. The brand sees the number and its four parts; the earner sees a band and two tips.</p></div>
+  <div class="sh"><span class="chip ok status">Locked</span><h2>Quality bands</h2><p class="sub">Pass or fail decides pay. Quality sits beside it and never changes pay. The brand sees the number and its four parts; the earner sees a band and two tips in plain words.</p></div>
   <div class="grid g3">
     <div class="card glass"><span class="label">Bands</span><div class="row"><span class="band strong">Strong</span><span class="small">80 to 100</span></div><div class="row"><span class="band good">Good</span><span class="small">60 to 79</span></div><div class="row"><span class="band work">Needs work</span><span class="small">below 60, still paid</span></div><p class="small">Never coral. Coral means fix this, and a low band is not a failure.</p></div>
     <div class="card glass"><span class="label">Earner · a post, opened</span>
-      <div class="row" style="align-items:flex-start;flex-wrap:nowrap"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true"><path d="M50 0L100 50L50 100L0 50Z M50 28L72 50L50 72L28 50Z" fill-rule="evenodd" fill="var(--orange)"/></svg><span class="grow"><b style="display:block">Reel · GCash Heroes</b><span class="small">Wed · Send money home</span><span style="display:flex;margin-top:6px"><span class="band work">Needs work</span></span></span><span class="chip ok">+₱40</span></div>
-      <div class="tips"><div><b>1</b><span style="flex:1">Name who you send money to.</span><span class="rid tp">Talking point</span></div><div><b>2</b><span style="flex:1">Cut the caption to two Taglish lines.</span><span class="rid">R-07</span></div></div></div>
+      <div class="row" style="align-items:flex-start;flex-wrap:nowrap"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:22px;height:22px"><g fill="var(--green)"><path d="M0 100 L0 0 A100 100 0 0 1 100 100 Z"/></g></svg><span class="grow"><b style="display:block">Reel · GCash Heroes</b><span class="small">Wed · Send money home</span><span style="display:flex;margin-top:6px"><span class="band work">Needs work</span></span></span><span class="chip ok">+₱40</span></div>
+      <div class="tips"><div><b>1</b><span style="flex:1">Name who you send money to.</span><span class="rid tp">Talking point</span></div><div><b>2</b><span style="flex:1">Cut the caption to two Taglish lines.</span></div></div></div>
     <div class="card glass"><span class="label">Earner · a fix</span>
-      <div class="check"><svg width="16" height="16" viewBox="-5 -5 110 110" aria-hidden="true" style="flex:none"><path d="M0 0H100V100H0Z M27 27V73H73V27Z" fill="none" stroke="var(--l-coral)" stroke-width="9"/></svg><span><b>Needs a fix</b> <span class="rid">R-01</span><br><span style="font-size:13.5px">The Paid partnership label isn’t on. Turn it on, then paste the link again.</span></span></div>
-      <p class="small">Every fix names the rule the brand approved. Disputes go to the OkPo team.</p></div>
+      <div class="check"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:16px;height:16px"><g fill="none" stroke="var(--l-coral)" stroke-width="9"><path d="M50 0L100 50L50 100L0 50Z M50 28L72 50L50 72L28 50Z" fill-rule="evenodd"/></g></svg><span><b>Needs a fix · Say it’s paid</b><br><span style="font-size:13.5px">The Paid partnership label isn’t on. Turn it on, then paste the link again.</span></span></div>
+      <p class="small">Every fix names the rule in plain words. The ID is on tap. Disputes go to the OkPo team.</p></div>
   </div>
   <div class="card glass"><span class="label">Brand console · same post</span>
     <div class="row"><span class="num" style="font:800 40px/1 var(--display)">58</span><span class="small grow">of 100 · Needs work</span><span class="small mono">Brief fit 18/35 · Clear and true 22/25 · Craft 13/20 · Style 5/20</span></div></div>
@@ -252,26 +306,29 @@ border-radius: 20px;</pre><p class="small">Strong glass swaps the gradient for <
 <section id="components">
   <div class="sh"><h2>Components</h2></div>
   <div class="grid g2">
-    <div class="card glass"><span class="label">Buttons</span><div class="row"><button class="btn" type="button">Submit for check</button><button class="ghost" type="button">↑ First</button></div></div>
-    <div class="card glass"><span class="label">Status chips</span><div class="row"><span class="chip go">Start</span><span class="chip ok">+₱40</span><span class="chip fix">Needs a fix</span><span class="chip n">Checking</span></div></div>
-    <div class="card glass"><span class="label">Rule IDs</span><div class="row"><span class="rid">R-01</span><span class="rid">R-13 · R-01</span><span class="rid tp">Talking point</span><span class="rid">K2</span></div></div>
+    <div class="card glass"><span class="label">Buttons</span><div class="row"><button class="btn" type="button">Approve and publish Edition 2</button><button class="ghost" type="button">See changes</button></div></div>
+    <div class="card glass"><span class="label">Status chips</span><div class="row"><span class="chip go">Start</span><span class="chip ok">+₱40</span><span class="chip fix">Needs a fix</span><span class="chip warn">1 to check</span><span class="chip n">Checking</span></div></div>
+    <div class="card glass"><span class="label">IDs, one tap down</span><div class="row"><span class="rid">R-03</span><span class="rid k">K2</span><span class="rid tp">Talking point</span></div><p class="small">Shown on tap or hover with the source and trust, never upfront.</p></div>
     <div class="card glass"><span class="label">Wordmark</span><div class="row"><span class="wordmark" style="font-size:36px" role="img" aria-label="OkPo"><span>O</span><span>k</span><span>P</span><span>o</span></span><span class="small">O coral, k yellow, P green, o blue. Minimum 20px.</span></div></div>
   </div>
 </section>
 
 <section id="prototypes">
-  <div class="sh"><h2>Working prototypes</h2><p class="sub">Every one follows these rules. Short links to share: /setup, /console, /earner, /audience, /lobby, /connected.</p></div>
-  <div class="grid g3 links"><a class="glass" href="/setup"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true"><path d="M0 0 A100 100 0 0 1 100 100 L0 100 Z" fill="var(--green)"/></svg><span class="grow"><b style="display:block">Brand setup</b><span class="small">The new-brand flow, one question per screen</span></span></a><a class="glass" href="/console"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true"><path d="M50 50 Q50 2 98 2 Q98 50 50 50 Z M50 50 Q98 50 98 98 Q50 98 50 50 Z M50 50 Q50 98 2 98 Q2 50 50 50 Z M50 50 Q2 50 2 2 Q50 2 50 50 Z" fill="var(--purple)"/></svg><span class="grow"><b style="display:block">Brand console</b><span class="small">Brand context, campaigns, posts, leads</span></span></a><a class="glass" href="/earner"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true"><path d="M50 0L100 50L50 100L0 50Z M50 28L72 50L50 72L28 50Z" fill-rule="evenodd" fill="var(--orange)"/></svg><span class="grow"><b style="display:block">Earner app</b><span class="small">Ana’s phone: brief, missions, wallet</span></span></a><a class="glass" href="/audience"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true"><path d="M0 100 A50 50 0 0 1 100 100 Z" fill="var(--yellow)"/><rect width="100" height="22" fill="var(--yellow)"/></svg><span class="grow"><b style="display:block">Audience</b><span class="small">A follower on Ana’s OkPo page</span></span></a><a class="glass" href="/lobby"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true"><path d="M0 0H100V100H0Z M27 27V73H73V27Z" fill-rule="evenodd" fill="var(--coral)"/></svg><span class="grow"><b style="display:block">Lobby</b><span class="small">Creators directory and Earn with OkPo</span></span></a><a class="glass" href="/connected"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true"><path d="M0 0 L50 0 L50 50 Z M100 0 L100 50 L50 50 Z M100 100 L50 100 L50 50 Z M0 100 L0 50 L50 50 Z" fill="var(--blue)"/></svg><span class="grow"><b style="display:block">Connected</b><span class="small">Console and both phones, one state</span></span></a>
+  <div class="sh"><h2>Working prototypes</h2><p class="sub">Short links to share: /onboard, /console, /earner, /audience, /lobby, /connected. DESIGN.md §12 lists what each still has to catch up on.</p></div>
+  <div class="grid g3 links"><a class="glass" href="/onboard"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:22px;height:22px"><g fill="var(--yellow)"><path d="M0 0 L50 0 L50 50 Z M100 0 L100 50 L50 50 Z M100 100 L50 100 L50 50 Z M0 100 L0 50 L50 50 Z"/></g></svg><span class="grow"><b style="display:block">Onboarding to console</b><span class="small">Fast onboarding, the live moment, the Playbook</span></span></a><a class="glass" href="/console"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:22px;height:22px"><g fill="var(--blue)"><path d="M0 100 A50 50 0 0 1 100 100 Z"/><rect width="100" height="22"/></g></svg><span class="grow"><b style="display:block">Brand console</b><span class="small">Playbook, campaigns, posts, leads</span></span></a><a class="glass" href="/earner"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:22px;height:22px"><g fill="var(--yellow)"><path d="M0 0 L50 0 L50 50 Z M100 0 L100 50 L50 50 Z M100 100 L50 100 L50 50 Z M0 100 L0 50 L50 50 Z"/></g></svg><span class="grow"><b style="display:block">Earner app</b><span class="small">Ana’s phone: today’s mission, coach, wallet</span></span></a><a class="glass" href="/audience"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:22px;height:22px"><g fill="var(--ink)"><path d="M0 50 Q50 -16 100 50 Q50 116 0 50 Z"/></g></svg><span class="grow"><b style="display:block">Audience</b><span class="small">A follower on Ana’s OkPo page</span></span></a><a class="glass" href="/lobby"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:22px;height:22px"><g fill="var(--ink)"><path d="M0 0H100V100H0Z M27 27V73H73V27Z" fill-rule="evenodd"/></g></svg><span class="grow"><b style="display:block">Lobby</b><span class="small">Campaigns to join and Earn with OkPo</span></span></a><a class="glass" href="/connected"><svg class="tile" viewBox="-5 -5 110 110" aria-hidden="true" style="width:22px;height:22px"><g fill="var(--green)"><path d="M0 100 L0 0 A100 100 0 0 1 100 100 Z"/></g></svg><span class="grow"><b style="display:block">Connected</b><span class="small">Console and both phones, one state</span></span></a>
   </div>
 </section>
 
 <section id="coders">
   <div class="sh"><h2>For AI coders</h2><p class="sub">Point your coding agent at <a href="DESIGN.md" style="color:var(--ink)">DESIGN.md</a> and import <span class="mono">tokens.css</span>. The short list it must never break:</p></div>
   <div class="card glass"><ul class="dd donts">
-    <li><span>No sloppy edges on product controls.</span></li>
-    <li><span>No glaze colour behind a screen.</span></li>
+    <li><span>Five shapes, five meanings. Everything else is ink.</span></li>
+    <li><span>No icons in the console nav.</span></li>
+    <li><span>Rule IDs, trust and dates one tap down, never upfront.</span></li>
+    <li><span>Campaign rules live in the campaign, never in the Playbook.</span></li>
+    <li><span>“Today’s mission” for earners; “brief” is brand-side only.</span></li>
+    <li><span>No sloppy edges on product controls. No glaze colour behind a screen.</span></li>
     <li><span>Never show the earner their quality number.</span></li>
-    <li><span>Say “talking point”, never “angle”.</span></li>
     <li><span>No full-screen moments in the brand console.</span></li>
     <li><span>No blur on backdrop tiles. No em dashes in copy.</span></li>
   </ul></div>
