@@ -605,17 +605,12 @@ Order of work: earner app, then the rest of the console, then Connected and the 
 
 **Earner (`earner.html`)**: done 3 Oct. Tabs, takeovers, Today's mission, Always true, Never / Careful / Always, Coach citations, tab titles, follower wordmark and the dark banner all match.
 
-**Console (`console.html`)**
+**Console (`console.html`)**: done 4 Oct. Words-only nav, the Playbook view (book, OkPo line, three parts, detail on tap, Try it, Suggestions), campaigns built on an edition with clash flags, a quiet Overview, rule IDs one tap down, editions instead of versions, no section tiles on headers except the five meanings.
 
-14. Nav has tiles. Change to words only (§7).
-15. The Brand context tab. Rebuild as the Playbook view (§10): book, one line, three parts.
-16. Campaign facts and rules sit inside Brand context. Move them to the campaign, built on an edition, with clash flags.
-17. Overview has an always-on "needs you" strip and KPI tiles. Quiet it: show `.need` rows only when due.
-18. "Needs a fix · R-01" and rule IDs upfront. Move IDs behind a tap.
-19. Glaze rings on light: the green check flash, the yellow example ring and the coral verdict border. Change to label shades or tints.
-20. Quality band is plain text. Change to `.band`.
-21. The console's new-brand view still says Know, Aim and Direction. `setup.html` is the reference.
-22. "One pulse per section per minute, then a counter" is specced but not built.
+Still open in the console:
+
+1. "One pulse per section per minute, then a counter" is specced but not built.
+2. The in-console new-brand flow (it reads sources with live AI) still uses its own five steps. `setup.html` and the onboarding prototype are the reference for its look.
 
 **Setup (`setup.html`)**
 
