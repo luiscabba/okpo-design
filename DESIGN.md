@@ -618,7 +618,9 @@ Still open in the console:
 
 **Lobby (`lobby.html`)**: remapped 4 Oct. Campaigns wear the pin, nav is words only, "brief" becomes "mission" on the earner side.
 
-**Retired:** the Brand Setup artifact and the GU, SU, BC2 and Ctx2 boards on the product canvas. Keep them as archive; do not build from them.
+**Artifacts synced 4 Oct:** Connected matches `connected.html` (saved state key bumped to `okpo-connected-v3`). Journeys is rebuilt as a journey map of the brand, earner and follower lanes with screenshots of the current prototypes. Restaurant is now a hub that opens each current prototype in one tab bar. Conn-Map on the product canvas has a Lobby lane and the current vocabulary.
+
+**Retired 4 Oct:** the Brand Setup artifact (an archive banner points to `/onboard`) and the GU, SU, BC2 and Ctx2 boards on the product canvas, plus the Conn-C-05 and Conn-C-10 copies (titles start "Superseded", with a note on each page). Earlier versions of Journeys and Restaurant stay in their version history. Keep all of them as archive; do not build from them.
 
 ---
 

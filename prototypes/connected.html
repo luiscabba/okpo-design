@@ -201,9 +201,9 @@ const FRESH=()=>({day:0,role:'team',tab:'aim',
  ana:{tab:'today',inv:'none',camps:['heroes'],missions:[],today:0,ready:1180,confirming:0,streak:6,notifs:[],signups:9},
  fol:{via:'heroes',taps:['heroes'],signed:false,credit:null},
  log:[]});
-let S;try{S=JSON.parse(localStorage.getItem('okpo-connected-v2')||'null')}catch(e){S=null}
+let S;try{S=JSON.parse(localStorage.getItem('okpo-connected-v3')||'null')}catch(e){S=null}
 if(!S||!S.camps)S=FRESH();
-const save=()=>{try{localStorage.setItem('okpo-connected-v2',JSON.stringify(S))}catch(e){}};
+const save=()=>{try{localStorage.setItem('okpo-connected-v3',JSON.stringify(S))}catch(e){}};
 const C=id=>S.camps[id];
 
 /* the 7:00 AM brief is written from what is published */
