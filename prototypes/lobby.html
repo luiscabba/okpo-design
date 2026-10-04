@@ -26,7 +26,7 @@ html,body{margin:0}
 body{background:var(--ground);color:var(--ink);font:400 15px/1.55 var(--text);-webkit-font-smoothing:antialiased;padding-inline:16px;padding-block:0 48px;min-height:100vh}
 button,input{font:inherit;color:inherit}button{cursor:pointer}
 a{color:inherit}
-:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:8px}
+:focus-visible{outline:2px solid var(--l-blue,#1971c2);outline-offset:2px;border-radius:8px}
 .bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}.bg svg{position:absolute;fill:var(--tone)}
 .wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:56px}
 .glass{background:linear-gradient(160deg,var(--glass-a),var(--glass-b));-webkit-backdrop-filter:blur(14px) saturate(1.5);backdrop-filter:blur(14px) saturate(1.5);border:1px solid var(--glass-edge);box-shadow:inset 0 1px 0 var(--glass-edge),var(--glass-shadow);border-radius:20px}
@@ -152,24 +152,25 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 const peso=n=>'₱'+Math.round(n).toLocaleString('en-PH');
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const P={frame:'<path d="M0 0H100V100H0Z M27 27V73H73V27Z" fill-rule="evenodd" fill="C"/>',quarter:'<path d="M0 100 L0 0 A100 100 0 0 1 100 100 Z" fill="C"/>',diamond:'<path d="M50 0L100 50L50 100L0 50Z M50 28L72 50L50 72L28 50Z" fill-rule="evenodd" fill="C"/>',half:'<path d="M0 100 A50 50 0 0 1 100 100 Z" fill="C"/><rect width="100" height="22" fill="C"/>',pin:'<path d="M0 0 L50 0 L50 50 Z M100 0 L100 50 L50 50 Z M100 100 L50 100 L50 50 Z M0 100 L0 50 L50 50 Z" fill="C"/>',petal:'<path d="M50 50 Q50 2 98 2 Q98 50 50 50 Z M50 50 Q98 50 98 98 Q50 98 50 50 Z M50 50 Q50 98 2 98 Q2 50 50 50 Z M50 50 Q2 50 2 2 Q50 2 50 50 Z" fill="C"/>'};
-const COL={frame:'var(--coral)',quarter:'var(--green)',diamond:'var(--orange)',half:'var(--yellow)',pin:'var(--blue)',petal:'var(--purple)'};
+/* the shape map (DESIGN.md §6): five shapes, five meanings; frame is ink */
+const COL={half:'var(--blue)',petal:'var(--purple)',diamond:'var(--coral)',pin:'var(--yellow)',quarter:'var(--green)',frame:'var(--ink)'};
 const tile=(k,s=16,c)=>`<svg class="tile" width="${s}" height="${s}" viewBox="-5 -5 110 110" aria-hidden="true">${P[k].replace(/fill="C"/g,`fill="${c||COL[k]}"`)}</svg>`;
 const APP='https://okpo-design.vercel.app';
 
 const CAMPS=[
- {id:'heroes',brand:'GCash',bm:'G',name:'GCash Heroes',k:'half',kind:'open',post:40,act:12,what:'One Reel or Story a day from the morning brief',fits:'Anyone in the Philippines with followers who don’t use GCash yet',ends:'31 Oct',tps:['Free to join','Five-minute sign-up','Send money home'],ana:'joined'},
+ {id:'heroes',brand:'GCash',bm:'G',name:'GCash Heroes',k:'pin',kind:'open',post:40,act:12,what:'One Reel or Story a day from your morning mission',fits:'Anyone in the Philippines with followers who don’t use GCash yet',ends:'31 Oct',tps:['Free to join','Five-minute sign-up','Send money home'],ana:'joined'},
  {id:'ipon',brand:'GCash',bm:'G',name:'GCash Ipon Challenge',k:'pin',kind:'invite',post:25,inv:30,act:10,actLabel:'per first deposit',what:'Two Reels a week about saving for a goal',fits:'Creators with student followers',ends:'Sat 4 Oct to accept',tps:['Start with ₱50','Goals for students'],ana:'invited'},
- {id:'kanto',brand:'Kanto Kape',bm:'KK',name:'Kanto Kape · first orders',k:'diamond',kind:'open',post:35,act:15,actLabel:'per first order',what:'A taste test or your order in the Kanto app, 3 a week',fits:'Food creators with followers in Metro Manila',ends:'15 Dec',tps:['Order in the app','Show the stamp card'],ana:'fits'},
- {id:'baon',brand:'Baon Box',bm:'BB',name:'Baon Box · trial boxes',k:'quarter',kind:'open',post:30,act:20,actLabel:'per trial box',what:'Unbox and cook one trial box',fits:'Followers in Cebu',ends:'30 Nov',tps:['Ready in 15 minutes','First box free'],ana:'nofit',why:'Needs followers in Cebu. Ana’s are mostly in Iloilo and QC.'}];
+ {id:'kanto',brand:'Kanto Kape',bm:'KK',name:'Kanto Kape · first orders',k:'pin',kind:'open',post:35,act:15,actLabel:'per first order',what:'A taste test or your order in the Kanto app, 3 a week',fits:'Food creators with followers in Metro Manila',ends:'15 Dec',tps:['Order in the app','Show the stamp card'],ana:'fits'},
+ {id:'baon',brand:'Baon Box',bm:'BB',name:'Baon Box · trial boxes',k:'pin',kind:'open',post:30,act:20,actLabel:'per trial box',what:'Unbox and cook one trial box',fits:'Followers in Cebu',ends:'30 Nov',tps:['Ready in 15 minutes','First box free'],ana:'nofit',why:'Needs followers in Cebu. Ana’s are mostly in Iloilo and QC.'}];
 const POSTS=[
- {h:'@ana.posts',n:'Ana Reyes',av:'AR',t:'Food',c:'heroes',cap:'Libre mag-join. Sign-up in 14 seconds, on the real app.',page:true,k:'half'},
- {h:'@bea.saves',n:'Bea Tan',av:'BT',t:'Budget',c:'heroes',cap:'Pinadala ko kay Nanay in two taps.',k:'half'},
- {h:'@lia.cooks',n:'Lia Gomez',av:'LG',t:'Food',c:'kanto',cap:'Sikwate Latte, ordered ahead. Sulit.',k:'diamond'},
- {h:'@joyful.kai',n:'Kai Santos',av:'KS',t:'Tech',c:'heroes',cap:'Five minutes, one ID, done.',k:'half'},
+ {h:'@ana.posts',n:'Ana Reyes',av:'AR',t:'Food',c:'heroes',cap:'Libre mag-join. Sign-up in 14 seconds, on the real app.',page:true,k:'pin'},
+ {h:'@bea.saves',n:'Bea Tan',av:'BT',t:'Budget',c:'heroes',cap:'Pinadala ko kay Nanay in two taps.',k:'pin'},
+ {h:'@lia.cooks',n:'Lia Gomez',av:'LG',t:'Food',c:'kanto',cap:'Sikwate Latte, ordered ahead. Sulit.',k:'pin'},
+ {h:'@joyful.kai',n:'Kai Santos',av:'KS',t:'Tech',c:'heroes',cap:'Five minutes, one ID, done.',k:'pin'},
  {h:'@mika.vlogs',n:'Mika Uy',av:'MU',t:'Student life',c:'ipon',cap:'First ₱50 into GSave. Goal: a new phone.',k:'pin'},
  {h:'@rhea.budget',n:'Rhea Ong',av:'RO',t:'Budget',c:'ipon',cap:'Ipon week 2. Still going.',k:'pin'},
- {h:'@jo.fits',n:'Jo Ramos',av:'JR',t:'Beauty',c:'heroes',cap:'Pay for my shoot fees in the app, no cash.',k:'half'},
- {h:'@nico.ph',n:'Nico Paz',av:'NP',t:'Tech',c:'kanto',cap:'Stamp 9 of 9. Free drink.',k:'diamond'}];
+ {h:'@jo.fits',n:'Jo Ramos',av:'JR',t:'Beauty',c:'heroes',cap:'Pay for my shoot fees in the app, no cash.',k:'pin'},
+ {h:'@nico.ph',n:'Nico Paz',av:'NP',t:'Tech',c:'kanto',cap:'Stamp 9 of 9. Free drink.',k:'pin'}];
 const FRESH=()=>({view:'lobby',who:'visitor',topic:'All',join:{step:'num',num:'',camp:'heroes'}});
 let S;try{S=JSON.parse(sessionStorage.getItem('okpo-lobby')||'null')}catch(e){S=null}
 if(!S||!S.join)S=FRESH();
@@ -178,9 +179,9 @@ const ana=()=>S.who==='ana';
 
 function nav(){
  $('#nav').innerHTML=`<a href="#lobby" data-view="lobby" aria-label="OkPo home" style="text-decoration:none"><span class="wm" style="font-size:26px"><span>O</span><span>k</span><span>P</span><span>o</span></span></a>
- <span class="links"><button class="nl" type="button" data-view="lobby" data-to="posts" ${S.view==='lobby'?'aria-current="page"':''}>${tile('frame',12)}Creators</button>
- <button class="nl" type="button" data-view="earn" ${S.view==='earn'?'aria-current="page"':''}>${tile('quarter',12)}Earn with OkPo</button>
- <a class="nl" href="${APP}/console">${tile('petal',12)}For brands</a></span>
+ <span class="links"><button class="nl" type="button" data-view="lobby" data-to="posts" ${S.view==='lobby'?'aria-current="page"':''}>Creators</button>
+ <button class="nl" type="button" data-view="earn" ${S.view==='earn'?'aria-current="page"':''}>Earn with OkPo</button>
+ <a class="nl" href="${APP}/console">For brands</a></span>
  <span class="spacer"></span>
  <span class="acts">${ana()?`<span class="row who" style="gap:8px"><span class="av">AR</span><span class="small">Ana</span></span><a class="btn" href="${APP}/earner">Open the app</a>`:`<button class="nl" type="button" data-who="ana">Sign in</button><button class="btn" type="button" data-view="earn">Start earning</button>`}</span>`;
 }
@@ -206,12 +207,12 @@ function vLobby(){
  const list=POSTS.filter(p=>S.topic==='All'||p.t===S.topic);
  const campName=id=>CAMPS.find(c=>c.id===id).name;
  return `<div style="display:flex;flex-direction:column;gap:56px">
- <section class="hero"><span class="label">okpo.com</span><h1>Brands train the AI.<br>Creators get the brief.<br>Everyone sees the work.</h1>
+ <section class="hero"><span class="label">okpo.com</span><h1>Brands train the AI.<br>Creators get the mission.<br>Everyone sees the work.</h1>
   ${ana()?`<div class="mine glass strong">${tile('quarter',28)}<span class="grow"><span class="label">Your week so far</span><b style="display:block;font-size:18px">You earned ${peso(1240)} in GCash Heroes last week</b><span class="small">6-day streak · 1 invite waiting · ${peso(1180)} ready to claim</span></span><a class="btn" href="${APP}/earner">Open the app</a></div>`:''}
   <div class="doors">
-   <button class="door glass" type="button" data-view="earn">${tile('quarter',30)}<b>Earn from your posts</b><span class="sub">No follower minimum. A brief every morning, paid every Friday to your GCash.</span><span class="label" style="margin-top:auto">For creators →</span></button>
+   <button class="door glass" type="button" data-view="earn">${tile('quarter',30)}<b>Earn from your posts</b><span class="sub">No follower minimum. A mission every morning, paid every Friday to your GCash.</span><span class="label" style="margin-top:auto">For creators →</span></button>
    <button class="door glass" type="button" data-view="lobby" data-to="posts">${tile('frame',30)}<b>Find a creator</b><span class="sub">See what creators posted this week, and ask any of them about the campaign they’re on.</span><span class="label" style="margin-top:auto">For followers →</span></button>
-   <a class="door glass" href="${APP}/console">${tile('petal',30)}<b>Grow with creators</b><span class="sub">Load your brand once. OkPo trains creators daily and you pay for customers your bank confirms.</span><span class="label" style="margin-top:auto">For brands →</span></a>
+   <a class="door glass" href="${APP}/console">${tile('pin',30)}<b>Grow with creators</b><span class="sub">Load your brand once. OkPo trains creators daily and you pay for customers your bank confirms.</span><span class="label" style="margin-top:auto">For brands →</span></a>
   </div></section>
  <section id="campaigns" style="display:flex;flex-direction:column;gap:16px"><div class="row" style="flex-wrap:wrap;align-items:flex-end;row-gap:6px"><span class="grow" style="min-width:min(100%,420px)"><span class="label">${ana()?'Campaigns for you':'Open now'}</span><h2>${ana()?'Your campaigns, and ones you could join':'Campaigns you can join today'}</h2></span><span class="small">Every deal is fixed. No pitching, no haggling.</span></div>
   <div class="camps">${CAMPS.map(campCard).join('')}</div></section>
@@ -227,15 +228,15 @@ function vEarn(){
   <label for="jnum" class="small">Mobile number</label><div class="field" id="jnumf"><span class="small" style="font-family:var(--mono)">+63</span><input id="jnum" inputmode="tel" autocomplete="tel" placeholder="917 123 4567" value="${esc(j.num)}"></div>
   <button class="btn" type="submit">Send me a code</button><button class="ghost" type="button" data-fillnum style="align-self:flex-start">Use a sample number</button><span class="small">One number for signing in and for payouts. Link TikTok or Instagram after your first mission.</span></form>`;
  else if(j.step==='code')form=`<form class="form glass strong" data-form="code"><b style="font-size:18px">Enter the code</b><span class="small">Sent to +63 ${esc(j.num)}. Demo code: 123456.</span><div class="otp" role="group" aria-label="6-digit code">${[0,1,2,3,4,5].map(i=>`<input id="o${i}" inputmode="numeric" maxlength="1" aria-label="Digit ${i+1}">`).join('')}</div><span class="small" id="otpMsg"></span><button class="ghost" type="button" data-fillotp style="align-self:flex-start">Fill the demo code</button><button class="ghost" type="button" data-step="num" style="align-self:flex-start">Change number</button></form>`;
- else form=`<div class="form glass strong">${tile(c.k,40)}<b style="font-size:22px">You’re in.</b><span class="sub">You start in <b style="color:var(--ink)">${esc(c.name)}</b> on a 3-post trial. Your first brief arrives tomorrow at 7:00 AM.</span><a class="btn" href="${APP}/earner">Open the app</a><span class="small">Link your TikTok or Instagram there after your first mission.</span></div>`;
+ else form=`<div class="form glass strong">${tile(c.k,40)}<b style="font-size:22px">You’re in.</b><span class="sub">You start in <b style="color:var(--ink)">${esc(c.name)}</b> on a 3-post trial. Your first mission arrives tomorrow at 7:00 AM.</span><a class="btn" href="${APP}/earner">Open the app</a><span class="small">Link your TikTok or Instagram there after your first mission.</span></div>`;
  return `<div style="display:flex;flex-direction:column;gap:48px">
- <section class="ehero"><div style="display:flex;flex-direction:column;gap:18px"><span class="label row" style="gap:8px">${tile('quarter',12)}Earn with OkPo</span><h1>Get paid for posts that bring people in.</h1><p class="sub" style="font-size:18px;max-width:34em">A short brief every morning, a coach when you’re stuck, and pay every Friday for posts that pass and followers who sign up.</p>
+ <section class="ehero"><div style="display:flex;flex-direction:column;gap:18px"><span class="label row" style="gap:8px">${tile('quarter',12)}Earn with OkPo</span><h1>Get paid for posts that bring people in.</h1><p class="sub" style="font-size:18px;max-width:34em">A mission every morning, a coach when you’re stuck, and pay every Friday for posts that pass and followers who sign up.</p>
   <div class="diffs"><div class="diff glass"><b>No follower minimum</b><span class="small">Campaigns say who they’re looking for. You see which ones fit.</span></div><div class="diff glass"><b>Just your number</b><span class="small">No email, no bank forms. Your number is your login and your payout.</span></div><div class="diff glass"><b>One payday</b><span class="small">Every Friday to your GCash, for every campaign. Claim sooner for 2%.</span></div></div></div>
   ${form}</section>
  <section class="example glass"><div class="row" style="flex-wrap:wrap"><span class="grow"><span class="label">A worked example, not a promise</span><b style="display:block;font-size:20px">A week in ${esc(c.name)}</b></span><span class="small">Your page is your link: sign-ups through it earn you more.</span></div>
   <div class="calc"><span>5 posts that pass × ${peso(c.post)}</span><b class="num">${peso(5*c.post)}</b><span>4 followers who sign up and activate × ${peso(c.act)}</span><b class="num">${peso(4*c.act)}</b><span>Weekly bonus for 5 passed posts</span><b class="num">[₱X]</b><span class="t">Paid Friday to your GCash</span><b class="t num">${peso(5*c.post+4*c.act)} + [₱X]</b></div></section>
  <section class="steps">${[['frame','Every morning','Up to three missions across your campaigns, each with today’s talking point and a short Do and Don’t list.'],['diamond','Post, then paste the link','The AI checks it in minutes. If something needs a fix, it names the rule and how to fix it.'],['quarter','Every Friday','Pay for posts that passed and sign-ups that activated, straight to your GCash.']].map(([k,t,d])=>`<div class="step glass">${tile(k,26)}<b style="font-size:18px">${t}</b><span class="sub">${d}</span></div>`).join('')}</section>
- <section class="glass" style="padding:8px 22px"><details open><summary>Do I need a lot of followers?</summary><p class="sub" style="margin-top:6px">No. Some campaigns look for followers in a place or topic, and the Lobby shows which ones fit you.</p></details><details><summary>Is it labelled as paid?</summary><p class="sub" style="margin-top:6px">Always. Every post turns on Paid partnership, and your OkPo page says who pays.</p></details><details><summary>What if a post doesn’t pass?</summary><p class="sub" style="margin-top:6px">You get the exact fix. Fix it, paste the link again, and your streak is safe until midnight.</p></details><details><summary>Can I be in more than one campaign?</summary><p class="sub" style="margin-top:6px">Yes. Missions from all of them arrive in one brief, up to three a day.</p></details></section></div>`;
+ <section class="glass" style="padding:8px 22px"><details open><summary>Do I need a lot of followers?</summary><p class="sub" style="margin-top:6px">No. Some campaigns look for followers in a place or topic, and the Lobby shows which ones fit you.</p></details><details><summary>Is it labelled as paid?</summary><p class="sub" style="margin-top:6px">Always. Every post turns on Paid partnership, and your OkPo page says who pays.</p></details><details><summary>What if a post doesn’t pass?</summary><p class="sub" style="margin-top:6px">You get the exact fix. Fix it, paste the link again, and your streak is safe until midnight.</p></details><details><summary>Can I be in more than one campaign?</summary><p class="sub" style="margin-top:6px">Yes. Missions from all of them arrive in Today, up to three a day.</p></details></section></div>`;
 }
 function render(to){
  nav();$('#view').innerHTML=S.view==='earn'?vEarn():vLobby();
@@ -253,7 +254,7 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-view],[dat
  if(d.view){e.preventDefault();S.view=d.view;render(d.to);return}
  if(d.topic){S.topic=d.topic;render('posts');return}
  if(d.startcamp){S.join={step:'num',num:'',camp:d.startcamp};S.view='earn';render();return}
- if(d.joincamp){const c=CAMPS.find(x=>x.id===d.joincamp);c.ana='joined';render('campaigns');toast(`${tile(c.k,16)}<span><b>Joined ${esc(c.name)}</b> on a 3-post trial. Missions start in tomorrow’s brief.</span>`);return}
+ if(d.joincamp){const c=CAMPS.find(x=>x.id===d.joincamp);c.ana='joined';render('campaigns');toast(`${tile(c.k,16)}<span><b>Joined ${esc(c.name)}</b> on a 3-post trial. Missions start tomorrow.</span>`);return}
  if(d.noop!==undefined){e.preventDefault();toast(esc(d.noop));return}
  if('fillnum' in d){$('#jnum').value='917 123 4567';return}
  if('fillotp' in d){const ins=$$('.otp input');'123456'.split('').forEach((c,i)=>ins[i].value=c);check(ins);return}

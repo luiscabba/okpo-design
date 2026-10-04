@@ -11,7 +11,8 @@ The product design system for OkPo: the brand console, the earner app and the ea
   - `/audience`: the same file, opened on the follower's page
   - `/lobby`: okpo.com for visitors and signed-in earners (campaigns, posts that passed, Earn with OkPo)
   - `/connected`: all three sharing one state
-  - `/setup` (also `/onboard`): brand setup, the fast path: one input, a few answer cards, live
+  - `/onboard` (also `/setup`): onboarding to console: website in, the Playbook drafted as a book, a few answers, live in liquid glass, then the console
+  - `/setup-v1`: the earlier fast setup, kept for reference
 
 It is plain static HTML. No build step.
 

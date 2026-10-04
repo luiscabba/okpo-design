@@ -1,4 +1,6 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}.band{display:inline-flex;align-items:center;gap:6px;padding:4px 9px;border-radius:99px;font:600 11.5px/1 var(--text,'IBM Plex Sans'),sans-serif;white-space:nowrap}.band i{width:7px;height:7px;border-radius:50%;background:currentColor}.band.s{background:rgba(105,219,124,.24);color:var(--l-green,#237a36)}.band.g{background:var(--soft);color:var(--body)}.band.n{background:rgba(255,212,59,.3);color:var(--l-yellow,#9c6500)}
+.dotp{width:7px;height:7px;border-radius:50%;background:var(--l-coral,#c92a2a);display:inline-block}
+</style></head><body>
 <title>OkPo Connected</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
@@ -66,13 +68,9 @@ button,input{font:inherit;color:inherit}button{cursor:pointer}button:disabled{cu
 .con{padding:16px;display:flex;flex-direction:column;gap:12px;min-height:740px}
 .tabs{display:flex;gap:4px;flex-wrap:wrap}
 .tabs button{border:0;background:transparent;border-radius:10px;padding:7px 11px;font-size:13px;color:var(--body);display:inline-flex;align-items:center;gap:7px}
-.tabs button[aria-current="page"]{color:var(--ink);font-weight:600}
-.tabs button[data-tab="aim"][aria-current="page"]{background:color-mix(in srgb,var(--green) 24%,transparent)}
-.tabs button[data-tab="recruit"][aria-current="page"]{background:color-mix(in srgb,var(--yellow) 26%,transparent)}
-.tabs button[data-tab="posts"][aria-current="page"]{background:color-mix(in srgb,var(--orange) 24%,transparent)}
-.tabs button[data-tab="leads"][aria-current="page"]{background:color-mix(in srgb,var(--blue) 24%,transparent)}
-.tabs button[data-tab="pool"][aria-current="page"]{background:color-mix(in srgb,var(--green) 24%,transparent)}
-.echo{background:color-mix(in srgb,var(--orange) 16%,transparent);border-radius:10px;padding-inline:8px}
+.tabs button[aria-current="page"]{color:var(--ink);font-weight:600;background:rgba(18,18,18,.07)}
+:root[data-theme="dark"] .tabs button[aria-current="page"]{background:rgba(255,255,255,.08)}
+.echo{background:color-mix(in srgb,var(--yellow) 22%,transparent);border-radius:10px;padding-inline:8px}
 .echo.lead{background:color-mix(in srgb,var(--blue) 16%,transparent)}
 .ping{display:inline-block;animation:ping 1s var(--ease) 2}
 @keyframes ping{40%{transform:scale(1.5)}}
@@ -106,6 +104,8 @@ button,input{font:inherit;color:inherit}button{cursor:pointer}button:disabled{cu
 .note{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:14px;background:var(--panel);border:1px solid var(--line);font-size:12.5px}
 .av{width:36px;height:36px;border-radius:50%;background:var(--soft);display:grid;place-items:center;font-weight:600;font-size:12px;color:var(--body);flex:none}
 .wash{position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#121212;pointer-events:none}
+.wash svg{position:absolute;overflow:visible}
+.wash b{position:relative}
 
 /* links */
 .hl{animation:hl 1.6s var(--ease)}
@@ -140,7 +140,7 @@ button,input{font:inherit;color:inherit}button{cursor:pointer}button:disabled{cu
     <span class="small" id="clockNote" style="max-width:420px">The brand console, Ana’s phone and a follower’s phone share one state.</span>
     <span class="spacer"></span>
     <div class="seg who" role="group" aria-label="Show"><button type="button" data-show="console" aria-pressed="true">Brand</button><button type="button" data-show="ana" aria-pressed="false">Ana</button><button type="button" data-show="fol" aria-pressed="false">Follower</button></div>
-    <button class="btn" type="button" id="nextDay">Next day, 7:00 AM brief</button>
+    <button class="btn" type="button" id="nextDay">Next day, 7:00 AM missions</button>
     <button class="ghost" type="button" id="themeBtn">Dark</button>
     <button class="ghost" type="button" id="resetBtn">Reset</button>
   </div>
@@ -177,8 +177,10 @@ const fmt=n=>Math.round(n).toLocaleString('en-PH');
 
 /* shapes */
 const P={frame:'<path d="M0 0H100V100H0Z M27 27V73H73V27Z" fill-rule="evenodd" fill="C"/>',quarter:'<path d="M0 100 L0 0 A100 100 0 0 1 100 100 Z" fill="C"/>',diamond:'<path d="M50 0L100 50L50 100L0 50Z M50 28L72 50L50 72L28 50Z" fill-rule="evenodd" fill="C"/>',half:'<path d="M0 100 A50 50 0 0 1 100 100 Z" fill="C"/><rect width="100" height="22" fill="C"/>',pin:'<path d="M0 0 L50 0 L50 50 Z M100 0 L100 50 L50 50 Z M100 100 L50 100 L50 50 Z M0 100 L0 50 L50 50 Z" fill="C"/>',petal:'<path d="M50 50 Q50 2 98 2 Q98 50 50 50 Z M50 50 Q98 50 98 98 Q50 98 50 50 Z M50 50 Q50 98 2 98 Q2 50 50 50 Z M50 50 Q2 50 2 2 Q50 2 50 50 Z" fill="C"/>'};
-const COL={frame:'var(--coral)',quarter:'var(--green)',diamond:'var(--orange)',half:'var(--yellow)',petal:'var(--purple)',pin:'var(--blue)'};
-function tile(k,s=14,out){let b=P[k];b=out?b.replace(/fill="C"/g,`style="fill:none;stroke:${out};stroke-width:9"`).replace('fill-rule="evenodd" ',''):b.replace(/fill="C"/g,`style="fill:${COL[k]}"`);return `<svg width="${s}" height="${s}" viewBox="-5 -5 110 110" aria-hidden="true" style="flex:none;display:block">${b}</svg>`}
+P.speech='<path d="M0 100 V30 Q0 0 30 0 H70 Q100 0 100 30 V70 Q100 100 70 100 Z" fill="C"/>';P.lens='<path d="M0 50 Q50 -16 100 50 Q50 116 0 50 Z" fill="C"/>';
+/* the shape map (DESIGN.md §6): five shapes, five meanings; tab-only tiles are ink */
+const COL={half:'var(--blue)',petal:'var(--purple)',diamond:'var(--coral)',pin:'var(--yellow)',quarter:'var(--green)',frame:'var(--ink)',speech:'var(--ink)',lens:'var(--ink)'};
+function tile(k,s=14,out){let b=P[k];if(out&&k==='pin')return `<svg width="${s}" height="${s}" viewBox="-5 -5 110 110" aria-hidden="true" style="flex:none;display:block">${b.replace(/fill="C"/g,`style="fill:${out};opacity:.42"`)}</svg>`;b=out?b.replace(/fill="C"/g,`style="fill:none;stroke:${out};stroke-width:9"`).replace('fill-rule="evenodd" ',''):b.replace(/fill="C"/g,`style="fill:${COL[k]}"`);return `<svg width="${s}" height="${s}" viewBox="-5 -5 110 110" aria-hidden="true" style="flex:none;display:block">${b}</svg>`}
 const tone=(k,st)=>`<svg viewBox="-5 -5 110 110" style="${st}" aria-hidden="true">${P[k].replace(/fill="C"/g,'style="fill:var(--tone)"')}</svg>`;
 $('#bgs').innerHTML=tone('quarter','left:-260px;top:-340px;width:900px;height:900px')+tone('petal','left:46vw;top:-260px;width:620px;height:620px')+tone('half','left:52vw;top:60vh;width:780px;height:780px');
 const phoneBg=()=>`<div class="pbg">${tone('quarter','left:-110px;top:-110px;width:380px;height:380px')}${tone('petal','left:170px;top:130px;width:270px;height:270px')}${tone('half','left:110px;top:480px;width:350px;height:350px')}</div>`;
@@ -189,9 +191,9 @@ const DAYS=['Tue 30 Sep','Wed 1 Oct','Thu 2 Oct','Fri 3 Oct','Sat 4 Oct','Sun 5 
 const ANG={heroes:[{n:'Free to join',line:'Say it’s free to join. No promises on amounts.',r:'R-06 · R-03'},{n:'Five-minute sign-up',line:'Show the whole sign-up in the real app, under 20 seconds.',r:'R-05 · R-08'},{n:'Send money home',line:'Talk about sending money home to family.',r:'R-04'}],
  ipon:[{n:'Start with ₱50',line:'Show your own first ₱50 going into GSave.',r:'R-05 · R-12'},{n:'Goals for students',line:'Name one thing you’re saving for.',r:'R-09'}]};
 const qBand=n=>n>=80?'Strong':n>=60?'Good':'Needs work';
-const bandChip=n=>`<span class="chip ${n>=80?'ok':n>=60?'n':'warn'}">${qBand(n)}</span>`;
+const bandChip=n=>`<span class="band ${n>=80?'s':n>=60?'g':'n'}"><i></i>${qBand(n)}</span>`;
 const FRESH=()=>({day:0,role:'team',tab:'aim',
- camps:{heroes:{name:'GCash Heroes',short:'Heroes',k:'half',status:'live',post:40,act:12,draft:ANG.heroes.map(a=>a.n),pub:ANG.heroes.map(a=>a.n),pool:62000,cut:null},
+ camps:{heroes:{name:'GCash Heroes',short:'Heroes',k:'pin',status:'live',post:40,act:12,draft:ANG.heroes.map(a=>a.n),pub:ANG.heroes.map(a=>a.n),pool:62000,cut:null},
         ipon:{name:'GCash Ipon Challenge',short:'Ipon',k:'pin',status:'live',post:30,act:10,draft:ANG.ipon.map(a=>a.n),pub:ANG.ipon.map(a=>a.n),pool:37800,cut:null}},
  ver:7,pend:[],
  leads:{counted:1284,confirmed:1196,trail:[]},
@@ -224,65 +226,85 @@ function toast(html,where){const host=where||$('#toastLayer');const t=document.c
 const team=()=>S.role==='team';
 function stChip(s){return s==='live'?'<span class="chip ok">● Live</span>':s==='paused'?'<span class="chip pause">● Paused</span>':'<span class="chip n">'+esc(s)+'</span>'}
 function renderCon(){const c=C('heroes'),pn=S.pend.length,money=S.pend.some(p=>p.money);
- const tabs=[['aim','Talking points · Heroes','quarter'],['recruit','Recruiting','half'],['posts','Posts','diamond'],['leads','Leads','pin'],['pool','Pool','quarter']];
+ const tabs=[['aim','Talking points · Heroes'],['recruit','Recruiting'],['posts','Posts'],['leads','Leads'],['pool','Pool']];
  if(S.tab==='posts')S.echoPosts=false;if(S.tab==='leads')S.echoLeads=false;
  let body='';
  if(S.tab==='aim'){body=`<div class="row" style="flex-wrap:wrap"><b class="disp grow" style="font-size:22px">GCash Heroes</b>${stChip(c.status)}${c.status==='live'?`<button class="ghost" type="button" data-pause="heroes">Pause</button>`:`<button class="ghost" type="button" data-resume="heroes">Resume</button>`}</div>
-  <div class="box" id="outbar"><div class="row" style="flex-wrap:wrap">${tile('petal',16)}<span class="grow">${pn?`<b>${pn} change${pn>1?'s':''} ready for v${S.ver+1}.</b> <span class="small">${money?'Includes a money change, so GCash approves first.':'GCash is told.'} Reaches Ana in the next 7:00 AM brief.</span>`:`<b>Published · v${S.ver}.</b> <span class="small">What Ana’s brief is written from.</span>`}</span>${pn?(money&&team()?`<button class="btn" type="button" data-pub>Send to GCash</button>`:`<button class="btn" type="button" data-pub>${money?'Approve and publish':'Publish'} v${S.ver+1}</button>`):''}</div>${pn?`<div class="small">${S.pend.map(p=>'· '+esc(p.what)+(p.money?(p.sent?' (waiting for GCash)':' (needs GCash)'):'')).join('<br>')}</div>`:''}</div>
+  <div class="box" id="outbar"><div class="row" style="flex-wrap:wrap"><span class="grow">${pn?`<b>${pn} change${pn>1?'s':''} ready for Edition ${S.ver+1}.</b> <span class="small">${money?'Includes a money change, so GCash approves first.':'GCash is told.'} Reaches Ana in the next 7:00 AM brief.</span>`:`<b>Published · Edition ${S.ver}.</b> <span class="small">What Ana’s brief is written from.</span>`}</span>${pn?(money&&team()?`<button class="btn" type="button" data-pub>Send to GCash</button>`:`<button class="btn" type="button" data-pub>${money?'Approve and publish':'Publish'} Edition ${S.ver+1}</button>`):''}</div>${pn?`<div class="small">${S.pend.map(p=>'· '+esc(p.what)+(p.money?(p.sent?' (waiting for GCash)':' (needs GCash)'):'')).join('<br>')}</div>`:''}</div>
   <span class="label">Talking points, in order · drafts until published</span><span class="small" style="margin-top:-4px">What posts lead with. First gets the most missions. Steers the brief; never overrides a rule.</span>
   <div style="display:flex;flex-direction:column;gap:6px" id="angles">${c.draft.map((n,i)=>`<div class="angle"><span class="mono small">0${i+1}</span><b class="grow">${esc(n)}</b>${c.pub[i]!==n?'<span class="chip warn">Changed</span>':''}<button class="ghost" type="button" data-up="${i}" ${i===0||!team()?'disabled':''} aria-label="Move ${esc(n)} up">↑ First</button></div>`).join('')}</div>
   <span class="label">Rewards</span>
   <div class="angle"><span class="grow"><b>${peso(c.post)} per passed post</b><br><span class="small">${c.cut?`Drops to ${peso(c.cut.to)} on ${DAYS[c.cut.on]}. Earners got 3 days’ notice.`:'₱12 per activated sign-up'}</span></span><button class="ghost" type="button" data-cut ${!team()||c.cut||S.pend.some(p=>p.cut)?'disabled':''}>Lower to ₱35</button></div>
-  <div class="brief" id="conBrief"><div class="row"><span class="label grow">Ana’s next brief, as published</span><span class="small">7:00 AM</span></div>${c.pub.slice(0,2).map((n,i)=>`<div class="row" style="align-items:flex-start">${tile('quarter',11,'var(--mute)')}<span class="grow">${esc(ANG.heroes.find(a=>a.n===n).line)}<br><span class="tag">TALKING POINT 0${i+1} · ${esc(n)}</span></span></div>`).join('')}<div class="row" style="align-items:flex-start">${tile('frame',11,'var(--mute)')}<span class="grow">Tag #GCashHeroes and turn on Paid partnership.<br><span class="tag">RULES R-13 · R-01</span></span></div><div class="row" style="align-items:flex-start">${tile('frame',11,'var(--mute)')}<span class="grow">Don’t promise approval, amounts or dates.<br><span class="tag">RULE R-03 · FAIL</span></span></div></div>`}
+  <div class="brief" id="conBrief"><div class="row"><span class="label grow">Ana’s next brief, as published</span><span class="small">7:00 AM</span></div>${c.pub.slice(0,2).map((n,i)=>`<div class="row" style="align-items:flex-start">${tile('pin',11)}<span class="grow">${esc(ANG.heroes.find(a=>a.n===n).line)}<br><span class="tag">TALKING POINT 0${i+1} · ${esc(n)}</span></span></div>`).join('')}<div class="row" style="align-items:flex-start">${tile('diamond',11)}<span class="grow">Tag #GCashHeroes and turn on Paid partnership.<br><span class="tag">ALWAYS · THIS CAMPAIGN</span></span></div><div class="row" style="align-items:flex-start">${tile('diamond',11)}<span class="grow">Don’t promise approval, amounts or dates.<br><span class="tag">NEVER · PLAYBOOK</span></span></div></div>`}
  if(S.tab==='recruit'){const inv=S.ana.inv;body=`<b class="disp" style="font-size:22px">Recruiting · GCash Ipon Challenge</b><span class="sub">Invite people who fit. An invite is a better deal they must accept within 72 hours.</span>
   <div class="angle" id="recAna"><span class="av">AR</span><span class="grow"><b>@ana.posts</b><br><span class="small">Food and budget · QC · pass rate 96% on Heroes</span></span>${inv==='joined'?'<span class="chip ok">Joined</span>':inv==='sent'?'<span class="chip warn">Invite sent · 72h</span>':`<button class="btn" type="button" data-invite ${team()?'':'disabled'}>Invite at ₱30 per post</button>`}</div>
   <div class="angle"><span class="av">BT</span><span class="grow"><b>@bea.saves</b><br><span class="small">Budget · Bacolod</span></span><span class="chip ok">Joined</span></div>
   <span class="small">Open call pays ₱25. Ana’s invite replaces that with ₱30; it doesn’t add to it.</span>`}
- if(S.tab==='posts'){body=`<b class="disp" style="font-size:22px">Posts, checked against the brief</b><div id="postList">${S.posts.map(p=>`<div class="li${p.when==='just now'?' echo':''}"><span class="av">${p.h[1].toUpperCase()}</span><span class="grow"><b>${p.h}</b><br><span class="small">${p.t} · ${C(p.c).name} · ${p.when}${p.tp?' · '+esc(p.tp):''}</span></span>${p.q?`<span class="mono small" title="Quality score, brand side only">${p.q}</span>${bandChip(p.q)}`:''}${p.s==='pass'?'<span class="chip ok">Passed</span>':'<span class="chip warn">In review</span>'}</div>`).join('')}</div><span class="small">Quality is a separate score from pass or fail. You see the number; the earner sees only the band and two tips. It never changes pay.</span>`}
+ if(S.tab==='posts'){body=`<b class="disp" style="font-size:22px">Posts, checked against the Playbook</b><div id="postList">${S.posts.map(p=>`<div class="li${p.when==='just now'?' echo':''}"><span class="av">${p.h[1].toUpperCase()}</span><span class="grow"><b>${p.h}</b><br><span class="small">${p.t} · ${C(p.c).name} · ${p.when}${p.tp?' · '+esc(p.tp):''}</span></span>${p.q?`<span class="mono small" title="Quality score, brand side only">${p.q}</span>${bandChip(p.q)}`:''}${p.s==='pass'?'<span class="chip ok">Passed</span>':'<span class="chip warn">In review</span>'}</div>`).join('')}</div><span class="small">Quality is a separate score from pass or fail. You see the number; the earner sees only the band and two tips. It never changes pay.</span>`}
  if(S.tab==='leads'){const L=S.leads;body=`<b class="disp" style="font-size:22px">Your numbers, next to ours</b>
   <div class="kpis" id="leadKpis"><div class="kpi"><span class="label">Counted by OkPo</span><b class="num">${fmt(L.counted)}</b></div><div class="kpi"><span class="label">Confirmed by GCash</span><b class="num">${fmt(L.confirmed)}</b></div><div class="kpi"><span class="label">Waiting</span><b class="num">${L.counted-L.confirmed}</b></div><div class="kpi"><span class="label">Match</span><b class="num">${Math.round(L.confirmed/L.counted*100)}%</b></div></div>
   <div class="row"><span class="label grow">Latest trail</span><button class="ghost" type="button" data-gconfirm ${L.counted>L.confirmed?'':'disabled'}>GCash confirms</button></div>
   <div id="trail">${L.trail.length?L.trail.map((t,i)=>`<div class="li${i===0&&!t.ok?' echo lead':''}">${tile(C(t.c).k,14)}<span class="grow"><b>${t.id}</b> · from ${t.h}<br><span class="small">${esc(t.d)}</span></span>${t.ok?'<span class="chip ok">Confirmed</span>':'<span class="chip n">Waiting</span>'}</div>`).join(''):'<span class="small">Sign up from the follower’s phone to add one.</span>'}</div>
   <span class="small">Counts within 7 days of the tap. GCash confirms within 2 days. Last link tapped gets the credit, once. Billing uses GCash’s number.</span>`}
  if(S.tab==='pool'){body=`<b class="disp" style="font-size:22px">Pool and billing</b><div class="kpis" id="poolKpis">${['heroes','ipon'].map(id=>`<div class="kpi"><span class="label">${C(id).short} pool left</span><b class="num">${peso(C(id).pool)}</b></div>`).join('')}<div class="kpi"><span class="label">Billing</span><b style="font-size:16px">GCash-confirmed</b></div><div class="kpi"><span class="label">Cap</span><b>₱120</b></div></div><span class="small">Each passed post and each confirmed sign-up is paid from its campaign’s pool. Spending stops at the pool.</span>`}
- $('#con').innerHTML=`<div class="tabs" role="tablist">${tabs.map(([k,l,t])=>{const echo=(k==='posts'&&S.echoPosts)||(k==='leads'&&S.echoLeads);return `<button type="button" data-tab="${k}" ${S.tab===k?'aria-current="page"':''}><span class="${echo?'ping':''}">${S.tab===k||echo?tile(t,13):tile(t,12,'var(--mute)')}</span>${l}${k==='aim'&&pn?`<span class="cnt">${pn}</span>`:''}</button>`}).join('')}</div>${body}`;
+ $('#con').innerHTML=`<div class="tabs" role="tablist">${tabs.map(([k,l])=>{const echo=(k==='posts'&&S.echoPosts)||(k==='leads'&&S.echoLeads);return `<button type="button" data-tab="${k}" ${S.tab===k?'aria-current="page"':''}>${l}${echo?'<span class="ping dotp" aria-label="New"></span>':''}${k==='aim'&&pn?`<span class="cnt">${pn}</span>`:''}</button>`}).join('')}</div>${body}`;
  $$('[data-role]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.role===S.role)))}
 
 /* ---------- Ana ---------- */
 function renderAna(){const A=S.ana,M=A.missions,done=M.filter(m=>m.s==='pass').length,left=capLeft();
  let html='';
  if(A.tab==='today'){html=`<div class="row"><span class="wm" style="font-size:20px"><span>O</span><span>k</span><span>P</span><span>o</span></span><span class="spacer"></span><span class="av">AR</span></div>
-  <div><span class="sub">Magandang umaga, Ana · ${DAYS[S.day]}</span><div class="big">${left?left+' mission'+(left>1?'s':'')+' left':'All done for today'}</div><span class="small">Up to 3 a day across your campaigns. Brief written from v${A.briefVer||S.ver}.</span></div>
+  <div><span class="sub">Magandang umaga, Ana · ${DAYS[S.day]}</span><div class="big" style="font-size:26px">Today’s mission</div><span class="small">${left?left+' of 3 left. ':'All done for today. '}Up to 3 a day across your campaigns. Written from Playbook Edition ${A.briefVer||S.ver}.</span></div>
   ${A.inv==='sent'?`<div class="card glass" id="anaInvite">${tile('pin',22)}<span class="label">GCash invited you · 72 hours</span><b>GCash Ipon Challenge</b><span class="small">₱30 per passed post (open call ₱25) · ₱10 per first deposit</span><div class="row"><button class="btn grow" type="button" data-accept>Accept</button><button class="ghost" type="button" data-decline>Not now</button></div></div>`:''}
   ${A.notifs.slice(0,2).map(n=>`<div class="note">${tile(n.k,16)}<span><b>${esc(n.t)}</b><br><span class="small" style="color:var(--body)">${esc(n.b)}</span></span></div>`).join('')}
-  <div class="card glass" style="padding:4px 14px;gap:0" id="anaMissions">${M.length?M.map(m=>{const lock=m.s==='open'&&!left;return `<button class="mission ${m.s==='pass'?'done':''}" type="button" data-m="${m.id}" ${m.s!=='open'||lock?'aria-disabled="true"':''}>${m.s==='pass'?tile('diamond',20):tile('diamond',20,'var(--mute)')}<span class="grow" style="display:flex;flex-direction:column"><span class="mt">${esc(m.t)}</span><span class="small">${m.s==='check'?'AI is checking…':m.s==='pass'?'Passed · +'+peso(m.r)+(m.band?' · '+m.band:''):lock?'Daily cap reached · tomorrow':(m.tp?'Talking point: '+esc(m.tp)+' · ':'')+esc(m.line)}</span>${m.s==='open'&&m.rid?`<span class="ctag" style="text-transform:none">${esc(m.rid)}</span>`:''}${A.camps.length>1?`<span class="ctag">${tile(C(m.c).k,8)}${C(m.c).short}</span>`:''}</span>${m.s==='open'&&!lock?`<span class="go">+${peso(m.r)}</span>`:m.s==='check'?'<span class="spin"></span>':''}</button>`}).join(''):'<span class="small" style="padding:12px 0">No missions today. Your campaigns are paused.</span>'}</div>
+  <div class="card glass" style="padding:4px 14px;gap:0" id="anaMissions">${M.length?M.map(m=>{const lock=m.s==='open'&&!left;return `<button class="mission ${m.s==='pass'?'done':''}" type="button" data-m="${m.id}" ${m.s!=='open'||lock?'aria-disabled="true"':''}>${m.s==='pass'?tile('pin',20):tile('pin',20,'var(--mute)')}<span class="grow" style="display:flex;flex-direction:column"><span class="mt">${esc(m.t)}</span><span class="small">${m.s==='check'?'AI is checking…':m.s==='pass'?'Passed · +'+peso(m.r)+(m.band?' · '+m.band:''):lock?'Daily cap reached · tomorrow':(m.tp?'Talking point: '+esc(m.tp)+' · ':'')+esc(m.line)}</span>${A.camps.length>1?`<span class="ctag">${tile(C(m.c).k,8)}${C(m.c).short}</span>`:''}</span>${m.s==='open'&&!lock?`<span class="go">+${peso(m.r)}</span>`:m.s==='check'?'<span class="spin"></span>':''}</button>`}).join(''):'<span class="small" style="padding:12px 0">No missions today. Your campaigns are paused.</span>'}</div>
   <div class="card glass"><div class="row"><span class="label grow">Earned today</span><b class="num">${peso(A.today)}</b></div><div class="row"><span class="small grow">Posting streak</span><b>${A.streak} days</b></div></div>`}
- if(A.tab==='wallet'){html=`<b style="font-size:17px">Wallet</b><div class="card glass" id="anaWallet"><span class="label">Ready to claim</span><div class="big num" style="font-size:40px">${peso(A.ready)}</div><div class="row small"><span class="grow">Confirming · waits on GCash</span><b class="num" style="color:var(--ink)">${peso(A.confirming)}</b></div><button class="btn" type="button" disabled>Claim to GCash</button><span class="small">Claim now costs 2%. Friday is free.</span></div>`}
- if(A.tab==='page'){html=`<b style="font-size:17px">My page</b><div class="card glass" id="anaPage"><span class="label">okpo.com/ana.posts</span><div class="row" style="gap:20px"><span><span class="big num">${A.signups}</span><br><span class="small">sign-ups this week</span></span></div><span class="small">Your page leads with the campaign a follower tapped.</span></div>`}
- $('#pAna').innerHTML=phoneBg()+`<div class="scr">${html}</div><nav class="ptabs glass" aria-label="Earner app">${[['today','Today','frame'],['wallet','Wallet','quarter'],['page','My page','half']].map(([k,l,t])=>`<button type="button" data-atab="${k}" ${A.tab===k?'aria-current="page"':''}>${A.tab===k?tile(t,20):tile(t,19,'var(--mute)')}${l}</button>`).join('')}</nav>`}
+ if(A.tab==='wallet'){html=`<div class="big" style="font-size:26px">Wallet</div><div class="card glass" id="anaWallet"><span class="label">Ready to claim</span><div class="big num" style="font-size:40px">${peso(A.ready)}</div><div class="row small"><span class="grow">Confirming · waits on GCash</span><b class="num" style="color:var(--ink)">${peso(A.confirming)}</b></div><button class="btn" type="button" disabled>Claim to GCash</button><span class="small">Claim now costs 2%. Friday is free.</span></div>`}
+ if(A.tab==='page'){html=`<div class="big" style="font-size:26px">My page</div><div class="card glass" id="anaPage"><span class="label">okpo.com/ana.posts</span><div class="row" style="gap:20px"><span><span class="big num">${A.signups}</span><br><span class="small">sign-ups this week</span></span></div><span class="small">Your page leads with the campaign a follower tapped.</span></div>`}
+ $('#pAna').innerHTML=phoneBg()+`<div class="scr">${html}</div><nav class="ptabs glass" aria-label="Earner app">${[['today','Today','pin'],['wallet','Wallet','quarter'],['page','My page','lens']].map(([k,l,t])=>`<button type="button" data-atab="${k}" ${A.tab===k?'aria-current="page"':''}>${A.tab===k?tile(t,20):tile(t,19,'var(--mute)')}${l}</button>`).join('')}</nav>`}
 
 /* ---------- follower ---------- */
 function renderFol(){const F=S.fol,ip=F.via==='ipon',iponOn=S.ana.camps.includes('ipon');
- const card=ip?{k:'pin',t:'Start the Ipon Challenge',d:'Ipon ng ₱50 sa GSave. Libre, mga 3 minuto.',b:'Start saving on GCash',src:'Story'}:{k:'half',t:'Join GCash Heroes',d:'Libre mag-join. About 5 minutes.',b:'Sign up on GCash',src:'Reel'};
+ const card=ip?{k:'pin',t:'Start the Ipon Challenge',d:'Ipon ng ₱50 sa GSave. Libre, mga 3 minuto.',b:'Start saving on GCash',src:'Story'}:{k:'pin',t:'Join GCash Heroes',d:'Libre mag-join. About 5 minutes.',b:'Sign up on GCash',src:'Reel'};
  $('#pFol').innerHTML=phoneBg()+`<div class="scr"><div class="row small"><span class="grow mono">okpo.com/ana.posts?c=${ip?'ipon':'heroes'}</span></div>
   <div class="seg" role="group" aria-label="Which link did they tap" style="align-self:center"><button type="button" data-via="heroes" aria-pressed="${!ip}">Tapped Heroes Reel</button><button type="button" data-via="ipon" aria-pressed="${ip}" ${iponOn?'':'disabled title="Ana isn’t in Ipon yet"'}>Tapped Ipon Story</button></div>
   <div style="display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center"><span class="av" style="width:70px;height:70px;font-size:20px">AR</span><span class="disp" style="font-size:22px">Ana Reyes</span><span class="chip n">Paid partnership with GCash</span></div>
   <div class="card glass" id="folCard"><span class="label">You came from Ana’s ${card.src}</span><span class="row">${tile(card.k,16)}<b style="font-size:15px">${card.t}</b></span><span class="sub">${card.d}</span><button class="btn" type="button" data-signup ${F.signed?'disabled':''}>${F.signed?'You’re signed up':card.b}</button><span class="small">${F.signed?'Credited once, to '+C(F.credit).name+'.':F.taps.length>1?'You tapped '+F.taps.map(x=>C(x).short).join(', then ')+'. The last link gets the credit.':'Ana gets credit when GCash confirms it.'}</span></div>
   ${!iponOn?'<span class="small" style="text-align:center">Ana’s Ipon link appears once she joins Ipon.</span>':''}
-  <div class="card glass"><span class="row">${tile('petal',16)}<b>Ask Ana’s AI</b></span><span class="small">Answers from GCash’s checked info for ${C(F.via).name}.</span></div></div>`}
+  <div class="card glass"><span class="row">${tile('speech',16)}<b>Ask Ana’s AI</b></span><span class="small">Answers from GCash’s Playbook and ${C(F.via).name}. It never says a guess.</span></div></div>`}
 
 function renderAll(){renderCon();renderAna();renderFol();renderLog();$('#clock').textContent=DAYS[S.day];save()}
 
 /* ---------- actions ---------- */
-function wash(phone,color,text){if(RM){toast(text,phone);return}const w=document.createElement('div');w.className='wash';w.style.background=color;w.innerHTML=`<b class="disp" style="font-size:34px">${text}</b>`;phone.appendChild(w);w.animate([{opacity:0},{opacity:1,offset:.2},{opacity:1,offset:.75},{opacity:0}],{duration:1500}).finished.then(()=>w.remove())}
+/* reward wash: the earner app's hand-drawn engine, smaller (DESIGN.md §9) */
+function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function arc(cx,cy,r,a0,a1,n=40){const o=[];for(let i=0;i<=n;i++){const a=(a0+(a1-a0)*i/n)*Math.PI/180;o.push([cx+r*Math.cos(a),cy+r*Math.sin(a)])}return o}
+const POLY={
+ diamond:[[[50,0],[100,50],[50,100],[0,50],[50,0]],[[50,28],[72,50],[50,72],[28,50],[50,28]]],
+ frame:[[[0,0],[100,0],[100,100],[0,100],[0,0]],[[27,27],[73,27],[73,73],[27,73],[27,27]]],
+ quarter:[[[0,100],[0,0],...arc(0,100,100,-90,0),[0,100]]],
+ half:[[...arc(50,100,50,180,360),[0,100]],[[0,0],[100,0],[100,22],[0,22],[0,0]]],
+ pin:[[[0,0],[50,0],[50,50],[0,0]],[[100,0],[100,50],[50,50],[100,0]],[[100,100],[50,100],[50,50],[100,100]],[[0,100],[0,50],[50,50],[0,100]]]};
+function wob(pts,seed,amp){
+  const r=rng(seed),ph=[r()*6.28,r()*6.28,r()*6.28,r()*6.28],f=[.18+r()*.14,.5+r()*.3,.18+r()*.14,.5+r()*.3],q=[];
+  for(let i=0;i<pts.length-1;i++){const[a,b]=pts[i],[c,d]=pts[i+1],n=Math.max(1,Math.floor(Math.hypot(c-a,d-b)/3));for(let j=0;j<n;j++)q.push([a+(c-a)*j/n,b+(d-b)*j/n])}
+  q.push(pts[pts.length-1]);
+  return 'M'+q.map(([x,y],i)=>`${(x+amp*(Math.sin(i*f[0]+ph[0])+.45*Math.sin(i*f[1]+ph[1]))).toFixed(2)} ${(y+amp*(Math.sin(i*f[2]+ph[2])+.45*Math.sin(i*f[3]+ph[3]))).toFixed(2)}`).join(' L')+' Z';
+}
+function sloppy(k,color,size,seed){const amp=Math.min(2/(size/112),1.1);const d=POLY[k].map((p,j)=>wob(p,seed*10+j,amp)).join(' ');return `<path d="${d}" fill="${color}" fill-rule="evenodd" stroke="${color}" stroke-width="1.5" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>`}
+function wash(phone,color,text,k,fill){if(RM){toast(text,phone);return}const W=phone.clientWidth,H=phone.clientHeight,sz=W*.7;const w=document.createElement('div');w.className='wash';w.style.background=color;
+ w.innerHTML=`<svg viewBox="-6 -6 112 112" style="left:${W/2-sz/2}px;top:${H*.42-sz/2}px;width:${sz}px;height:${sz}px">${sloppy(k||'quarter',fill||'#2b8a3e',sz,7)}</svg><b class="disp" style="font-size:40px;margin-top:${sz*.95}px">${text}</b>`;phone.appendChild(w);
+ const s=w.querySelector('svg');s.animate([{transform:'scale(.06) rotate(-25deg)'},{transform:'none'}],{duration:620,easing:'cubic-bezier(.34,1.45,.64,1)'});
+ w.animate([{clipPath:`circle(0px at ${W/2}px ${H*.6}px)`},{clipPath:`circle(${Math.hypot(W,H)}px at ${W/2}px ${H*.6}px)`}],{duration:460,easing:'cubic-bezier(.3,.7,.2,1)'});
+ setTimeout(()=>w.animate([{opacity:1},{opacity:0}],{duration:260}).finished.then(()=>w.remove()),1700)}
 function passMission(m){const c=C(m.c),A=S.ana;m.s='pass';m.q=m.id===1?84:m.id===2?73:66;m.band=qBand(m.q);A.today+=m.r;A.ready+=m.r;c.pool-=m.r;if(!A.doneToday){A.doneToday=true;A.streak++}
  S.posts.forEach(p=>{if(p.when==='just now')p.when='earlier'});S.posts.unshift({h:'@ana.posts',c:m.c,t:m.t.split(':')[0].split(' ')[0],s:'pass',when:'just now',tp:m.tp,q:m.q});if(S.tab!=='posts')S.echoPosts=true;
- renderAll();wash($('#pAna'),'#ffe8cc','Passed');
+ renderAll();wash($('#pAna'),'#ebfbee','Passed','quarter','#69db7c');
  link('Ana','Brand console',`Ana’s ${esc(m.t.toLowerCase())} passed (${m.band}). It shows in <b>Posts</b> with its quality score, and ${peso(m.r)} comes out of the ${c.short} pool.`,['#anaMissions','#postList','#poolKpis','#con'])}
 $('#pAna').addEventListener('click',e=>{const t=e.target.closest('button');if(!t)return;const d=t.dataset,A=S.ana;
  if(d.atab){A.tab=d.atab;renderAna();save();return}
  if(d.m){const m=A.missions.find(x=>x.id===+d.m);if(!m||m.s!=='open')return;if(!capLeft()){toast('That’s 3 for today. It comes back tomorrow.',$('#pAna'));return}m.s='check';renderAna();setTimeout(()=>passMission(m),RM?100:1400);return}
- if('accept' in d){A.inv='joined';A.camps.push('ipon');A.notifs.unshift({k:'pin',t:'You joined GCash Ipon Challenge',b:'Its missions start in tomorrow’s brief, inside your 3 a day.'});renderAll();
+ if('accept' in d){A.inv='joined';A.camps.push('ipon');A.notifs.unshift({k:'pin',t:'You joined GCash Ipon Challenge',b:'Its missions start tomorrow, inside your 3 a day.'});renderAll();
    link('Ana','Brand console','Ana accepted the Ipon invite. Recruiting shows <b>Joined</b>, and her follower page can now carry an Ipon link.',['#recAna','#con','#pFol']);return}
  if('decline' in d){toast('Not now. The invite stays open until 72 hours pass.',$('#pAna'));return}});
 
@@ -290,7 +312,7 @@ $('#pFol').addEventListener('click',e=>{const t=e.target.closest('button');if(!t
  if(d.via){if(F.signed){toast('This follower already signed up. One sign-up, one credit.',$('#pFol'));return}F.via=d.via;if(F.taps[F.taps.length-1]!==d.via)F.taps.push(d.via);renderFol();save();return}
  if('signup' in d){F.signed=true;F.credit=F.via;const c=C(F.via),amt=F.via==='ipon'?10:12;const id='#L-'+(48222+S.leads.trail.length);
    S.leads.counted++;S.leads.trail.unshift({id,h:'@ana.posts',c:F.via,d:(F.taps.length>1?'Tapped '+F.taps.map(x=>C(x).short).join(', then ')+' · ':'')+'credited to '+c.short,ok:false});
-   S.ana.confirming+=amt;S.ana.signups++;if(S.tab!=='leads')S.echoLeads=true;S.ana.notifs.unshift({k:'half',t:'A follower signed up · '+c.short,b:'+'+peso(amt)+' once GCash confirms.'});
+   S.ana.confirming+=amt;S.ana.signups++;if(S.tab!=='leads')S.echoLeads=true;S.ana.notifs.unshift({k:'pin',t:'A follower signed up · '+c.short,b:'+'+peso(amt)+' once GCash confirms.'});
    renderAll();link('Follower','Ana and Brand console',`A follower signed up from Ana’s page, credited to <b>${c.name}</b>${F.taps.length>1?' (the last link tapped)':''}. Leads counts it; Ana sees +${peso(amt)} confirming.`,['#folCard','#trail','#leadKpis','#pAna','#con']);return}});
 
 $('#con').addEventListener('click',e=>{const t=e.target.closest('button');if(!t)return;const d=t.dataset,c=C('heroes');
@@ -300,14 +322,14 @@ $('#con').addEventListener('click',e=>{const t=e.target.closest('button');if(!t)
  if('pub' in d){const money=S.pend.some(p=>p.money);
    if(money&&team()){S.pend.forEach(p=>p.sent=1);renderCon();save();link('OkPo team','GCash','A reward change went to GCash for approval. Switch the console to <b>GCash</b> to approve it.',['#outbar']);return}
    S.ver++;c.pub=c.draft.slice();const cut=S.pend.find(p=>p.cut);
-   if(cut){c.cut={to:35,on:Math.min(S.day+3,6)};S.ana.notifs.unshift({k:'half',t:'Heroes posts drop to ₱35 on '+DAYS[c.cut.on],b:'3 days’ notice. Posts you make before then keep ₱40.'})}
+   if(cut){c.cut={to:35,on:Math.min(S.day+3,6)};S.ana.notifs.unshift({k:'quarter',t:'Heroes posts drop to ₱35 on '+DAYS[c.cut.on],b:'3 days’ notice. Posts you make before then keep ₱40.'})}
    const what=S.pend.map(p=>p.what).join('; ');S.pend=[];renderAll();
-   link(team()?'OkPo team':'GCash','Ana',`v${S.ver} published: ${esc(what)}. ${cut?'Ana got the 3-day notice now. ':''}The talking-point change reaches her in the <b>next 7:00 AM brief</b>.`,['#outbar','#conBrief','#pAna']);return}
+   link(team()?'OkPo team':'GCash','Ana',`Edition ${S.ver} published: ${esc(what)}. ${cut?'Ana got the 3-day notice now. ':''}The talking-point change reaches her in the <b>next 7:00 AM brief</b>.`,['#outbar','#conBrief','#pAna']);return}
  if(d.pause){c.status='paused';renderAll();link('Brand console','Ana','GCash Heroes is paused. From the next brief, Ana gets no Heroes missions; pay she earned is still paid Friday.',['#con','#pAna']);return}
  if(d.resume){c.status='live';renderAll();link('Brand console','Ana','GCash Heroes is live again. Its missions return in the next brief.',['#con','#pAna']);return}
  if('invite' in d){S.ana.inv='sent';renderAll();link('Brand console','Ana','Ana got an invite to Ipon at ₱30 per post. It sits on her Today until she answers, for 72 hours.',['#recAna','#pAna']);return}
  if('gconfirm' in d){const n=S.leads.counted-S.leads.confirmed;S.leads.confirmed=S.leads.counted;S.leads.trail.forEach(x=>x.ok=true);const amt=S.ana.confirming;S.ana.ready+=amt;S.ana.confirming=0;
-   S.leads.trail.forEach(x=>{});renderAll();if(amt)wash($('#pAna'),'#ebfbee','+'+peso(amt));
+   S.leads.trail.forEach(x=>{});renderAll();if(amt)wash($('#pAna'),'#69db7c','+'+peso(amt),'quarter','#2b8a3e');
    link('GCash','Ana and Brand console',`GCash confirmed ${n} sign-up${n>1?'s':''}. Billing uses this number${amt?', and Ana’s '+peso(amt)+' moved to Ready':''}.`,['#leadKpis','#trail','#pAna']);return}});
 
 $$('[data-role]').forEach(b=>b.onclick=()=>{S.role=b.dataset.role;renderCon();save()});
@@ -317,7 +339,7 @@ $('#nextDay').onclick=()=>{if(S.day>=6){toast('That’s the end of the demo week
  if(c.cut&&S.day>=c.cut.on){c.post=c.cut.to;c.cut=null}
  S.ana.doneToday=false;S.ana.briefVer=S.ver;writeBrief();S.ana.tab='today';
  renderAll();const lead=S.ana.missions[0];
- link('7:00 AM brief','Ana',`New day. Ana’s brief is written from v${S.ver}: ${lead?'it leads with <b>'+esc(lead.t)+'</b>'+(S.ana.camps.length>1?' and mixes '+S.ana.camps.map(x=>C(x).short).join(' and '):''):'no missions, because her campaigns are paused'}.`,['#anaMissions','#pAna'])};
+ link('7:00 AM brief','Ana',`New day. Ana’s mission is written from Edition ${S.ver}: ${lead?'it leads with <b>'+esc(lead.t)+'</b>'+(S.ana.camps.length>1?' and mixes '+S.ana.camps.map(x=>C(x).short).join(' and '):''):'no missions, because her campaigns are paused'}.`,['#anaMissions','#pAna'])};
 
 $('#resetBtn').onclick=()=>{S=FRESH();writeBrief();renderAll()};
 $$('[data-show]').forEach(b=>b.onclick=()=>{$('#stage').dataset.show=b.dataset.show;$$('[data-show]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)))});

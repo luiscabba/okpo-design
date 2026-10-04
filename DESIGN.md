@@ -1,6 +1,6 @@
 # OkPo design system, for AI coders
 
-Read this before you write any OkPo UI. It describes the system **as Luis decided it on 3 Oct 2026**. The working prototypes (`prototypes/console.html`, `setup.html`, `earner.html`, `lobby.html`, `connected.html`) are being brought in line; §12 lists what they still get wrong. If this file and a prototype disagree, this file wins, and the prototype is due a fix. If a screen you are asked to build breaks a rule here, follow this file and say so in your summary.
+Read this before you write any OkPo UI. It describes the system **as Luis decided it on 3 Oct 2026**. The working prototypes (`prototypes/console.html`, `onboard.html`, `earner.html`, `lobby.html`, `connected.html`) are being brought in line; §12 lists what they still get wrong. If this file and a prototype disagree, this file wins, and the prototype is due a fix. If a screen you are asked to build breaks a rule here, follow this file and say so in your summary.
 
 Status words:
 
@@ -59,7 +59,7 @@ OkPo trains AI to train a brand's influencers. Three surfaces share one state:
 | **Earner page** | A follower of the earner | `okpo.com/<handle>`: sign up, ask the earner's AI | `earner.html` (right phone) |
 | **Lobby** | Visitors and signed-in earners on okpo.com | Campaigns to join, posts that passed, Earn with OkPo | `lobby.html` |
 
-New brands arrive through fast onboarding (`setup.html`), which ends with their Playbook live.
+New brands arrive through fast onboarding (`onboard.html`), which ends with their Playbook live.
 
 First client: GCash. Campaign names are plain client names ("GCash Heroes", "GCash Ipon Challenge").
 
@@ -541,7 +541,7 @@ Campaigns live in Campaigns. The Playbook never holds campaign facts or rules.
 - The Coach answers from the Playbook and cites the part in plain words.
 - The earner page's Ask AI follows the trust rules: never a Guess, never a sensitive fact below Confirmed.
 
-### Fast onboarding (Locked, `prototypes/setup.html`)
+### Fast onboarding (Locked, `prototypes/onboard.html`)
 
 The first visit is a fast path. Completeness is not the goal; the brand or OkPo finishes the rest later.
 
@@ -598,7 +598,7 @@ Order of work: earner app, then the rest of the console, then Connected and the 
 
 **All prototypes**
 
-1. Every prototype except `setup.html` redeclares `:root` instead of loading `tokens.css`.
+1. Every prototype redeclares `:root` instead of loading `tokens.css`.
 2. Focus rings use `var(--blue)`. Change to `2px solid var(--l-blue)`.
 3. Tile colour map `COL` still uses the old map (frame coral, half yellow, diamond orange, pin blue). Change to §6.
 4. "Brand context" in copy. Change to Playbook.
@@ -610,17 +610,13 @@ Order of work: earner app, then the rest of the console, then Connected and the 
 Still open in the console:
 
 1. "One pulse per section per minute, then a counter" is specced but not built.
-2. The in-console new-brand flow (it reads sources with live AI) still uses its own five steps. `setup.html` and the onboarding prototype are the reference for its look.
+2. The in-console new-brand flow (it reads sources with live AI) still uses its own five steps. The site’s “Add a brand” opens `/onboard` instead; the live AI reading only runs inside Claude.
 
-**Setup (`setup.html`)**
+**Onboarding (`onboard.html`)**: done 4 Oct. It is the canvas prototype (website to live playbook to console), rendered as a page. The earlier `setup.html` is kept as `setup-v1.html`.
 
-23. Live toast "GCash brand context v1 is live" and the petal flight. Change to the liquid-glass live moment and "Your playbook is live."
-24. The level meter is purple. Change to ink.
+**Connected (`connected.html`)**: remapped 4 Oct. Shape map, words-only console tabs, Today's mission, editions, `.band`, and the hand-drawn reward wash.
 
-**Connected and Lobby**
-
-25. The connected prototype's takeover is a text-only linear fade. Replace with the earner engine.
-26. Connected uses quality chips. Change to `.band`.
+**Lobby (`lobby.html`)**: remapped 4 Oct. Campaigns wear the pin, nav is words only, "brief" becomes "mission" on the earner side.
 
 **Retired:** the Brand Setup artifact and the GU, SU, BC2 and Ctx2 boards on the product canvas. Keep them as archive; do not build from them.
 

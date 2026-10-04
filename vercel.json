@@ -28,12 +28,17 @@
   },
   {
    "source": "/setup",
-   "destination": "/prototypes/setup.html",
+   "destination": "/prototypes/onboard.html",
    "permanent": false
   },
   {
    "source": "/onboard",
-   "destination": "/prototypes/setup.html",
+   "destination": "/prototypes/onboard.html",
+   "permanent": false
+  },
+  {
+   "source": "/setup-v1",
+   "destination": "/prototypes/setup-v1.html",
    "permanent": false
   }
  ]
