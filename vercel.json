@@ -22,6 +22,16 @@
    "permanent": false
   },
   {
+   "source": "/byteplus/onboard",
+   "destination": "/prototypes/onboard-byteplus.html",
+   "permanent": false
+  },
+  {
+   "source": "/byteplus/console",
+   "destination": "/prototypes/console-byteplus.html",
+   "permanent": false
+  },
+  {
    "source": "/audience",
    "destination": "/prototypes/earner.html#follower",
    "permanent": false
