@@ -530,7 +530,7 @@ The view opens on the same book the brand saw in onboarding, with the three part
 
 Detail goes one level at a time: book, part, line, source.
 
-The book’s contents are the same everywhere it appears (onboarding, the live moment, the console, the showcase): 01 What you sell, 02 Who buys (Facts), 03 How you sound, 04 How you look (Voice), 05 Rules. “How you look” is a Voice line, not a fourth part.
+The book’s contents are the same everywhere it appears (onboarding, the live moment, the console, the showcase): 01 What you sell, 02 Who buys (Facts), 03 How you sound, 04 How you look (Voice), 05 Rules. “How you look” is its own chapter (settled 5 Oct, reopened by Luis): five chapters, still three parts. Its lines live in the Voice part under a “How you look” heading, after “How you sound”, so the shape map needs no new shape. Tapping chapter 04 opens Voice at that heading.
 
 ### Campaigns (Locked 3 Oct)
 
