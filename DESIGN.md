@@ -546,8 +546,7 @@ Campaigns live in Campaigns. The Playbook never holds campaign facts or rules.
 ### Today's missions (Locked 3 Oct, campaigns first since 5 Oct)
 
 - The earner's Today tab headline is **"Today's missions"**, then the cap strip ("3 of 3 left today, shared by your campaigns"), the mini wallet (Earned today, this week, a Wallet link), then **one card per campaign**, then the streak, weekly bonus and coach.
-- A campaign card sells the day's money: the brand and talking point, "You could earn today · up to ₱65" in green beside an outlined green quarter (outlined because it isn't earned yet), and one green pill per mission ("₱40 Reel"). A passed mission's pill fills in; the line under it says what's earned and what's being checked. At the cap, the amount greys out and says the missions come back at 7:00 AM.
-- Missions live one tap in, on the campaign's screen: the money block large, today's talking point, the missions, then the `.always` block "Always true for GCash" with 2 or 3 Playbook lines, and a coach button scoped to that campaign. Back from a mission returns to the campaign.
+- A campaign card sells the day's money, with missions one tap in on the campaign's screen. The look is being chosen on the Onboarding canvas, page "Earner Today · campaigns first" (directions A, B, C). Until then /earner keeps the 3 Oct Today.
 - Invites sit in the same list as a dashed card with "See invite"; "+ Find more campaigns" closes the list. The pilot's one campaign still gets a card, so campaigns never get buried as more arrive.
 - The mission card's Do and Don't become Never, Careful, Always in plain words. No rule IDs.
 - The Coach answers from the Playbook and cites the part in plain words.
