@@ -83,7 +83,7 @@ They came from the Playbook redesign and apply to every view.
 | 5 | **Quiet until something needs you** | Healthy looks calm. "1 to check" appears only when due. | No always-on "needs you" strip; it appears when it has something. |
 | 6 | **Few named groups, each with a shape** | Facts, Voice, Rules. Shape first, then word. | One shape per idea across every room, no collisions (§6). |
 | 7 | **Plain words** | "1 to check", not "Sourced · R-03 · expired". | "Today's mission", not "brief v7". |
-| 8 | **Fits one screen at rest** | If the first view scrolls, it is doing two jobs. | Earner Today opens on Today’s mission and the missions; Always true and the habit cards follow below, as settled 3 Oct. |
+| 8 | **Fits one screen at rest** | If the first view scrolls, it is doing two jobs. | Earner Today opens on Today’s missions, the cap strip, the mini wallet and the campaign cards; the habit cards follow below (campaigns first, 5 Oct). |
 | 9 | **Show it working** | "See it in a post" beats a paragraph about a rule. | Show the earner's draft with the fix, not a rules list. |
 
 ---
@@ -360,7 +360,7 @@ lens:   <path d="M0 50 Q50 -16 100 50 Q50 116 0 50 Z"/>
 | `.band` | Quality band, Plex 600 11.5px, 7px dot + word: Strong (green), Good (neutral), Needs work (yellow). Never coral. |
 | `.li` | List row, padding 11px 0, top rule except the first |
 | `.mission` | Pin 22px (filled done, outline open, `--l-coral` outline needs a fix), title 600, one sub line, chip on the right |
-| `.always` | "Always true for GCash" block under Today's mission: a `.label`, then 2 or 3 Playbook lines in plain words, each led by a 7px dot in its part's colour. No IDs. |
+| `.always` | "Always true for GCash" block on a campaign's screen, under its missions: a `.label`, then 2 or 3 Playbook lines in plain words, each led by a 7px dot in its part's colour. No IDs. |
 | `.book` | The Playbook book in liquid glass (§3): cover with brand monogram, name, one-line description, "Written by OkPo and GCash"; contents page with numbered chapters. An edition chip "Edition N · live" above it. |
 | `.part` | Playbook part card: tile beside the header (Facts, Voice, Rules), one-line summary, a mono count ("14 FACTS"), and "1 to check" in warn only when due. Opens the part. |
 | `.tbl` | Mono uppercase headers, 13.5px cells, clickable rows hover `--soft` and open on Enter |
@@ -543,9 +543,12 @@ Campaigns live in Campaigns. The Playbook never holds campaign facts or rules.
 - **Pools are per campaign (Locked 5 Oct).** A campaign’s posts are paid from its own pool. Pool and billing lists one pool per campaign and one invoice for the brand.
 - **Overview is brand-wide (Locked 5 Oct):** the one OkPo line, then a row per campaign (progress and pool left), then the chart and recent posts.
 
-### Today's mission (Locked 3 Oct)
+### Today's missions (Locked 3 Oct, campaigns first since 5 Oct)
 
-- The earner's Today tab headline is **"Today's mission"**, one mission card, then the `.always` block "Always true for GCash" with 2 or 3 Playbook lines.
+- The earner's Today tab headline is **"Today's missions"**, then the cap strip ("3 of 3 left today, shared by your campaigns"), the mini wallet (Earned today, this week, a Wallet link), then **one card per campaign**, then the streak, weekly bonus and coach.
+- A campaign card sells the day's money: the brand and talking point, "You could earn today · up to ₱65" in green beside an outlined green quarter (outlined because it isn't earned yet), and one green pill per mission ("₱40 Reel"). A passed mission's pill fills in; the line under it says what's earned and what's being checked. At the cap, the amount greys out and says the missions come back at 7:00 AM.
+- Missions live one tap in, on the campaign's screen: the money block large, today's talking point, the missions, then the `.always` block "Always true for GCash" with 2 or 3 Playbook lines, and a coach button scoped to that campaign. Back from a mission returns to the campaign.
+- Invites sit in the same list as a dashed card with "See invite"; "+ Find more campaigns" closes the list. The pilot's one campaign still gets a card, so campaigns never get buried as more arrive.
 - The mission card's Do and Don't become Never, Careful, Always in plain words. No rule IDs.
 - The Coach answers from the Playbook and cites the part in plain words.
 - The earner page's Ask AI follows the trust rules: never a Guess, never a sensitive fact below Confirmed.
