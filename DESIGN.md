@@ -1,6 +1,6 @@
 # OkPo design system, for AI coders
 
-Read this before you write any OkPo UI. It describes the system **as Luis decided it on 3 Oct 2026**. The working prototypes (`prototypes/console.html`, `onboard.html`, `earner.html`, `lobby.html`, `connected.html`) are being brought in line; §12 lists what they still get wrong. If this file and a prototype disagree, this file wins, and the prototype is due a fix. If a screen you are asked to build breaks a rule here, follow this file and say so in your summary.
+Read this before you write any OkPo UI. It describes the system **as Luis decided it on 3 Oct 2026, with the 5 Oct review folded in**. The working prototypes (`prototypes/console.html`, `onboard.html`, `earner.html`, `lobby.html`, `connected.html`) are being brought in line; §12 lists what they still get wrong. If this file and a prototype disagree, this file wins, and the prototype is due a fix. **One exception:** the earner app and the follower page settled on 3 Oct (the “Earner keep and change” board) are the source for those two rooms. If this file disagrees with them, this file is due a fix, not the screens. If a screen you are asked to build breaks a rule here, follow this file and say so in your summary.
 
 Status words:
 
@@ -42,7 +42,7 @@ Luis reopened and re-locked these. Everything else from 2 Oct stands.
 | Voice | Chrome in second person, OkPo's guide in first person, the AI in third person | §11 |
 | Copy | Names from data, button and toast shapes, money format, no em dashes | §11 |
 
-Open: the Lobby's register (§2), the sensitive list (§10), the level names (§10).
+Open: the sensitive list (§10), the level names (§10).
 
 The golden rule for new screens: **reuse a pattern that already exists in a prototype before inventing one.** No new icons, badges, marks or shortened wordmarks. Visuals come from the tiles and the line-icon set in §6, and the full wordmark.
 
@@ -57,7 +57,8 @@ OkPo trains AI to train a brand's influencers. Three surfaces share one state:
 | **Brand console** | Brand marketing manager, OkPo team | Playbook, campaigns, recruiting, posts, leads, pool | `console.html` |
 | **Earner app** | Influencers ("earners", e.g. Ana) | Today's mission, coach, posts, wallet, my page | `earner.html` (left phone) |
 | **Earner page** | A follower of the earner | `okpo.com/<handle>`: sign up, ask the earner's AI | `earner.html` (right phone) |
-| **Lobby** | Visitors and signed-in earners on okpo.com | Campaigns to join, posts that passed, Earn with OkPo | `lobby.html` |
+| **Lobby** | Visitors and signed-in creators at okpo.com (the home page) | Campaigns to join, posts that passed, Earn with OkPo | `lobby.html` |
+| **For brands** | Brand marketing managers at okpo.com/brands | The landing, with the masterline “Build a community that grows your revenue.” | `~/Projects/okpo/site` (`/brands` redirects to okpo-landing for now) |
 
 New brands arrive through fast onboarding (`onboard.html`), which ends with their Playbook live.
 
@@ -76,13 +77,13 @@ They came from the Playbook redesign and apply to every view.
 | # | Principle | In the console | Elsewhere |
 |---|---|---|---|
 | 1 | **Start with something they recognise** | The Playbook view opens on the book they saw in onboarding. | Today's mission looks like what they were promised at sign-up. |
-| 2 | **One job per screen** | The first visit reassures. Upkeep lives one level down. | Today is the mission. Wallet is the money. Not both. |
+| 2 | **One job per screen** | The first visit reassures. Upkeep lives one level down. | Today leads with the mission. The money and habit cards from the delight study stay under it (Earned today, streak, weekly bonus); claiming lives in Wallet. |
 | 3 | **Say it once** | The contents already summarise the parts; cards don't repeat them. | The mission card doesn't repeat the campaign card. |
 | 4 | **Detail one level at a time** | Book, then part, then line, then source. | Rule IDs, trust labels and dates are on tap, never upfront. |
 | 5 | **Quiet until something needs you** | Healthy looks calm. "1 to check" appears only when due. | No always-on "needs you" strip; it appears when it has something. |
 | 6 | **Few named groups, each with a shape** | Facts, Voice, Rules. Shape first, then word. | One shape per idea across every room, no collisions (§6). |
 | 7 | **Plain words** | "1 to check", not "Sourced · R-03 · expired". | "Today's mission", not "brief v7". |
-| 8 | **Fits one screen at rest** | If the first view scrolls, it is doing two jobs. | Earner Today fits a phone without scrolling. |
+| 8 | **Fits one screen at rest** | If the first view scrolls, it is doing two jobs. | Earner Today opens on Today’s mission and the missions; Always true and the habit cards follow below, as settled 3 Oct. |
 | 9 | **Show it working** | "See it in a post" beats a paragraph about a rule. | Show the earner's draft with the fix, not a rules list. |
 
 ---
@@ -98,7 +99,7 @@ They came from the Playbook redesign and apply to every view.
 
 Marketing hero claim: "I need more ___" is one field, `#fff` (dark `#1b1b1b`), 1px `#d9d0bb` (dark `#3a3a3a`) edge, 18px corners, the yellow button inside it. Focus turns the edge ink with a soft blue ring. Sent empty: coral edge and "Tell us what you need more of." The other site buttons still use the drawn edge until Luis decides on them.
 
-Never mix registers on one screen. **Open, Luis to review:** the Lobby lives on okpo.com but is built in the product register. Keep it that way until he decides.
+Never mix registers on one screen. **Locked 5 Oct:** the Lobby is okpo.com’s home page and stays in the product register; the landing moves to okpo.com/brands in the marketing register.
 
 Diagrams and design boards are light only.
 
@@ -124,6 +125,10 @@ Diagrams and design boards are light only.
 3. A full glaze block takes ink text.
 4. The wordmark is the only place glazes colour letters on light.
 5. In the product a glaze always means one of the five meanings in §6, or a status from the table below. Nothing is coloured for decoration.
+
+### Chart series (Locked 5 Oct)
+
+Charts never use glazes. Two series: `--s-gcash` ink for the number that bills (confirmed by the brand), `--s-okpo` a tone shade (`#C9BFA9`, dark `#55524B`) for OkPo’s count. Axis labels use the mono stack with a fallback.
 
 ### Neutrals (Locked)
 
@@ -525,6 +530,8 @@ The view opens on the same book the brand saw in onboarding, with the three part
 
 Detail goes one level at a time: book, part, line, source.
 
+The book’s contents are the same everywhere it appears (onboarding, the live moment, the console, the showcase): 01 What you sell, 02 Who buys (Facts), 03 How you sound, 04 How you look (Voice), 05 Rules. “How you look” is a Voice line, not a fourth part.
+
 ### Campaigns (Locked 3 Oct)
 
 Campaigns live in Campaigns. The Playbook never holds campaign facts or rules.
@@ -532,7 +539,9 @@ Campaigns live in Campaigns. The Playbook never holds campaign facts or rules.
 - A campaign is **built on a Playbook edition**, named on the campaign ("Built on Edition 1").
 - It adds talking points, a goal and an ending. It can add rules or tighten them, never loosen.
 - When a new edition is published, OkPo re-checks every live campaign against it and flags anything that now clashes on that campaign, in plain words, with a fix.
-- Campaigns wear the yellow pin.
+- Campaigns wear the yellow pin, beside the campaign name on every card.
+- **Pools are per campaign (Locked 5 Oct).** A campaign’s posts are paid from its own pool. Pool and billing lists one pool per campaign and one invoice for the brand.
+- **Overview is brand-wide (Locked 5 Oct):** the one OkPo line, then a row per campaign (progress and pool left), then the chart and recent posts.
 
 ### Today's mission (Locked 3 Oct)
 
@@ -553,7 +562,7 @@ The first visit is a fast path. Completeness is not the goal; the brand or OkPo 
 - **Sensitive conflicts must be answered to publish.** "Don't mention it yet" counts as an answer; the AI stays quiet and the item goes to To check. Continue stays locked until it is answered.
 - **Rules:** pre-ticked toggles grouped Never, Careful, Always.
 - **Minimum to publish Edition 1:** who they want more of, voice, at least 1 rule, every sensitive conflict answered.
-- **Test and publish**, then the liquid-glass live moment (§9): "**Your playbook is live.**", then "Open the console", which lands on the Playbook view's first visit.
+- **Test and publish**, then the liquid-glass live moment (§9): "**Your playbook is live.**", then "Open the console", which lands on the real console (`console.html#first`) on Edition 1’s first visit. Onboarding has 9 screens and no console of its own. In the demo, “Skip to day 12” jumps to Edition 7 with two campaigns live; Edition 7 grew out of Edition 1’s facts and rules.
 - **To check:** one shared list inside the Playbook of skipped, Guess and unconfirmed sensitive items. The brand and OkPo both have full access; whoever gets there first confirms it.
 - Steps in the `.stepper`: Sources, Read, Check, Rules, Test and publish. Under 900px it becomes "2 of 5 · Read".
 
@@ -576,6 +585,7 @@ An expectation setter: what the AI can do with what it has been given.
 
 ## 11. Copy (Locked)
 
+- **The person who posts (Locked 5 Oct):** brand screens (console, /brands) say **influencers**, the word the buyer uses. Everywhere else (Lobby, earner app, earner page) says **creators**, or just “you”. “Earner” stays the internal word in this file and in code.
 - **Chrome is English**, short, second person. Taglish lives in data, AI answers, earner greetings and follower-facing lines. Use "po" when the other person uses it.
 - **Three voices, never mixed:**
   - **Chrome** (headings, buttons, labels, toasts): second person. "Is this right?", "Check the rest later".
@@ -594,33 +604,22 @@ An expectation setter: what the AI can do with what it has been given.
 
 ## 12. Known drift to fix in the prototypes
 
-Order of work: earner app, then the rest of the console, then Connected and the Lobby.
+**Review of 5 Oct, fixed the same day.** Every room was opened and checked. The review page lists every screen with its status.
 
-**All prototypes**
+- **Console:** charts in ink and a tone shade; switches and sliders ink; the brief preview uses dots with IDs on hover; campaign cards wear the pin; the new-campaign flow names its edition and asks “What should this campaign get you?”; Leads says “How a sign-up counts” and pays from the pool; the Playbook first visit drops Add a brand (it lives in the brand switcher) and the updated-by line; the book has five lines; Facts show their group once; Voice has Add a trait; Posts show the campaign; Overview has a row per campaign; Pool and billing has a pool per campaign; Edition 1 first visit (`#first`) with “Skip to day 12”; the Playbook parts use the breadcrumb.
+- **Onboarding:** 9 screens; the draft book says Draft; OkPo’s guide line carries a mono “OkPo” label, no mark; briefs at 7:00; “Open the console” opens `console.html#first`.
+- **Connected:** Ana’s phone has the five tabs; no edition on the earner side; the brief uses dots.
+- **Lobby:** home page hero is the creator line; For brands opens /brands; Never, Careful, Always copy.
+- **Earner:** sources on tap say “GCash Playbook”, no edition. Nothing else changed: the 3 Oct screens are the source.
 
-1. Every prototype redeclares `:root` instead of loading `tokens.css`.
-2. Focus rings use `var(--blue)`. Change to `2px solid var(--l-blue)`.
-3. Tile colour map `COL` still uses the old map (frame coral, half yellow, diamond orange, pin blue). Change to §6.
-4. "Brand context" in copy. Change to Playbook.
+Still open:
 
-**Earner (`earner.html`)**: done 3 Oct. Tabs, takeovers, Today's mission, Always true, Never / Careful / Always, Coach citations, tab titles, follower wordmark and the dark banner all match.
+1. The console’s in-product new-brand flow still uses its own five steps; the brand switcher’s “Add a brand” opens `/onboard`.
+2. “One pulse per section per minute, then a counter” is specced but not built.
+3. The landing’s move to okpo.com/brands happens in `~/Projects/okpo/site`; until then `/brands` redirects to okpo-landing.
+4. Not yet opened in the review: the earner app’s campaigns, invite and notifications screens, and Ask AI on the earner page.
 
-**Console (`console.html`)**: done 4 Oct. Words-only nav, the Playbook view (book, OkPo line, three parts, detail on tap, Try it, Suggestions), campaigns built on an edition with clash flags, a quiet Overview, rule IDs one tap down, editions instead of versions, no section tiles on headers except the five meanings.
-
-Still open in the console:
-
-1. "One pulse per section per minute, then a counter" is specced but not built.
-2. The in-console new-brand flow (it reads sources with live AI) still uses its own five steps. The site’s “Add a brand” opens `/onboard` instead; the live AI reading only runs inside Claude.
-
-**Onboarding (`onboard.html`)**: done 4 Oct. It is the canvas prototype (website to live playbook to console), rendered as a page. The earlier `setup.html` is kept as `setup-v1.html`.
-
-**Connected (`connected.html`)**: remapped 4 Oct. Shape map, words-only console tabs, Today's mission, editions, `.band`, and the hand-drawn reward wash.
-
-**Lobby (`lobby.html`)**: remapped 4 Oct. Campaigns wear the pin, nav is words only, "brief" becomes "mission" on the earner side.
-
-**Artifacts synced 4 Oct:** Connected matches `connected.html` (saved state key bumped to `okpo-connected-v3`). Journeys is rebuilt as a journey map of the brand, earner and follower lanes with screenshots of the current prototypes. Restaurant is now a hub that opens each current prototype in one tab bar. Conn-Map on the product canvas has a Lobby lane and the current vocabulary.
-
-**Retired 4 Oct:** the Brand Setup artifact (an archive banner points to `/onboard`) and the GU, SU, BC2 and Ctx2 boards on the product canvas, plus the Conn-C-05 and Conn-C-10 copies (titles start "Superseded", with a note on each page). Earlier versions of Journeys and Restaurant stay in their version history. Keep all of them as archive; do not build from them.
+**Retired 4 Oct:** the Brand Setup artifact, `/setup-v1`, and the GU, SU, BC2 and Ctx2 boards on the product canvas. Keep them as archive; do not build from them.
 
 ---
 

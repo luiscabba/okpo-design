@@ -40,6 +40,11 @@
    "source": "/setup-v1",
    "destination": "/prototypes/setup-v1.html",
    "permanent": false
+  },
+  {
+   "source": "/brands",
+   "destination": "https://okpo-landing.vercel.app",
+   "permanent": false
   }
  ]
 }

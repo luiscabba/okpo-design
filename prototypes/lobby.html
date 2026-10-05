@@ -181,7 +181,7 @@ function nav(){
  $('#nav').innerHTML=`<a href="#lobby" data-view="lobby" aria-label="OkPo home" style="text-decoration:none"><span class="wm" style="font-size:26px"><span>O</span><span>k</span><span>P</span><span>o</span></span></a>
  <span class="links"><button class="nl" type="button" data-view="lobby" data-to="posts" ${S.view==='lobby'?'aria-current="page"':''}>Creators</button>
  <button class="nl" type="button" data-view="earn" ${S.view==='earn'?'aria-current="page"':''}>Earn with OkPo</button>
- <a class="nl" href="${APP}/console">For brands</a></span>
+ <a class="nl" href="${APP}/brands">For brands</a></span>
  <span class="spacer"></span>
  <span class="acts">${ana()?`<span class="row who" style="gap:8px"><span class="av">AR</span><span class="small">Ana</span></span><a class="btn" href="${APP}/earner">Open the app</a>`:`<button class="nl" type="button" data-who="ana">Sign in</button><button class="btn" type="button" data-view="earn">Start earning</button>`}</span>`;
 }
@@ -207,12 +207,12 @@ function vLobby(){
  const list=POSTS.filter(p=>S.topic==='All'||p.t===S.topic);
  const campName=id=>CAMPS.find(c=>c.id===id).name;
  return `<div style="display:flex;flex-direction:column;gap:56px">
- <section class="hero"><span class="label">okpo.com</span><h1>Brands train the AI.<br>Creators get the mission.<br>Everyone sees the work.</h1>
-  ${ana()?`<div class="mine glass strong">${tile('quarter',28)}<span class="grow"><span class="label">Your week so far</span><b style="display:block;font-size:18px">You earned ${peso(1240)} in GCash Heroes last week</b><span class="small">6-day streak · 1 invite waiting · ${peso(1180)} ready to claim</span></span><a class="btn" href="${APP}/earner">Open the app</a></div>`:''}
+ <section class="hero"><span class="label">okpo.com</span><h1>The fastest way to become a brand partner and get paid.</h1>
+  ${ana()?`<div class="mine glass strong">${tile('quarter',28)}<span class="grow"><span class="label">Your week so far</span><b style="display:block;font-size:18px">You’ve earned ${peso(1240)} in GCash Heroes this week</b><span class="small">6-day streak · 1 invite waiting · ${peso(1180)} ready to claim</span></span><a class="btn" href="${APP}/earner">Open the app</a></div>`:''}
   <div class="doors">
    <button class="door glass" type="button" data-view="earn">${tile('quarter',30)}<b>Earn from your posts</b><span class="sub">No follower minimum. A mission every morning, paid every Friday to your GCash.</span><span class="label" style="margin-top:auto">For creators →</span></button>
    <button class="door glass" type="button" data-view="lobby" data-to="posts">${tile('frame',30)}<b>Find a creator</b><span class="sub">See what creators posted this week, and ask any of them about the campaign they’re on.</span><span class="label" style="margin-top:auto">For followers →</span></button>
-   <a class="door glass" href="${APP}/console">${tile('pin',30)}<b>Grow with creators</b><span class="sub">Load your brand once. OkPo trains creators daily and you pay for customers your bank confirms.</span><span class="label" style="margin-top:auto">For brands →</span></a>
+   <a class="door glass" href="${APP}/brands">${tile('pin',30)}<b>Build a community that grows your revenue</b><span class="sub">Load your brand once. OkPo trains your influencers every day, and you pay for customers you confirm.</span><span class="label" style="margin-top:auto">For brands →</span></a>
   </div></section>
  <section id="campaigns" style="display:flex;flex-direction:column;gap:16px"><div class="row" style="flex-wrap:wrap;align-items:flex-end;row-gap:6px"><span class="grow" style="min-width:min(100%,420px)"><span class="label">${ana()?'Campaigns for you':'Open now'}</span><h2>${ana()?'Your campaigns, and ones you could join':'Campaigns you can join today'}</h2></span><span class="small">Every deal is fixed. No pitching, no haggling.</span></div>
   <div class="camps">${CAMPS.map(campCard).join('')}</div></section>
@@ -235,7 +235,7 @@ function vEarn(){
   ${form}</section>
  <section class="example glass"><div class="row" style="flex-wrap:wrap"><span class="grow"><span class="label">A worked example, not a promise</span><b style="display:block;font-size:20px">A week in ${esc(c.name)}</b></span><span class="small">Your page is your link: sign-ups through it earn you more.</span></div>
   <div class="calc"><span>5 posts that pass × ${peso(c.post)}</span><b class="num">${peso(5*c.post)}</b><span>4 followers who sign up and activate × ${peso(c.act)}</span><b class="num">${peso(4*c.act)}</b><span>Weekly bonus for 5 passed posts</span><b class="num">[₱X]</b><span class="t">Paid Friday to your GCash</span><b class="t num">${peso(5*c.post+4*c.act)} + [₱X]</b></div></section>
- <section class="steps">${[['frame','Every morning','Up to three missions across your campaigns, each with today’s talking point and a short Do and Don’t list.'],['diamond','Post, then paste the link','The AI checks it in minutes. If something needs a fix, it names the rule and how to fix it.'],['quarter','Every Friday','Pay for posts that passed and sign-ups that activated, straight to your GCash.']].map(([k,t,d])=>`<div class="step glass">${tile(k,26)}<b style="font-size:18px">${t}</b><span class="sub">${d}</span></div>`).join('')}</section>
+ <section class="steps">${[['pin','Every morning','Up to three missions across your campaigns, each with today’s talking point and a short Never, Careful and Always list.'],['diamond','Post, then paste the link','The AI checks it in minutes. If something needs a fix, it names the rule and how to fix it.'],['quarter','Every Friday','Pay for posts that passed and sign-ups that activated, straight to your GCash.']].map(([k,t,d])=>`<div class="step glass">${tile(k,26)}<b style="font-size:18px">${t}</b><span class="sub">${d}</span></div>`).join('')}</section>
  <section class="glass" style="padding:8px 22px"><details open><summary>Do I need a lot of followers?</summary><p class="sub" style="margin-top:6px">No. Some campaigns look for followers in a place or topic, and the Lobby shows which ones fit you.</p></details><details><summary>Is it labelled as paid?</summary><p class="sub" style="margin-top:6px">Always. Every post turns on Paid partnership, and your OkPo page says who pays.</p></details><details><summary>What if a post doesn’t pass?</summary><p class="sub" style="margin-top:6px">You get the exact fix. Fix it, paste the link again, and your streak is safe until midnight.</p></details><details><summary>Can I be in more than one campaign?</summary><p class="sub" style="margin-top:6px">Yes. Missions from all of them arrive in Today, up to three a day.</p></details></section></div>`;
 }
 function render(to){
