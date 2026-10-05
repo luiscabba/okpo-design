@@ -12,6 +12,16 @@
    "permanent": false
   },
   {
+   "source": "/byteplus",
+   "destination": "/prototypes/earner-byteplus.html",
+   "permanent": false
+  },
+  {
+   "source": "/byteplus/audience",
+   "destination": "/prototypes/earner-byteplus.html#follower",
+   "permanent": false
+  },
+  {
    "source": "/audience",
    "destination": "/prototypes/earner.html#follower",
    "permanent": false
