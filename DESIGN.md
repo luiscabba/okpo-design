@@ -546,7 +546,8 @@ Campaigns live in Campaigns. The Playbook never holds campaign facts or rules.
 ### Today's missions (Locked 3 Oct, campaigns first since 5 Oct)
 
 - The earner's Today tab headline is **"Today's missions"**, then the cap strip ("3 of 3 left today, shared by your campaigns"), the mini wallet (Earned today, this week, a Wallet link), then **one card per campaign**, then the streak, weekly bonus and coach.
-- A campaign card sells the day's money, with missions one tap in on the campaign's screen. The look is being chosen on the Onboarding canvas, page "Earner Today · campaigns first" (directions A, B, C). Until then /earner keeps the 3 Oct Today.
+- A campaign card (B2, picked 5 Oct; canvas page "Earner Today · campaigns first") shows the campaign's pinwheel, name and talking point, **earned / total** for today ("₱40 / ₱65", big ink number, small total), a bar with one segment per mission (paid green, checking striped, open pale), each mission's amount (✓ once paid) and a small ink arrow circle to open it. At the cap it dims and says "Back tomorrow at 7:00 AM".
+- The campaign screen repeats earned / total large with the same bar, then the talking point, the missions, the cap line, Always true and that campaign's coach.
 - Invites sit in the same list as a dashed card with "See invite"; "+ Find more campaigns" closes the list. The pilot's one campaign still gets a card, so campaigns never get buried as more arrive.
 - The mission card's Do and Don't become Never, Careful, Always in plain words. No rule IDs.
 - The Coach answers from the Playbook and cites the part in plain words.
