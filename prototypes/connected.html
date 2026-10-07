@@ -94,6 +94,20 @@ button,input{font:inherit;color:inherit}button{cursor:pointer}button:disabled{cu
 .ptabs{position:absolute;left:10px;right:10px;bottom:10px;height:58px;border-radius:24px;display:flex;align-items:center;padding:0 6px;z-index:5}
 .ptabs button{flex:1;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10.5px;color:var(--mute)}
 .ptabs button[aria-current="page"]{color:var(--ink);font-weight:600}
+.ccard{width:100%;border:0;gap:12px;text-align:left;color:var(--ink);font:inherit}
+.ccard.dim{opacity:.72}
+.cc-amt{display:flex;align-items:baseline;gap:4px;white-space:nowrap}
+.cc-amt b{font:800 24px/1 var(--display);letter-spacing:-.03em}
+.cc-amt span{font-size:12.5px;color:var(--mute)}
+.segbar{display:flex;gap:4px}
+.segbar i{height:9px;border-radius:6px;background:rgba(105,219,124,.28);display:block}
+.segbar i.paid{background:var(--green)}
+.segbar i.chk{background:repeating-linear-gradient(135deg,rgba(105,219,124,.55) 0 5px,rgba(105,219,124,.25) 5px 10px)}
+.cc-ms{display:flex;justify-content:space-between;gap:6px;font-size:11px;color:var(--mute)}
+.cc-ms .on{color:var(--ink);font-weight:600}
+.cc-go{width:32px;height:32px;border-radius:50%;background:var(--btn);color:var(--on-btn);display:grid;place-items:center;flex:none}
+.cinv{border:1.5px dashed rgba(156,101,0,.45)!important}
+.bk{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:transparent;display:grid;place-items:center;color:var(--ink);flex:none}
 .mission{width:100%;border:0;background:transparent;text-align:left;display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
 .mission:first-child{border-top:0}
 .mission .mt{display:block;font-weight:600;font-size:13.5px}
@@ -202,9 +216,9 @@ const FRESH=()=>({day:0,role:'team',tab:'aim',
  ana:{tab:'today',inv:'none',camps:['heroes'],missions:[],today:0,ready:1180,confirming:0,streak:6,notifs:[],signups:9},
  fol:{via:'heroes',taps:['heroes'],signed:false,credit:null},
  log:[]});
-let S;try{S=JSON.parse(localStorage.getItem('okpo-connected-v4')||'null')}catch(e){S=null}
+let S;try{S=JSON.parse(localStorage.getItem('okpo-connected-v5')||'null')}catch(e){S=null}
 if(!S||!S.camps)S=FRESH();
-const save=()=>{try{localStorage.setItem('okpo-connected-v4',JSON.stringify(S))}catch(e){}};
+const save=()=>{try{localStorage.setItem('okpo-connected-v5',JSON.stringify(S))}catch(e){}};
 const C=id=>S.camps[id];
 
 /* the 7:00 AM brief is written from what is published */
@@ -252,14 +266,31 @@ function renderCon(){const c=C('heroes'),pn=S.pend.length,money=S.pend.some(p=>p
  $$('[data-role]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.role===S.role)))}
 
 /* ---------- Ana ---------- */
+const ARROW='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+const mType=m=>/^Reel/.test(m.t)?'Reel':/^Story/.test(m.t)?'Story':'Reply';
+function campDay(cid){const M=S.ana.missions.filter(m=>m.c===cid);const sum=a=>a.reduce((x,m)=>x+m.r,0);return{M,tot:sum(M),earned:sum(M.filter(m=>m.s==='pass')),checking:sum(M.filter(m=>m.s==='check')),open:M.filter(m=>m.s==='open')}}
+function segBar(M){return `<span class="segbar" aria-hidden="true">${M.map(m=>`<i class="${m.s==='pass'?'paid':m.s==='check'?'chk':''}" style="flex:${m.r}"></i>`).join('')}</span>`}
+function campCard(cid,left){const c=C(cid),d=campDay(cid),capped=!left&&d.open.length>0,tp=(d.open[0]||d.M[0]||{}).tp;
+ const note=capped?'Back tomorrow at 7:00 AM':d.checking?peso(d.checking)+' being checked':c.status!=='live'?'Paused by the brand':'';
+ return `<button class="ccard card glass${capped?' dim':''}" type="button" data-camp="${cid}" aria-label="${esc(c.name)}: ${d.earned} of ${d.tot} pesos earned today. Open missions."><span class="row" style="gap:10px">${tile(c.k,26)}<span class="grow" style="display:flex;flex-direction:column;min-width:0"><b style="font-size:14.5px">${esc(c.name)}</b><span class="small">${tp?esc(tp):''}</span></span><span class="cc-amt num"><b>${peso(d.earned)}</b><span>/ ${peso(d.tot)}</span></span></span>${segBar(d.M)}<span class="row" style="gap:10px"><span class="cc-ms grow">${d.M.map(m=>`<span class="${m.s==='pass'?'on':''}">${m.s==='pass'?'✓ ':''}${peso(m.r)} ${mType(m)}</span>`).join('')}</span><span class="cc-go">${ARROW}</span></span>${note?`<span class="small">${note}</span>`:''}</button>`}
+function missionRow(m,left){const lock=m.s==='open'&&!left;return `<button class="mission ${m.s==='pass'?'done':''}" type="button" data-m="${m.id}" ${m.s!=='open'||lock?'aria-disabled="true"':''}>${m.s==='pass'?tile('pin',20):tile('pin',20,'var(--mute)')}<span class="grow" style="display:flex;flex-direction:column"><span class="mt">${esc(m.t)}</span><span class="small">${m.s==='check'?'AI is checking…':m.s==='pass'?'Passed · +'+peso(m.r)+(m.band?' · '+m.band:''):lock?'Daily cap reached · tomorrow':(m.tp?'Talking point: '+esc(m.tp)+' · ':'')+esc(m.line)}</span></span>${m.s==='open'&&!lock?`<span class="go">+${peso(m.r)}</span>`:m.s==='check'?'<span class="spin"></span>':''}</button>`}
 function renderAna(){const A=S.ana,M=A.missions,done=M.filter(m=>m.s==='pass').length,left=capLeft();
  let html='';
- if(A.tab==='today'){html=`<div class="row"><span class="wm" style="font-size:20px"><span>O</span><span>k</span><span>P</span><span>o</span></span><span class="spacer"></span><span class="av">AR</span></div>
-  <div><span class="sub">Magandang umaga, Ana · ${DAYS[S.day]}</span><div class="big" style="font-size:26px">Today’s mission</div><span class="small">${left?left+' of 3 left. ':'All done for today. '}Up to 3 a day across your campaigns.</span></div>
-  ${A.inv==='sent'?`<div class="card glass" id="anaInvite">${tile('pin',22)}<span class="label">GCash invited you · 72 hours</span><b>GCash Ipon Challenge</b><span class="small">₱30 per passed post (open call ₱25) · ₱10 per first deposit</span><div class="row"><button class="btn grow" type="button" data-accept>Accept</button><button class="ghost" type="button" data-decline>Not now</button></div></div>`:''}
+ if(A.tab==='today'&&A.open&&!A.camps.includes(A.open))A.open=null;
+ if(A.tab==='today'&&!A.open){html=`<div class="row"><span class="wm" style="font-size:20px"><span>O</span><span>k</span><span>P</span><span>o</span></span><span class="spacer"></span><span class="av">AR</span></div>
+  <div><span class="sub">Magandang umaga, Ana · ${DAYS[S.day]}</span><div class="big" style="font-size:26px">Today</div><span class="small">${left?left+' of 3 left today. Pick from any campaign.':'All 3 done today. New missions at 7:00 AM.'}</span></div>
+  <div class="card glass" style="flex-direction:row;align-items:center;gap:10px">${tile('quarter',20)}<span class="grow" style="display:flex;flex-direction:column"><span class="small">Earned today</span><b class="num">${peso(A.today)}</b></span><span class="small" style="text-align:right">${A.streak}-day streak</span></div>
   ${A.notifs.slice(0,2).map(n=>`<div class="note">${tile(n.k,16)}<span><b>${esc(n.t)}</b><br><span class="small" style="color:var(--body)">${esc(n.b)}</span></span></div>`).join('')}
-  <div class="card glass" style="padding:4px 14px;gap:0" id="anaMissions">${M.length?M.map(m=>{const lock=m.s==='open'&&!left;return `<button class="mission ${m.s==='pass'?'done':''}" type="button" data-m="${m.id}" ${m.s!=='open'||lock?'aria-disabled="true"':''}>${m.s==='pass'?tile('pin',20):tile('pin',20,'var(--mute)')}<span class="grow" style="display:flex;flex-direction:column"><span class="mt">${esc(m.t)}</span><span class="small">${m.s==='check'?'AI is checking…':m.s==='pass'?'Passed · +'+peso(m.r)+(m.band?' · '+m.band:''):lock?'Daily cap reached · tomorrow':(m.tp?'Talking point: '+esc(m.tp)+' · ':'')+esc(m.line)}</span>${A.camps.length>1?`<span class="ctag">${tile(C(m.c).k,8)}${C(m.c).short}</span>`:''}</span>${m.s==='open'&&!lock?`<span class="go">+${peso(m.r)}</span>`:m.s==='check'?'<span class="spin"></span>':''}</button>`}).join(''):'<span class="small" style="padding:12px 0">No missions today. Your campaigns are paused.</span>'}</div>
-  <div class="card glass"><div class="row"><span class="label grow">Earned today</span><b class="num">${peso(A.today)}</b></div><div class="row"><span class="small grow">Posting streak</span><b>${A.streak} days</b></div></div>`}
+  <span class="label">Your campaigns</span>
+  <div style="display:flex;flex-direction:column;gap:10px" id="anaMissions">
+  ${A.inv==='sent'?`<div class="card glass cinv" id="anaInvite"><span class="row" style="gap:10px">${tile('pin',26)}<span class="grow" style="display:flex;flex-direction:column"><span class="label" style="font-size:9.5px">Invited · 72h left</span><b>GCash Ipon Challenge</b></span><span class="cc-amt num"><b>₱30</b><span>a post</span></span></span><span class="small">Better than the open call’s ₱25 · ₱10 per first deposit</span><div class="row"><button class="btn grow" type="button" data-accept>Accept</button><button class="ghost" type="button" data-decline>Not now</button></div></div>`:''}
+  ${A.camps.map(cid=>campCard(cid,left)).join('')||'<span class="small">No campaigns yet.</span>'}</div>`}
+ if(A.tab==='today'&&A.open){const cid=A.open,c=C(cid),d=campDay(cid);
+  html=`<div class="row" style="gap:10px"><button class="bk" type="button" data-back aria-label="Back to Today"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><span class="small grow">Today / ${esc(c.short)}</span></div>
+  <div class="row" style="gap:10px">${tile(c.k,30)}<div class="big" style="font-size:24px">${esc(c.name)}</div></div>
+  <div class="card glass" style="gap:10px"><span class="label">Today in ${esc(c.short)}</span><span class="cc-amt num"><b style="font-size:36px">${peso(d.earned)}</b><span>/ ${peso(d.tot)} earned</span></span>${segBar(d.M)}<span class="small">${cid==='heroes'?'Plus ₱12 for every sign-up from your page that activates.':'Plus ₱10 for every first deposit from your page.'}</span></div>
+  <div class="card glass" style="padding:4px 14px;gap:0" id="anaMissions">${d.M.length?d.M.map(m=>missionRow(m,left)).join(''):'<span class="small" style="padding:12px 0">No missions today. This campaign is paused.</span>'}</div>
+  <span class="small" style="text-align:center">${left?left+' of 3 left today, across all your campaigns':'All 3 done today. New missions at 7:00 AM.'}</span>`}
  if(A.tab==='coach'){html=`<div class="row" style="gap:10px">${tile('speech',22)}<div class="big" style="font-size:26px">Coach</div></div><span class="small">Answers from GCash’s Playbook and your campaigns.</span><div class="card glass"><span class="small">The full coach runs in the earner app.</span><a class="link" href="earner.html">Open the earner app</a></div>`}
  if(A.tab==='posts'){const P2=M.filter(m=>m.s!=='open');html=`<div class="big" style="font-size:26px">Posts</div><span class="small">Every post is checked against GCash’s Playbook and the campaign before it counts.</span><div class="card glass" style="padding:4px 14px;gap:0">${P2.length?P2.map(m=>`<div class="li">${m.s==='pass'?tile('quarter',18):tile('frame',18,'var(--mute)')}<span class="grow"><b style="display:block">${esc(m.t)}</b><span class="small">Today</span></span>${m.s==='pass'?`<span class="chip ok">+${peso(m.r)}</span>`:'<span class="chip n">Checking</span>'}</div>`).join(''):'<span class="small" style="padding:12px 0">Nothing posted yet today.</span>'}</div>`}
  if(A.tab==='wallet'){html=`<div class="big" style="font-size:26px">Wallet</div><div class="card glass" id="anaWallet"><span class="label">Ready to claim</span><div class="big num" style="font-size:40px">${peso(A.ready)}</div><div class="row small"><span class="grow">Confirming · waits on GCash</span><b class="num" style="color:var(--ink)">${peso(A.confirming)}</b></div><button class="btn" type="button" disabled>Claim to GCash</button><span class="small">Claim now costs 2%. Friday is free.</span></div>`}
@@ -305,7 +336,9 @@ function passMission(m){const c=C(m.c),A=S.ana;m.s='pass';m.q=m.id===1?84:m.id==
  renderAll();wash($('#pAna'),'#ebfbee','Passed','quarter','#69db7c');
  link('Ana','Brand console',`Ana’s ${esc(m.t.toLowerCase())} passed (${m.band}). It shows in <b>Posts</b> with its quality score, and ${peso(m.r)} comes out of the ${c.short} pool.`,['#anaMissions','#postList','#poolKpis','#con'])}
 $('#pAna').addEventListener('click',e=>{const t=e.target.closest('button');if(!t)return;const d=t.dataset,A=S.ana;
- if(d.atab){A.tab=d.atab;renderAna();save();return}
+ if(d.atab){A.tab=d.atab;if(d.atab==='today')A.open=null;renderAna();save();return}
+ if(d.camp){A.open=d.camp;renderAna();save();return}
+ if('back' in d){A.open=null;renderAna();save();return}
  if(d.m){const m=A.missions.find(x=>x.id===+d.m);if(!m||m.s!=='open')return;if(!capLeft()){toast('That’s 3 for today. It comes back tomorrow.',$('#pAna'));return}m.s='check';renderAna();setTimeout(()=>passMission(m),RM?100:1400);return}
  if('accept' in d){A.inv='joined';A.camps.push('ipon');A.notifs.unshift({k:'pin',t:'You joined GCash Ipon Challenge',b:'Its missions start tomorrow, inside your 3 a day.'});renderAll();
    link('Ana','Brand console','Ana accepted the Ipon invite. Recruiting shows <b>Joined</b>, and her follower page can now carry an Ipon link.',['#recAna','#con','#pFol']);return}
