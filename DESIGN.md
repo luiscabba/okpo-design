@@ -42,7 +42,7 @@ Luis reopened and re-locked these. Everything else from 2 Oct stands.
 | Voice | Chrome in second person, OkPo's guide in first person, the AI in third person | §11 |
 | Copy | Names from data, button and toast shapes, money format, no em dashes | §11 |
 
-Open: the sensitive list (§10), the level names (§10).
+Locked 7 Oct: the sensitive list (§10) and the level names (§10).
 
 The golden rule for new screens: **reuse a pattern that already exists in a prototype before inventing one.** No new icons, badges, marks or shortened wordmarks. Visuals come from the tiles and the line-icon set in §6, and the full wordmark.
 
@@ -510,7 +510,7 @@ Every fact carries one of three levels:
 - **Sourced** (found word for word on the brand's own page): the AI may say it, close to the source, and names the source.
 - **Guess** (inferred): the AI never says it until confirmed.
 
-**Sensitive facts are never spoken at Sourced, only Confirmed.** List (Open, to revisit): money, eligibility, dates and deadlines, legal, health and safety.
+**Sensitive facts are never spoken at Sourced, only Confirmed.** List (Locked 7 Oct): money, eligibility, dates and deadlines, legal, health and safety.
 
 Trust is shown on tap, never as a chip on every line (principle 4).
 
@@ -573,7 +573,7 @@ The first visit is a fast path. Completeness is not the goal; the brand or OkPo 
 
 An expectation setter: what the AI can do with what it has been given.
 
-- **Four levels:** Just met, Learning, Knows you, Knows you well. Names are Open; the four-level shape is Locked.
+- **Four levels:** Just met, Learning, Knows you, Knows you well. Names and the four-level shape are Locked (names 7 Oct).
   - Just met: website read, not published. Drafts only. "0 of 4 to publish".
   - Learning: the minimum to publish is in. Writes daily briefs; sensitive questions go to the brand's team.
   - Knows you: To check cleared, none older than 7 days; fees and eligibility Confirmed; at least 1 file from the brand.
