@@ -612,6 +612,7 @@ An expectation setter: what the AI can do with what it has been given.
 - **Console:** charts in ink and a tone shade; switches and sliders ink; the brief preview uses dots with IDs on hover; campaign cards wear the pin; the new-campaign flow names its edition and asks “What should this campaign get you?”; Leads says “How a sign-up counts” and pays from the pool; the Playbook first visit drops Add a brand (it lives in the brand switcher) and the updated-by line; the book has five lines; Facts show their group once; Voice has Add a trait; Posts show the campaign; Overview has a row per campaign; Pool and billing has a pool per campaign; Edition 1 first visit (`#first`) with “Skip to day 12”; the Playbook parts use the breadcrumb.
 - **Onboarding:** 9 screens; the draft book says Draft; OkPo’s guide line carries a mono “OkPo” label, no mark; briefs at 7:00; “Open the console” opens `console.html#first`.
 - **Connected:** Ana’s phone has the five tabs; no edition on the earner side; the brief uses dots.
+- **Connected, 7 Oct:** Ana’s Today uses the B2 campaign cards (earned / total, a bar per mission, the open arrow), and a card opens that campaign’s missions; the invite sits in the campaign list.
 - **Lobby:** home page hero is the creator line; For brands opens /brands; Never, Careful, Always copy.
 - **Earner:** sources on tap say “GCash Playbook”, no edition. Nothing else changed: the 3 Oct screens are the source.
 
@@ -625,6 +626,16 @@ Still open:
 **Retired 4 Oct:** the Brand Setup artifact, `/setup-v1`, and the GU, SU, BC2 and Ctx2 boards on the product canvas. Keep them as archive; do not build from them.
 
 ---
+
+## 12a. The BytePlus demo copies
+
+For showing a client that isn’t GCash. Same prototypes, BytePlus as the brand, OkPo branding throughout, no BytePlus logo. Routes: `/byteplus/onboard`, `/byteplus/console`, `/byteplus` (earner), `/byteplus/audience` (follower). The home page links them under “BytePlus demo”.
+
+- **Never edit the `*-byteplus.html` files by hand.** They are built from the GCash files by `prototypes/tools/make-byteplus.py` (earner), `make-byteplus-onboard.py` and `make-byteplus-console.py`. Change the GCash prototype, then rerun the scripts from `prototypes/`. Each prints any replacement that no longer matches (`missing`) and any GCash wording left over (`left`); fix the script until both are clean.
+- **Campaigns:** `heroes` is BytePlus Seedance Creators (short Seedance, per sign-up that makes a first clip); `save` / `ipon` is BytePlus ModelArk Builders (short Builders, per first API call).
+- **Payouts stay GCash.** Earners are paid to their GCash wallet; that is OkPo’s payout rail, not the brand.
+- **Sourced vs invented.** From byteplus.com/en/product/modelark, read 5 Oct 2026: free tokens for new accounts (500,000 per language model, 2,000,000 per vision model); Seedance 2.5 clips up to 30 seconds, up to 50 reference files, more than 10 languages. Everything else (audiences, voice lines, rules, the launch promo, page numbers) is invented for the demo.
+- Connected has no BytePlus copy.
 
 ## 13. Do not
 
