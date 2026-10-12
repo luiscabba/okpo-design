@@ -89,6 +89,9 @@ nav.site .nl[aria-current="page"]{color:var(--ink);font-weight:600;box-shadow:in
 .post .pic{aspect-ratio:3/4;border-radius:18px;position:relative;overflow:hidden;background:var(--tone);display:flex;align-items:flex-end;padding:12px}
 .post .pic svg.big{position:absolute;right:-30px;top:-30px;width:150px;height:150px;opacity:.9}
 .post .pic .cap{position:relative;background:var(--glass-strong);border-radius:12px;padding:8px 10px;font-size:12.5px;line-height:1.35}
+.post .pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s var(--ease,ease)}
+.post:hover .pic img{transform:scale(1.03)}
+.post .pic .play{position:absolute;top:10px;right:10px;width:28px;height:28px;border-radius:50%;background:rgba(18,18,18,.45);display:grid;place-items:center}
 .av{width:30px;height:30px;border-radius:50%;background:var(--soft);display:grid;place-items:center;font-weight:600;font-size:11px;color:var(--body);flex:none}
 
 /* earn */
@@ -163,14 +166,14 @@ const CAMPS=[
  {id:'kanto',brand:'Kanto Kape',bm:'KK',name:'Kanto Kape · first orders',k:'pin',kind:'open',post:35,act:15,actLabel:'per first order',what:'A taste test or your order in the Kanto app, 3 a week',fits:'Food creators with followers in Metro Manila',ends:'15 Dec',tps:['Order in the app','Show the stamp card'],ana:'fits'},
  {id:'baon',brand:'Baon Box',bm:'BB',name:'Baon Box · trial boxes',k:'pin',kind:'open',post:30,act:20,actLabel:'per trial box',what:'Unbox and cook one trial box',fits:'Followers in Cebu',ends:'30 Nov',tps:['Ready in 15 minutes','First box free'],ana:'nofit',why:'Needs followers in Cebu. Ana’s are mostly in Iloilo and QC.'}];
 const POSTS=[
- {h:'@ana.posts',n:'Ana Reyes',av:'AR',t:'Food',c:'heroes',cap:'Libre mag-join. Sign-up in 14 seconds, on the real app.',page:true,k:'pin'},
- {h:'@bea.saves',n:'Bea Tan',av:'BT',t:'Budget',c:'heroes',cap:'Pinadala ko kay Nanay in two taps.',k:'pin'},
- {h:'@lia.cooks',n:'Lia Gomez',av:'LG',t:'Food',c:'kanto',cap:'Sikwate Latte, ordered ahead. Sulit.',k:'pin'},
- {h:'@joyful.kai',n:'Kai Santos',av:'KS',t:'Tech',c:'heroes',cap:'Five minutes, one ID, done.',k:'pin'},
- {h:'@mika.vlogs',n:'Mika Uy',av:'MU',t:'Student life',c:'ipon',cap:'First ₱50 into GSave. Goal: a new phone.',k:'pin'},
- {h:'@rhea.budget',n:'Rhea Ong',av:'RO',t:'Budget',c:'ipon',cap:'Ipon week 2. Still going.',k:'pin'},
- {h:'@jo.fits',n:'Jo Ramos',av:'JR',t:'Beauty',c:'heroes',cap:'Pay for my shoot fees in the app, no cash.',k:'pin'},
- {h:'@nico.ph',n:'Nico Paz',av:'NP',t:'Tech',c:'kanto',cap:'Stamp 9 of 9. Free drink.',k:'pin'}];
+ {h:'@ana.posts',img:'ana',n:'Ana Reyes',av:'AR',t:'Food',c:'heroes',cap:'Libre mag-join. Sign-up in 14 seconds, on the real app.',page:true,k:'pin'},
+ {h:'@bea.saves',img:'bea',n:'Bea Tan',av:'BT',t:'Budget',c:'heroes',cap:'Pinadala ko kay Nanay in two taps.',k:'pin'},
+ {h:'@lia.cooks',img:'lia',n:'Lia Gomez',av:'LG',t:'Food',c:'kanto',cap:'Sikwate Latte, ordered ahead. Sulit.',k:'pin'},
+ {h:'@joyful.kai',img:'kai',n:'Kai Santos',av:'KS',t:'Tech',c:'heroes',cap:'Five minutes, one ID, done.',k:'pin'},
+ {h:'@mika.vlogs',img:'mika',n:'Mika Uy',av:'MU',t:'Student life',c:'ipon',cap:'First ₱50 into GSave. Goal: a new phone.',k:'pin'},
+ {h:'@rhea.budget',img:'rhea',n:'Rhea Ong',av:'RO',t:'Budget',c:'ipon',cap:'Ipon week 2. Still going.',k:'pin'},
+ {h:'@jo.fits',img:'jo',n:'Jo Ramos',av:'JR',t:'Beauty',c:'heroes',cap:'Pay for my shoot fees in the app, no cash.',k:'pin'},
+ {h:'@nico.ph',img:'nico',n:'Nico Paz',av:'NP',t:'Tech',c:'kanto',cap:'Stamp 9 of 9. Free drink.',k:'pin'}];
 const FRESH=()=>({view:'lobby',who:'visitor',topic:'All',join:{step:'num',num:'',camp:'heroes'}});
 let S;try{S=JSON.parse(sessionStorage.getItem('okpo-lobby')||'null')}catch(e){S=null}
 if(!S||!S.join)S=FRESH();
@@ -215,7 +218,7 @@ function vLobby(){
    <a class="door glass" href="${APP}/brands">${tile('pin',30)}<b>Build a community that grows your revenue</b><span class="sub">Load your brand once. OkPo trains your influencers every day, and you pay for customers you confirm.</span><span class="label" style="margin-top:auto">For brands →</span></a>
   </div></section>
  <section id="posts" style="display:flex;flex-direction:column;gap:16px"><div class="row" style="flex-wrap:wrap;align-items:flex-end"><span class="grow"><span class="label">This week</span><h2>Posts that passed</h2><span class="small">The work, not the follower count. Tap one to open the creator’s OkPo page.</span></span><div class="filters" role="group" aria-label="Topic">${topics.map(t=>`<button type="button" data-topic="${t}" aria-pressed="${S.topic===t}">${t}</button>`).join('')}</div></div>
-  <div class="posts">${list.map(p=>`<${p.page?`a href="${APP}/audience"`:`button type="button" data-noop="Opens ${esc(p.h)}’s OkPo page."`} class="post"><span class="pic">${tile(p.k,150).replace('class="tile"','class="tile big"')}<span class="cap">${esc(p.cap)}</span></span><span class="row" style="gap:8px"><span class="av">${p.av}</span><span class="grow"><b style="display:block;font-size:14px">${esc(p.n)}</b><span class="small">${esc(p.h)} · ${esc(campName(p.c))}</span></span></span></${p.page?'a':'button'}>`).join('')||'<span class="small">Nothing in this topic this week.</span>'}</div></section>
+  <div class="posts">${list.map(p=>`<${p.page?`a href="${APP}/audience"`:`button type="button" data-noop="Opens ${esc(p.h)}’s OkPo page."`} class="post"><span class="pic">${p.img?`<img src="/prototypes/img/lobby/${p.img}.jpg" alt="${esc(p.n)}’s post: ${esc(p.cap)}" loading="lazy"><span class="play" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 24 24" fill="#fff"><path d="M7 5l12 7-12 7z"/></svg></span>`:tile(p.k,150).replace('class="tile"','class="tile big"')}<span class="cap">${esc(p.cap)}</span></span><span class="row" style="gap:8px"><span class="av">${p.av}</span><span class="grow"><b style="display:block;font-size:14px">${esc(p.n)}</b><span class="small">${esc(p.h)} · ${esc(campName(p.c))}</span></span></span></${p.page?'a':'button'}>`).join('')||'<span class="small">Nothing in this topic this week.</span>'}</div></section>
  <section id="campaigns" style="display:flex;flex-direction:column;gap:16px"><div class="row" style="flex-wrap:wrap;align-items:flex-end;row-gap:6px"><span class="grow" style="min-width:min(100%,420px)"><span class="label">${ana()?'Campaigns for you':'Open now'}</span><h2>${ana()?'Your campaigns, and ones you could join':'Campaigns you can join today'}</h2></span><span class="small">Every deal is fixed. No pitching, no haggling.</span></div>
   <div class="camps">${CAMPS.map(campCard).join('')}</div></section>
  </div>`;
