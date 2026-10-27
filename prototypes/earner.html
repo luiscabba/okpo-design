@@ -1,4 +1,62 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
+/* profile pages: My page and the follower page (27 Oct, banner style) */
+.pf-ban{margin:-22px -18px 0;height:230px;position:relative;overflow:hidden;flex:none}
+.pf-ban img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.pf-shd{position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,18,18,.55) 0%,rgba(18,18,18,0) 45%,rgba(18,18,18,.25) 100%)}
+.pf-copy{position:absolute;top:16px;right:16px;z-index:2}
+.pf-wm{position:absolute;top:18px;left:18px;z-index:2;font-size:22px;text-shadow:0 1px 8px rgba(0,0,0,.25)}
+.pf-vc{position:absolute;right:14px;bottom:14px;color:#fff;font:600 11px/1 var(--mono);text-shadow:0 1px 4px rgba(0,0,0,.6);height:12px;overflow:hidden}
+.pf-vc>span{display:flex;flex-direction:column;gap:0}
+.pf-vc span span{display:block;height:12px;line-height:12px}
+.pf-av{width:104px;height:104px;border-radius:50%;object-fit:cover;object-position:50% 22%;border:4px solid var(--ground);margin:-66px 0 -4px;position:relative;z-index:2;display:block;flex:none}
+.pf-name{display:flex;flex-direction:column;gap:4px}
+.pf-cnt{display:flex;justify-content:space-between}
+.pf-cnt>span{display:flex;flex-direction:column;gap:3px}
+.pf-cnt b,.pf-flip{font-family:var(--display);font-weight:800;font-size:26px;letter-spacing:-.03em;line-height:26px}
+.pf-flip{display:inline-block;height:26px;overflow:hidden}
+.pf-flip>span{display:flex;flex-direction:column}
+.pf-cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.pf-cal .h{text-align:center;font:600 10px/1 var(--mono);color:var(--mute)}
+.pf-day{aspect-ratio:1;border-radius:8px;display:grid;place-items:center;font:500 11px/1 var(--mono);background:var(--soft);color:var(--mute)}
+.pf-day.on{background:var(--yellow);color:#121212}
+.pf-day.today{background:transparent;box-shadow:inset 0 0 0 2px var(--ink);color:var(--ink);font-weight:600}
+.pf-day.today.on{background:var(--yellow);box-shadow:none;color:#121212}
+.pf-day.later{background:transparent;border:1px dashed var(--line);color:var(--mute);opacity:.7}
+.pf-brow{display:flex;align-items:center;gap:12px}
+.pf-brow>span:nth-child(2){flex:1;display:flex;flex-direction:column;gap:2px}
+.pf-g{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.pf-g button{position:relative;aspect-ratio:3/4;border:0;padding:0;border-radius:10px;overflow:hidden;background:var(--tone);cursor:pointer}
+.pf-g img{width:100%;height:100%;object-fit:cover;display:block}
+.pf-g .v{position:absolute;left:7px;bottom:6px;color:#fff;font:600 11px/1 var(--mono);text-shadow:0 1px 4px rgba(0,0,0,.6)}
+.pf-g .top{position:absolute;top:7px;left:7px}
+.pf-line{display:flex;align-items:center;gap:12px;border:0;background:transparent;padding:0;text-align:left;color:var(--ink);font:inherit;width:100%;cursor:pointer}
+.pf-stack{display:flex}
+.pf-stack .bm{width:44px;height:44px;border:3px solid var(--ground);background:var(--tone)}
+.pf-stack .bm+.bm{margin-left:-10px}
+.pf-earn{position:absolute;left:12px;right:12px;bottom:14px;z-index:30;display:flex;align-items:center;gap:12px;border-radius:20px;padding:12px 12px 12px 16px;color:var(--ink);background:var(--glass-strong);border:1px solid var(--glass-edge);box-shadow:var(--glass-shadow);transform:translateY(150%);transition:transform .34s var(--ease);cursor:pointer;touch-action:pan-y}
+.pf-earn.on{transform:none}
+.pf-earn.gone{transform:translateX(120%);transition:transform .26s var(--exit)}
+.pf-earn b{flex:1;font-size:14.5px}
+@keyframes pfFill{0%{background:transparent;box-shadow:inset 0 0 0 2px var(--ink);transform:scale(1)}55%{background:var(--yellow);box-shadow:inset 0 0 0 0 var(--ink);transform:scale(1.35)}100%{background:var(--yellow);transform:scale(1)}}
+@keyframes pfFlip{from{transform:none}to{transform:translateY(-50%)}}
+@keyframes pfRise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes pfPop{0%{opacity:0;transform:scale(.3)}70%{opacity:1;transform:scale(1.12)}100%{opacity:1;transform:scale(1)}}
+@keyframes pfSwap{from{opacity:0;transform:scale(1.06)}to{opacity:1;transform:none}}
+@keyframes pfSettle{from{opacity:.3;transform:scale(1.08)}to{opacity:1;transform:none}}
+.pf-day.fresh{animation:pfFill .62s var(--pop) .35s both}
+.pf-flip.fresh>span{animation:pfFlip .5s var(--pop) .55s both}
+.pf-vc.fresh>span{animation:pfFlip .5s var(--pop) .8s both}
+.pf-new{animation:pfRise .35s var(--ease) .3s both}
+.pf-new .bm{animation:pfPop .5s var(--pop) .45s both}
+.pf-ban .pf-swap{animation:pfSwap .9s var(--ease) .3s both}
+.pf-in .pf-ban img{animation:pfSettle .9s var(--ease) both}
+.pf-in .pf-av{animation:pfPop .6s var(--pop-soft) .25s both}
+.pf-in .pf-r1{animation:pfRise .32s var(--ease) .4s both}
+.pf-in .pf-r2{animation:pfRise .32s var(--ease) .49s both}
+.pf-in .pf-r3{animation:pfRise .32s var(--ease) .58s both}
+.pf-earn.on .pf-q{animation:pfPop .5s var(--pop) .2s both}
+@media (prefers-reduced-motion:reduce){.pf-day.fresh,.pf-flip.fresh>span,.pf-vc.fresh>span,.pf-new,.pf-new .bm,.pf-ban .pf-swap,.pf-in .pf-ban img,.pf-in .pf-av,.pf-in .pf-r1,.pf-in .pf-r2,.pf-in .pf-r3,.pf-earn.on .pf-q{animation:none}.pf-earn,.pf-earn.gone{transition:none}}
+</style></head><body>
 
 <title>OkPo Earner and Page</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -232,13 +290,15 @@ details.pq .tips div b{font:600 11px/1 var(--mono);color:var(--mute)}
   <button class="ghost" type="button" id="simConfirm">GCash confirms sign-ups</button>
   <button class="ghost" type="button" id="simOnb">Replay joining</button>
   <button class="ghost" type="button" id="simVia">New joiner from Ana’s Reel</button>
+  <button class="ghost" type="button" id="simBrand">New brand</button>
+  <button class="ghost" type="button" id="simTop">New top video</button>
   <button class="ghost" type="button" id="themeBtn">Dark</button>
   <button class="ghost" type="button" id="resetBtn">Reset</button>
 </div>
 
 <div class="stage" id="stage" data-show="earner">
   <div class="col" id="colEarn"><div class="phone" id="pE" aria-label="Ana’s phone, OkPo earner app"></div><span class="cap" id="capE">Ana’s phone · tap a mission to start</span></div>
-  <div class="col" id="colAud"><div class="phone" id="pA" aria-label="A follower’s phone, Ana’s OkPo page"></div><span class="cap" id="capA">A follower’s phone · okpo.com/ana.posts · sign up here and watch Ana’s phone</span></div>
+  <div class="col" id="colAud"><div class="phone" id="pA" aria-label="A follower’s phone, Ana’s OkPo page"></div><span class="cap" id="capA">A follower’s phone · okpo.com/ana.posts from Ana’s TikTok bio</span></div>
 </div>
 
 <script>
@@ -313,7 +373,7 @@ const FRESH=()=>({
 let S;try{S=JSON.parse(localStorage.getItem('okpo-ep5')||'null')}catch(e){S=null}
 if(!S||!S.e||!S.a||!S.e.camps)S=FRESH();
 if(!S.a.taps){S.a.via='heroes';S.a.taps=['heroes']}
-S.e.sheet=null;S.e.notifsOpen=false;S.a.over=null;
+S.e.sheet=null;S.e.notifsOpen=false;S.a.over=null;S.a.seen=false;S.a.bsheet=false;S.a.earnOn=false;
 const save=()=>{try{localStorage.setItem('okpo-ep5',JSON.stringify(S))}catch(e){}};
 const pE=$('#pE'),pA=$('#pA');
 [ $('#pE'),$('#pA') ].forEach(ph=>ph.addEventListener('scroll',()=>{ph.scrollLeft=0;ph.scrollTop=0}));
@@ -484,13 +544,29 @@ function vWallet(prev){
     <div class="li">${tile('quarter',20,'var(--l-coral)')}<span class="grow"><span style="display:block">1 sign-up not activated</span><span class="small">GCash couldn’t verify the account · removed Tue</span></span><span class="mono" style="text-decoration:line-through;color:var(--mute)">₱12</span></div>
   </div>`;
 }
+function pfCal(E){const on='1101101110111011110110111'.split('');let h=DAYS.map(d=>`<span class="h">${d}</span>`).join('')+'<span></span><span></span><span></span>';
+  for(let d=1;d<=31;d++){if(d<26)h+=`<span class="pf-day ${on[d-1]==='1'?'on':''}">${d}</span>`;else if(d===26)h+=`<span class="pf-day on">${d}</span>`;else if(d===27)h+=`<span class="pf-day today ${E.dayFilled?'on':''} ${E.dayFresh?'fresh':''}">${d}</span>`;else h+=`<span class="pf-day later">${d}</span>`}
+  return h}
+const pfFlip=(a,b,fresh)=>fresh?`<span class="pf-flip fresh"><span><span>${a}</span><span>${b}</span></span></span>`:`<b>${b}</b>`;
+const PF_VIDS=[['v1.jpg','4.0k','50% 30%'],['v2.jpg','3.1k','50% 50%'],['v3.jpg','2.9k','40% 40%'],['v3.jpg','2.4k','70% 50%'],['v1.jpg','2.2k','60% 40%'],['v2.jpg','1.8k','30% 50%']];
+function pfGrid(aud){return `<div class="pf-g">${PF_VIDS.map(([f,v,pos],i)=>{const inner=`<img src="img/ana/${f}" alt="" loading="lazy" style="object-position:${pos}"><span class="v">▶ ${v}</span>${i===0?'<span class="chip wait top">TOP</span>':''}`;return aud?`<button type="button" class="press" data-noopa="Ana’s video" aria-label="Video, ${v} views, opens on TikTok">${inner}</button>`:`<button type="button" class="press" data-noopv="1" aria-label="Video, ${v} views">${inner}</button>`}).join('')}</div>`}
 function vPage(){
-  const E=S.e;
-  return `<div class="row" style="align-items:flex-end"><div class="big grow" style="font-size:26px">My page</div><button class="btn press" type="button" data-seefollower style="padding:9px 12px">See it as a follower</button></div>
-  <div class="card glass strong"><span class="label">okpo.com/ana.posts</span><div class="row" style="gap:22px;flex-wrap:wrap"><span><span class="big num">${E.visits.toLocaleString()}</span><br><span class="small">visits this campaign</span></span><span><span class="big num">${E.signups}</span><br><span class="small">sign-ups this week</span></span></div>
-  <div class="copyrow"><button type="button" class="press" data-copy="okpo.com/ana.posts">${ic('copy',15)}Copy page link</button></div></div>
-  <div class="card glass" style="gap:10px"><div class="row">${ic('link',18)}<b class="grow">Invite a creator friend</b></div><span class="sub" style="font-size:13.5px">When their first 3 posts pass, OkPo adds <b style="color:var(--ink)">[₱X]</b> to your Wallet. It doesn’t come out of any brand’s pool.</span><div class="copyrow"><button type="button" class="press" data-copy="okpo.com/join?ref=ana">${ic('link',15)}Copy invite link</button></div></div>
-  <div class="card glass" style="padding:8px 16px;gap:0"><span class="label" style="padding:8px 0 4px">What followers ask your AI</span>${['May bayad ba mag-sign up?','Paano kung wala pa akong GCash?','Ano ang makukuha ko?'].map(q=>`<div class="li">${tile('speech',14)}<span class="grow">${q}</span></div>`).join('')}</div>`;
+  const E=S.e,passed=E.passedN??42,days=E.daysN??31,fresh=!!E.dayFresh,topNew=!!E.topNew;
+  const brands=[...(E.newBrand?[['TC','Tindahan Co','1 video',false,true]]:[]),['GC','GCash','20 videos · 2 campaigns',true],['KK','Kanto Kape','3 videos',false]];
+  const html=`<div class="pf-ban"><img src="img/ana/banner.jpg" alt="">${topNew?`<img class="${E.topFresh?'pf-swap':''}" src="img/ana/banner2.jpg" alt="">`:''}<div class="pf-shd"></div>
+   <button class="btn press pf-copy" type="button" data-copy="okpo.com/ana.posts">Copy my link</button>
+   <span class="pf-vc ${E.topFresh?'fresh':''}"><span>${topNew&&E.topFresh?'<span>▶ 4.0k · top video</span>':''}<span>▶ ${topNew?'5.2k':'4.0k'} · top video</span></span></span></div>
+  <img class="pf-av" src="img/ana/photo.jpg" alt="Ana Reyes">
+  <div class="pf-name"><div class="disp" style="font-size:32px">Ana Reyes</div><span class="small">@ana.posts · 8.2k followers</span></div>
+  <section class="card glass strong" style="gap:16px"><div class="row" style="gap:8px">${tile('pin',14)}<span class="label">Standing</span></div>
+   <div class="pf-cnt"><span>${pfFlip(passed-1,passed,fresh)}<span class="small">videos passed</span></span><span>${pfFlip(days-1,days,fresh&&E.dayFilledNow)}<span class="small">days posted</span></span><span><b>98%</b><span class="small">on time</span></span></div>
+   <div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:12px"><span class="label">October</span><div class="pf-cal">${pfCal(E)}</div></div></section>
+  <section class="card glass" style="gap:12px"><span class="label">Brands worked with</span>${brands.map(([m,n,sub,reg,nw])=>`<div class="pf-brow ${nw&&E.brandFresh?'pf-new':''}"><span class="bm">${m}</span><span><b style="font-weight:600">${n}</b><span class="small">${sub}</span></span>${reg?'<span class="chip wait">REGULAR</span>':''}</div>`).join('')}</section>
+  <div class="row" style="align-items:baseline"><span class="label grow">Brand videos</span><span class="small">2.8k average views</span></div>
+  ${pfGrid()}
+  <button class="card glass press" type="button" data-seefollower style="flex-direction:row;align-items:center;justify-content:space-between;text-align:left;font-weight:500">See my bio link page ${ic('chev',16)}</button>`;
+  E.dayFresh=false;E.dayFilledNow=false;E.brandFresh=false;E.topFresh=false;
+  return html;
 }
 function vReceipt(){
   const r=S.e.receipt;
@@ -682,7 +758,7 @@ function resolveMission(id){
   enqueue(async()=>{
     const origin=pE.querySelector('#mrow'+id)||null;
     const prev={today:S.e.today,week:S.e.week,ready:S.e.ready};
-    m.state='passed';{const pt=PASS_TIPS[m.id]||['Good',[['Kept to the mission.',''],['Two Taglish lines in the caption.','']]];m.band=pt[0];m.tips=pt[1]}S.e.today+=m.r;S.e.week+=m.r;S.e.ready+=m.r;S.e.weekPassed++;
+    m.state='passed';S.e.passedN=(S.e.passedN??42)+1;S.e.dayFresh=true;if(!S.e.dayFilled){S.e.dayFilled=true;S.e.dayFilledNow=true;S.e.daysN=(S.e.daysN??31)+1};{const pt=PASS_TIPS[m.id]||['Good',[['Kept to the mission.',''],['Two Taglish lines in the caption.','']]];m.band=pt[0];m.tips=pt[1]}S.e.today+=m.r;S.e.week+=m.r;S.e.ready+=m.r;S.e.weekPassed++;
     if(S.e.weekPassed===5)S.e.notifs.unshift({t:'Weekly bonus unlocked',b:'5 passed posts this week. OkPo adds [₱X] on Friday.',time:'Now',k:'quarter'});
     const first=!S.e.doneToday;
     if(first){S.e.doneToday=true;S.e.streak++;S.e.days[TODAY]='done'}
@@ -726,29 +802,27 @@ function gcashConfirms(){
 function renderA(kind='none'){
   const A=S.a;
   if(!pA.querySelector('.pbg'))pA.insertAdjacentHTML('afterbegin',backdrop());
-  const ip=A.via==='ipon',other=ip?'heroes':'ipon',otherOn=camp(other).status==='joined';
-  const CARD={heroes:{k:'pin',t:'Join GCash Heroes',d:'Libre mag-join. About 5 minutes on the GCash app.',b:'Sign up on GCash',src:'Reel'},ipon:{k:'pin',t:'Start the Ipon Challenge',d:'Ipon ng ₱50 sa GSave. Libre at mga 3 minuto.',b:'Start saving on GCash',src:'Story'}};
-  const C=CARD[A.via],O=CARD[other];
-  swap(pA,`<div class="row small"><span class="grow mono">okpo.com/ana.posts${ip?'?c=ipon':'?c=heroes'}</span><span style="font-weight:600;color:var(--ink)">OkPo</span></div>
-  <div style="display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center"><span class="av" style="width:84px;height:84px;font-size:24px">AR</span><span class="disp" style="font-size:26px">Ana Reyes</span><span class="sub">@ana.posts · food and budget tips, QC</span><span class="chip wait" style="letter-spacing:.04em">${ic('shield',12)}Paid partnership with GCash</span></div>
-  <div class="card glass strong"><span class="label">You came from Ana’s ${C.src}</span><span class="row">${tile(C.k,16)}<b style="font-size:16px">${C.t}</b></span><span class="sub">${C.d}</span>
-   <button class="btn y wide press" type="button" data-signup ${A.signed?'disabled':''}>${A.signed?'You’re signed up':C.b}</button><span class="small">${A.signed?`Credited once, to ${A.creditName}.`:'Opens GCash. Ana gets credit when GCash confirms it.'}</span></div>
-  ${otherOn?`<button class="card glass press" type="button" data-switchvia="${other}" style="flex-direction:row;align-items:center;gap:10px;text-align:left">${tile(O.k,16)}<span class="grow"><b style="display:block">${O.t}</b><span class="small">Also on Ana’s page</span></span>${ic('chev',16)}</button>`:''}
-  <button class="card glass press" type="button" data-becomeearner style="flex-direction:row;align-items:center;gap:10px;text-align:left">${tile('quarter',18)}<span class="grow"><b style="display:block">Post like Ana and get paid</b><span class="small">Join OkPo with your mobile number</span></span>${ic('chev',16)}</button>
-  <b>Posts</b><div class="thumbs">${['Heroes sign-up in 14s','₱500 grocery run','Budget ulam','Paano mag-GCash','Baon hacks','Week of meals'].map(t=>`<button type="button" class="press" data-noopa="${t}">${ic('play',12)}<span style="font-size:11px;text-align:left;margin-left:4px">${t}</span></button>`).join('')}</div>`,kind);
-  pA.querySelectorAll('.askbar,.sheet,.scrim,.over').forEach(n=>n.remove());
-  if(!A.sheet)pA.insertAdjacentHTML('beforeend',`<button class="askbar glass strong press" type="button" data-aopen>${tile('speech',20)}<span>Ask Ana’s AI about ${A.via==='ipon'?'the Ipon Challenge':'GCash Heroes'}</span><span class="go-y">${ic('send',16)}</span></button>`);
-  else{
-    pA.insertAdjacentHTML('beforeend',`<div class="scrim" data-aclose></div><div class="sheet glass strong" role="dialog" aria-label="Ana’s AI" style="height:600px"><span class="grab"></span>
-     <div class="row">${tile('speech',18)}<b class="grow">Ana’s AI</b><span class="small">Answers from GCash’s Playbook</span><button class="iconbtn" type="button" data-aclose aria-label="Close" style="width:32px;height:32px;background:var(--soft)">${ic('x',14)}</button></div>
-     <div class="chat" id="audChat" style="flex:1;overflow:auto">${chatHtml(A.chat,`Ask about ${A.via==='ipon'?'the Ipon Challenge':'GCash Heroes'}. Answers come from GCash’s Playbook. It only says what GCash has confirmed.`)}</div>
-     <div class="pills">${(A.via==='ipon'?['Magkano ang kailangan?','May ₱50 welcome credit ba?','Paano kung wala pa akong GCash?']:['May bayad ba mag-sign up?','May ₱50 welcome credit ba?','Paano kung wala pa akong GCash?']).map(q=>`<button class="pill press" type="button" data-ask="aud" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>
-     <button class="btn y wide press" type="button" data-signup ${A.signed?'disabled':''}>${A.signed?'You’re signed up':A.via==='ipon'?'Start saving on GCash':'Sign up on GCash'}</button>
-     <form class="composer glass" data-form="aud"><label for="audIn" style="position:absolute;left:-9999px">Ask a question</label><input id="audIn" placeholder="Magtanong…" autocomplete="off"><button class="btn press" type="submit" style="padding:8px 12px">Ask</button></form></div>`);
-    const sh=pA.querySelector('.sheet');if(kind==='sheet'&&!RM){sh.animate([{transform:'translateY(100%)'},{transform:'none'}],{duration:360,easing:'cubic-bezier(.2,.8,.2,1)'});pA.querySelector('.scrim').animate([{opacity:0},{opacity:1}],{duration:240})}
-    const ch=$('#audChat',pA);ch.scrollTop=ch.scrollHeight;
+  const grid=pfGrid(true);
+  const scr=swap(pA,`<div class="pf-ban"><img src="img/ana/banner.jpg" alt=""><div class="pf-shd"></div><span class="wm pf-wm" role="img" aria-label="OkPo"><span>O</span><span>k</span><span>P</span><span>o</span></span><span class="pf-vc"><span><span>▶ 4.0k · top video</span></span></span></div>
+  <img class="pf-av" src="img/ana/photo.jpg" alt="Ana Reyes">
+  <div class="pf-name"><div class="disp pf-r1" style="font-size:32px">Ana Reyes</div><span class="pf-r2" style="font-size:14px">Food and budget finds around QC</span></div>
+  <button class="pf-line press pf-r3" type="button" data-abrands aria-label="Brands Ana posts for"><span class="pf-stack"><span class="bm">GC</span><span class="bm">KK</span></span><span class="grow">Posts for <b style="font-weight:600">GCash</b> and <b style="font-weight:600">Kanto Kape</b></span>${ic('chev',16)}</button>
+  ${grid}`,kind);
+  if(!A.seen){scr.classList.add('pf-in');A.seen=true}
+  pA.querySelectorAll('.askbar,.sheet,.scrim,.over,.pf-earn').forEach(n=>n.remove());
+  if(!A.earnGone){
+    pA.insertAdjacentHTML('beforeend',`<div class="pf-earn" role="button" tabindex="0" data-becomeearner aria-label="Get paid to post, at any size. Start"><span class="pf-q" style="display:inline-flex">${tile('quarter',20)}</span><b>Get paid to post, at any size</b><span class="btn" style="padding:10px 14px">Start</span></div>`);
+    const bar=pA.querySelector('.pf-earn');
+    const show=()=>{if(scr.scrollTop>40)bar.classList.add('on')};scr.addEventListener('scroll',show,{passive:true});if(A.earnOn)bar.classList.add('on');else setTimeout(()=>{if(bar.isConnected&&scr.scrollHeight<=scr.clientHeight+40)bar.classList.add('on')},2500);bar.addEventListener('transitionend',()=>{A.earnOn=bar.classList.contains('on')});
+    let x0=null;bar.addEventListener('pointerdown',e=>{x0=e.clientX});bar.addEventListener('pointerup',e=>{if(x0!==null&&Math.abs(e.clientX-x0)>60){e.stopPropagation();bar.dataset.swiped='1';bar.classList.add('gone');A.earnGone=true;save();setTimeout(()=>bar.remove(),280)}x0=null});
+    bar.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();startVia()}});
   }
-  if(A.over)pA.insertAdjacentHTML('beforeend',`<div class="over"><div class="glass strong" role="dialog" aria-modal="true" aria-label="Leaving for GCash">${A.over==='done'?`${tile('pin',40)}<b style="font-size:20px">You’re in. Salamat!</b><span class="sub">GCash confirms it, then Ana gets credit for ${esc(A.creditName||'')}. (Demo: no real sign-up happened.)</span><button class="btn y press" type="button" data-overclose>Back to Ana’s page</button>`:`<b style="font-size:20px">Opening GCash</b><span class="sub">You’ll finish in the GCash app. Ana gets credit for <b>${A.via==='ipon'?'GCash Ipon Challenge':'GCash Heroes'}</b>${A.taps.length>1?', the last of her links you tapped in the past 7 days. One sign-up, one credit.':'.'}</span><div class="row"><button class="btn y grow press" type="button" data-signupgo>Continue to GCash</button><button class="btn press" type="button" data-overclose style="background:var(--soft);color:var(--ink)">Not now</button></div>`}</div></div>`);
+  if(A.bsheet){
+    pA.insertAdjacentHTML('beforeend',`<div class="scrim" data-abclose></div><div class="sheet glass strong" role="dialog" aria-label="Brands Ana posts for"><span class="grab"></span>
+     <div class="row"><span class="label grow">Brands Ana posts for</span><button class="iconbtn" type="button" data-abclose aria-label="Close" style="width:32px;height:32px;background:var(--soft)">${ic('x',14)}</button></div>
+     ${[['GC','GCash','20 videos',true],['KK','Kanto Kape','3 videos',false]].map(([m,n,sub,reg])=>`<div class="pf-brow"><span class="bm">${m}</span><span><b style="font-weight:600">${n}</b><span class="small">${sub}</span></span>${reg?'<span class="chip wait">REGULAR</span>':''}</div>`).join('')}</div>`);
+    if(kind==='sheet'&&!RM){pA.querySelector('.sheet').animate([{transform:'translateY(100%)'},{transform:'none'}],{duration:340,easing:'cubic-bezier(.2,.8,.2,1)'});pA.querySelector('.scrim').animate([{opacity:0},{opacity:1}],{duration:240})}
+  }
   save();
 }
 
@@ -794,6 +868,7 @@ pE.addEventListener('click',e=>{
   if('back' in d){E.stack.pop();renderE('pop');return}
   if('paste' in d){const i=$('#plink',pE);i.value='tiktok.com/@ana.posts/video/'+Math.floor(7e9+Math.random()*1e9);$('#plinkf',pE).classList.remove('bad');return}
   if(d.copy){copy(d.copy,pE);return}
+  if(d.noopv){toastIn(pE,'<span>Opens this video’s stats in the real app.</span>');return}
   if(d.noop){toastIn(pE,`<span>${esc(d.noop)} opens the composer in the real app.</span>`);return}
   if(d.ask==='coach'){ask('coach',d.q);return}
   if('claim' in d){E.sheet={opt:'now'};overlayE();return}
@@ -811,7 +886,10 @@ pE.addEventListener('submit',e=>{e.preventDefault();const f=e.target,k=f.dataset
   if(k==='num'){const v=$('#jnum',pE).value.replace(/\D/g,'');if(v.length!==10){$('#jnumf',pE).classList.add('bad');$('#jnum',pE).focus();toastIn(pE,'<span>Enter a 10-digit mobile number, like 917 123 4567.</span>');return}S.e.num=v.replace(/(\d{3})(\d{3})(\d{4})/,'$1 $2 $3');S.e.onb='code';renderE('push');return}
 });
 pA.addEventListener('click',e=>{
-  const t=e.target.closest('button,[data-aclose]');if(!t)return;const d=t.dataset;const A=S.a;
+  const t=e.target.closest('button,[data-aclose],[data-abclose],[data-becomeearner]');if(!t)return;const d=t.dataset;const A=S.a;
+  if('abrands' in d){A.bsheet=true;renderA('sheet');return}
+  if('abclose' in d){const sh=pA.querySelector('.sheet');const done=()=>{A.bsheet=false;renderA('none')};if(sh&&!RM)sh.animate([{transform:'none'},{transform:'translateY(100%)'}],{duration:240,easing:'ease-in'}).finished.then(done);else done();return}
+  if(t.dataset.swiped)return;
   if('aopen' in d){A.sheet=true;renderA('sheet');return}
   if('aclose' in d){if(!RM){const sh=pA.querySelector('.sheet');sh.animate([{transform:'none'},{transform:'translateY(100%)'}],{duration:260,easing:'ease-in'}).finished.then(()=>{A.sheet=false;renderA('none')})}else{A.sheet=false;renderA('none')}return}
   if(d.ask==='aud'){ask('aud',d.q);return}
@@ -833,6 +911,8 @@ function paintVia(){$('#viaH').setAttribute('aria-pressed',String(S.a.via==='her
 function arrive(c){if(c==='ipon'&&camp('ipon').status!=='joined'){toastIn(pA,`${tile('pin',16)}<span>Ana hasn’t joined Ipon yet. Accept the invite on her phone first (+ Campaigns).</span>`);return}if(S.a.signed){toastIn(pA,'<span>This follower already signed up. One sign-up, one credit. Reset to try again.</span>');return}S.a.via=c;if(S.a.taps[S.a.taps.length-1]!==c)S.a.taps.push(c);S.a.chat=[];S.a.sheet=false;paintVia();focusPhone('aud');renderA('fade')}
 $('#viaH').onclick=()=>arrive('heroes');$('#viaI').onclick=()=>arrive('ipon');
 $('#simVia').onclick=()=>startVia();
+$('#simBrand').onclick=()=>{focusPhone('earner');S.e.newBrand=true;S.e.brandFresh=true;S.e.stack=[];S.e.onb=null;S.e.tab='page';renderE('fade')};
+$('#simTop').onclick=()=>{focusPhone('earner');S.e.topNew=true;S.e.topFresh=true;S.e.stack=[];S.e.onb=null;S.e.tab='page';renderE('fade')};
 function startVia(){focusPhone('earner');S.e.via='ana';S.e.num='';S.e.onb='welcome';S.e.stack=[];S.e.sheet=null;S.e.notifsOpen=false;overlayE();renderE('fade')}
 $('#simOnb').onclick=()=>{focusPhone('earner');S.e.via=null;S.e.onb='welcome';S.e.stack=[];S.e.sheet=null;S.e.notifsOpen=false;overlayE();renderE('fade')};
 $('#resetBtn').onclick=()=>{const bg=S.bg;S=FRESH();S.bg=bg;setTimeout(paintVia,0);pE.querySelectorAll('.take,.toast').forEach(n=>n.remove());overlayE();renderE('fade');renderA('fade')};

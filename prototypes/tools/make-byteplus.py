@@ -141,6 +141,12 @@ for o,n in R:
     src=src.replace(o,n)
 # what's left that names the brand, other than the payout wallet
 left=[m for m in re.findall(r".{0,40}(?:GCash|Ipon|GSave|Heroes).{0,40}",src) if not re.search(r"Claim to GCash|your GCash|GCash · 0917|in your GCash|to your GCash|GCash on Friday",m)]
+# profile pages (27 Oct): brand rows, the follower's brand line and sheet
+for a_,b_ in [("['GC','GCash','20 videos · 2 campaigns',true]","['BP','BytePlus','20 videos · 2 campaigns',true]"),
+              ('Posts for <b style="font-weight:600">GCash</b>','Posts for <b style="font-weight:600">BytePlus</b>'),
+              ('<span class="bm">GC</span><span class="bm">KK</span>','<span class="bm">BP</span><span class="bm">KK</span>'),
+              ("[['GC','GCash','20 videos',true]","[['BP','BytePlus','20 videos',true]")]:
+    src=src.replace(a_,b_)
 open('earner-byteplus.html','w').write(src)
 print('missing:',len(missing)); [print('  -',m[:90]) for m in missing]
 print('left:',len(left)); [print('  ·',l) for l in left]
